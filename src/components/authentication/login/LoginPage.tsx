@@ -1,10 +1,17 @@
 import {ILoginPage, ILoginPageError, IUser} from "./type.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import http from "../../../http_common.ts";
-import { FcGoogle } from "react-icons/fc";
+
 import { BiLogoFacebook } from "react-icons/bi";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
+import {useGoogleLoginMutation} from "../../../services/user.ts";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import {useAppDispatch} from "../../../store";
+import {setCredentials} from "../../../store/slice/userSlice.ts";
+import {jwtParser} from "../../../utils/jwtParser.ts";
+import {User} from "../../../interfaces/user";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 const LoginPage = () => {
@@ -13,6 +20,35 @@ const LoginPage = () => {
     const init: ILoginPage = {
         email: "",
         password: ""
+    };
+    const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useAppDispatch();
+    const [googleLogin] = useGoogleLoginMutation();
+
+    const authSuccess = async (credentialResponse: CredentialResponse) => {
+        const res = await googleLogin({
+            credential: credentialResponse.credential || "",
+        });
+
+        if (res && "data" in res && res.data) {
+            localStorage.setItem("authToken", res.data.token);
+            console.log(res.data.token);
+
+            dispatch(
+                setCredentials({
+                    user: jwtParser(res.data.token) as User,
+                    token: res.data.token,
+                }),
+            );
+            const { from } = location.state || { from: { pathname: "/" } };
+            navigate(from);
+        } else {
+            console.log("Error login. Check login data!");
+        }
+    };
+    const authError = () => {
+        console.log("Error login.");
     };
 
     //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
@@ -61,17 +97,20 @@ const LoginPage = () => {
                                 className="flex justify-center items-center w-full"
                             />
                         </button>
-                        <button
-                            type="button"
-                            className="inlne-block mx-1 h-9 w-9 rounded-full bg-blue-600 hover:bg-blue-700 uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca]"
-                        >
-                            <FcGoogle
-                                size={20}
-                                className="flex justify-center items-center w-full"
+                        <div className="flex justify-center items-center">
+
+
+                            <GoogleLogin
+                                useOneTap
+                                locale="uk"
+                                size="large"
+                                onSuccess={authSuccess}
+                                onError={authError}
                             />
-                        </button>
+                        </div>
                     </div>
-                    <div className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
+                    <div
+                        className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
                         <p className="mx-4 mb-0 text-center font-semibold text-slate-500">
                             Or
                         </p>
