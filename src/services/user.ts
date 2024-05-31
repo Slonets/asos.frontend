@@ -5,7 +5,7 @@ import { API_URL } from "../utils/getEnvData.ts";
 
 export const userApi = createApi({
     reducerPath: "userApi",
-    baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/api/accounts/` }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}api/Account/` }),
     tagTypes: ["User"],
 
     endpoints: (builder) => ({
