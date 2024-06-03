@@ -1,9 +1,17 @@
 export interface IRegisterPage
 {
-    fisrtName:string;
+    firstName:string;
     lastName:string;
     phoneNumber:string;
     email:string;
-    image:File|null;
     password:string;
+    confirmPassword: string;
+}
+
+export interface IRegisterError
+{
+    email: string[],
+    password: string[],
+    confirmPassword: string[],
+    image:string[]
 }

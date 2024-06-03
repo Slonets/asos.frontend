@@ -12,7 +12,8 @@ function App() {
         <>
             <Routes>
                 <Route path="/" element={<DefaultLayout />}>
-                    <Route index element={<LoginPage/>}/>
+                    <Route index element={<RegisterPage/>}/>
+                    <Route path="login" element={<LoginPage />} />
 
                     <Route path="identity" element={<IdentityDefault/>}>
                         <Route path="login" element={<LoginPage/>}/>

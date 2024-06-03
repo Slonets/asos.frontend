@@ -66,6 +66,7 @@ const LoginPage = () => {
                 setAuthToken(token);
 
                 const user = jwtDecode<IUser>(token);
+                navigate("/");
                 console.log("Вхід успішний", user);
 
             })
