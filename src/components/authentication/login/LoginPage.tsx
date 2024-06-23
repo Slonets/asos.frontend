@@ -3,16 +3,17 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import http from "../../../http_common.ts";
 
 import { BiLogoFacebook } from "react-icons/bi";
-import { jwtDecode } from "jwt-decode";
+
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import {useAppDispatch} from "../../../store";
-import {setCredentials} from "../../../store/slice/userSlice.ts";
-import {jwtParser} from "../../../utils/jwtParser.ts";
-import {User} from "../../../interfaces/user";
+import { store, useAppDispatch} from "../../../store";
+// import {setCredentials} from "../../../store/slice/userSlice.ts";
+// import {jwtParser} from "../../../utils/jwtParser.ts";
+// import {User} from "../../../interfaces/user";
 import {useLocation, useNavigate} from "react-router-dom";
-
+import {AuthUserActionType} from "../type.ts";
+import {jwtDecode} from "jwt-decode";
 
 const LoginPage = () => {
 
@@ -27,27 +28,44 @@ const LoginPage = () => {
     const [googleLogin] = useGoogleLoginMutation();
 
     const authSuccess = async (credentialResponse: CredentialResponse) => {
-        const res = await googleLogin({
+        const resp = await googleLogin({
             credential: credentialResponse.credential || "",
         });
 
-        if (res && "data" in res && res.data) {
-            localStorage.setItem("authToken", res.data.token);
-            console.log(res.data.token);
+        if (resp && "data" in resp && resp.data)
+        {
+            // localStorage.setItem("authToken", res.data.token);
+            // console.log(res.data.token);
 
-            dispatch(
-                setCredentials({
-                    user: jwtParser(res.data.token) as User,
-                    token: res.data.token,
-                }),
-            );
+            // dispatch(
+            //     setCredentials({
+            //         user: jwtParser(res.data.token) as User,
+            //         token: res.data.token,
+            //     }),
+            // );
+
+            const token = resp.data.token as string;
+
+            setAuthToken(token);
+
+            const user = jwtDecode<IUser>(token);
+
+            console.log("Вхід успішний", user);
+
+            dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+
             const { from } = location.state || { from: { pathname: "/" } };
             navigate(from);
-        } else {
+        }
+        else
+        {
             console.log("Error login. Check login data!");
+
+            dispatch({type: AuthUserActionType.LOGOUT_USER});
         }
     };
-    const authError = () => {
+    const authError = () =>
+    {
         console.log("Error login.");
     };
 
@@ -61,13 +79,17 @@ const LoginPage = () => {
         http.post("api/account/login", data)
             .then(resp =>
             {
-                const token =resp.data.token as string;
+                const token = resp.data.token as string;
 
                 setAuthToken(token);
 
                 const user = jwtDecode<IUser>(token);
-                navigate("/");
+
                 console.log("Вхід успішний", user);
+
+                dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+
+                navigate("/");
 
             })
             .catch(badReqeust=>{
@@ -80,6 +102,13 @@ const LoginPage = () => {
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setData({...data, [e.target.name]: e.target.value});
     }
+
+    const handleLogout = () =>
+    {
+        setAuthToken(null as any);
+        store.dispatch({type: AuthUserActionType.LOGOUT_USER});
+    }
+
 
     return (
         <>
@@ -151,6 +180,17 @@ const LoginPage = () => {
                         >
                             Login
                         </button>
+
+                        {data && (
+                            <button
+                                className="mt-4 ml-4 bg-red-600 hover:bg-red-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
+                                type="button"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        )}
+
                     </div>
                     <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
                         Don&apos;t have an account?{" "}
