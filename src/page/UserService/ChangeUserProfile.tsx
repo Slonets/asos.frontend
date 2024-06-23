@@ -10,6 +10,7 @@ import axios from "axios";
 import {IUser} from "../../components/authentication/login/type.ts";
 import {APP_ENV} from "../../env";
 import {AuthUserActionType} from "../../components/authentication/type.ts";
+import {IChangePassword} from "../../interfaces/user";
 // import {useNavigate} from "react-router-dom";
 
 
@@ -32,6 +33,12 @@ const ChangeUserProfile = () => {
             image: "",
             roles: "",
         }
+
+    const dataPassword : IChangePassword=
+    {
+        currentPassword:"",
+        newPassword:"",
+    }
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
@@ -168,7 +175,6 @@ const ChangeUserProfile = () => {
 
         if (currentUser)
         {
-            // setUser(currentUser);
             setFieldValue("id", currentUser.id);
             setFieldValue("firstName", currentUser.firstName);
             setFieldValue("lastName", currentUser.lastName);
@@ -179,6 +185,42 @@ const ChangeUserProfile = () => {
         }
 
     }, [currentUser]);
+
+    const [Currentpassword, setPassword] = useState<IChangePassword>(dataPassword);
+
+
+    const [passwordError, setPasswordError] = useState("");
+    const handlePasswordSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+
+            const result = await http.post("api/Account/change-password",  {
+                newPassword: Currentpassword.newPassword,
+                currentPassword: Currentpassword.currentPassword
+            },{
+                headers:{
+                        "Content-Type": "multipart/form-data"
+                  }})
+
+            console.log("Пароль змінено успішно", result);
+
+        } catch (error)
+            {
+            console.error('Помилка зміни паролю:', error);
+
+            if (axios.isAxiosError(error))
+            {
+                setPasswordError(error.response?.data?.message || 'Помилка зміни паролю');
+            }
+        }
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword({ ...Currentpassword, [e.target.name]: e.target.value });
+        setPasswordError("");
+    };
+
 
     return (
         <>
@@ -260,29 +302,30 @@ const ChangeUserProfile = () => {
                     <button type="submit" className="button">Змінити</button>
                 </form>
 
-                {/*    <form onSubmit={handlePasswordSubmit} className="form">*/}
-                {/*        <div className="input-group">*/}
-                {/*            <label className="label">Новий пароль:</label>*/}
-                {/*            <input*/}
-                {/*                type="password"*/}
-                {/*                name="newPassword"*/}
-                {/*                value={password.newPassword}*/}
-                {/*                onChange={handlePasswordChange}*/}
-                {/*                className="input"*/}
-                {/*            />*/}
-                {/*        </div>*/}
-                {/*        <div className="input-group">*/}
-                {/*            <label className="label">Підтвердіть пароль:</label>*/}
-                {/*            <input*/}
-                {/*                type="password"*/}
-                {/*                name="confirmPassword"*/}
-                {/*                value={password.confirmPassword}*/}
-                {/*                onChange={handlePasswordChange}*/}
-                {/*                className="input"*/}
-                {/*            />*/}
-                {/*        </div>*/}
-                {/*        <button type="submit" className="button">Змінити пароль</button>*/}
-                {/*    </form>*/}
+                <form onSubmit={handlePasswordSubmit} className="form">
+                    <div className="input-group">
+                        <label className="label">Теперішній пароль:</label>
+                        <input
+                            type="password"
+                            name="currentPassword"
+                            value={Currentpassword.currentPassword}
+                            onChange={handlePasswordChange}
+                            className="input"
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label className="label">Новий пароль:</label>
+                        <input
+                            type="password"
+                            name="newPassword"
+                            value={Currentpassword.newPassword}
+                            onChange={handlePasswordChange}
+                            className="input"
+                        />
+                    </div>
+                    {passwordError && <div className="text-red-500 text-xs mt-1">{passwordError}</div>}
+                    <button type="submit" className="button">Змінити пароль</button>
+                </form>
             </div>
         </>
     )
