@@ -13,7 +13,11 @@ export interface ILoginPageError
 
 export interface IUser
 {
-    name:string;
-    image:string;
-    role:string;
+    id:number,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    image:string,
+    roles:string,
 }
