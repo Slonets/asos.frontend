@@ -20,16 +20,8 @@ export interface LoginResponse {
     token: string;
 }
 
-export interface IChangeUser {
-    id:number;
-    firstName: string,
-    lastName: string,
-    email: string,
-    phoneNumber:string,
-    image: File|null
-}
-
-export interface IChangeFoto {
-    id:number;
-    image: File|null;
+export interface IChangePassword
+{
+    currentPassword:string;
+    newPassword:string;
 }
