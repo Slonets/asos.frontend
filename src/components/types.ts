@@ -3,10 +3,20 @@ export interface ICategoryName {
     name: string,
 }
 export interface IProductCreate {
-    name: string;
-    description: string;
-    category_id: number;
-    files: File[];
+    Name: string;
+    Description: string;
+    CategoryId: number;
+    Price: number;
+    Size:number;
+    Color:string;
+    BrandId:number;
+    SubCategoryId:number;
+    Gender:number;
+    AboutMe:string;
+    LookAfterMe:string;
+    SizeAndFit:string;
+    Amount:number;
+    ImageUrls: File[];
 }
 export interface IUploadedFile {
     lastModified: number;
@@ -18,4 +28,21 @@ export interface IUploadedFile {
     thumbUrl: string;
     type: string;
     uid: string;
+}
+export interface IBrandName {
+    id: number,
+    name: string,
+}
+export interface ISizeName {
+    label: string;
+    value: number;
+}
+export interface IGenderName {
+    label: string;
+    value: number;
+}
+export interface ISubCategoryName {
+    id: number;
+    categoryId: number;
+    name: string;
 }
