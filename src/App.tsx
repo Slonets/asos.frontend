@@ -7,6 +7,7 @@ import LoginPage from "./components/authentication/login/LoginPage.tsx";
 import RegisterPage from "./components/authentication/register/RegisterPage.tsx";
 import UserProfile from "./page/UserService/UserProfile.tsx";
 import InfoUserLayout from "./page/UserService/InfoUserLayout.tsx"
+import ProductCreatePage from "./components/products/create/ProductCreatePage.tsx";
 
 function App() {
 
@@ -25,6 +26,10 @@ function App() {
 
                     <Route path="user-info" element={<InfoUserLayout/>}>
                         <Route path="profile" element={<UserProfile/>}/>
+                    </Route>
+
+                    <Route path="dashboard">
+                        <Route path="product/create" element={<ProductCreatePage/>}/>
                     </Route>
 
                 </Route>
