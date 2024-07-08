@@ -82,7 +82,7 @@ const RegisterPage = () => {
             const result = await http.post("api/Account/register", values
                 , {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'multipart/form-data'
                     }
                 }
             );

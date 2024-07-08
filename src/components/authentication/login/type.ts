@@ -20,4 +20,5 @@ export interface IUser
     phoneNumber: string,
     image:string,
     roles:string,
+    IsLockedOut:boolean,
 }
