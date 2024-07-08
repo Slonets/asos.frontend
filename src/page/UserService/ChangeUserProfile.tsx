@@ -32,6 +32,7 @@ const ChangeUserProfile = () => {
             phoneNumber: "",
             image: "",
             roles: "",
+            IsLockedOut:false
         }
 
     const dataPassword : IChangePassword=

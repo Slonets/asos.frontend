@@ -17,6 +17,7 @@ const UserProfile = () => {
         phoneNumber: "",
         image: "",
         roles: "",
+        IsLockedOut:false
     };
 
     const [info, setInfo] = useState<IUser>(init);
