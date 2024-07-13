@@ -8,7 +8,12 @@ export interface ILoginPageError
 {
     isSuccess:boolean;
     error:string;
+}
 
+export interface IValidLogin
+{
+    propertyName:string,
+    errorMessage:string;
 }
 
 export interface IUser

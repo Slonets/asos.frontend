@@ -1,4 +1,4 @@
-import {ILoginPage, ILoginPageError, IUser} from "./type.ts";
+import {ILoginPage, ILoginPageError, IUser, IValidLogin} from "./type.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import http from "../../../http_common.ts";
 
@@ -26,10 +26,12 @@ const LoginPage = () => {
 
     //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
     const [data, setData] = useState<ILoginPage>(init);
-    const [badReqeust, setBadReqeust]= useState<ILoginPageError>({
+    const [badRequest, setBadbadRequest]= useState<ILoginPageError>({
         error:"",
         isSuccess:false,
     });
+
+    const [valid, setValid]= useState<IValidLogin[]>([]);
 
         const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,15 +52,26 @@ const LoginPage = () => {
                 navigate("/");
 
             })
-            .catch(badReqeust => {
+            .catch(badRequest => {
 
-                if (axios.isAxiosError(badReqeust)) {
-                    if (badReqeust.response) {
-                        const errorData = badReqeust.response.data;
+                if (axios.isAxiosError(badRequest))
+                {
+                    if (badRequest.response)
+                    {
+                        const errorData = badRequest.response.data;
 
-                        setBadReqeust(errorData);
+                        if (typeof errorData.error === 'string')
+                        {
+                            setBadbadRequest(errorData);
 
-                        console.log("Error info", errorData);
+                            console.log("Одна помилка", errorData);
+                        }
+                        else if(Array.isArray(errorData))
+                        {
+                            setValid(errorData);
+
+                            console.log("Багато помилок", errorData);
+                        }
                     }
                 }
             });
@@ -133,11 +146,20 @@ const LoginPage = () => {
 
                         </div>
 
-                        {badReqeust.error && (
+                        {badRequest.error && (
                             <div className="error">
-                                <span id="errorSpan">{badReqeust.error}</span>
+                                <p id="errorSpan">{badRequest.error}</p>
                             </div>
                         )}
+
+                        {valid.length>0 &&
+                            (
+                            <div className="error">
+                                {valid.map((err, index) => (
+                                    <p id="errorSpan" key={index}>{err.errorMessage}</p>
+                                ))}
+                            </div>
+                            )}
 
                         <div  className="Frame23">
 
