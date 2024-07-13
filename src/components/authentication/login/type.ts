@@ -6,7 +6,9 @@ export interface ILoginPage
 
 export interface ILoginPageError
 {
+    isSuccess:boolean;
     error:string;
+
 }
 
 export interface IUser

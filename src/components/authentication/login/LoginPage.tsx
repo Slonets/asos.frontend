@@ -19,9 +19,6 @@ const LoginPage = () => {
         password: ""
     };
 
-    const respons: ILoginPageError = {
-        error:"",
-    };
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -29,7 +26,10 @@ const LoginPage = () => {
 
     //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
     const [data, setData] = useState<ILoginPage>(init);
-    const [mistake, setMistake]= useState<ILoginPageError>(respons);
+    const [badReqeust, setBadReqeust]= useState<ILoginPageError>({
+        error:"",
+        isSuccess:false,
+    });
 
         const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -52,36 +52,15 @@ const LoginPage = () => {
             })
             .catch(badReqeust => {
 
-                if (axios.isAxiosError(badReqeust))
-                {
-                    if (badReqeust.response)
-                    {
+                if (axios.isAxiosError(badReqeust)) {
+                    if (badReqeust.response) {
                         const errorData = badReqeust.response.data;
+
+                        setBadReqeust(errorData);
+
                         console.log("Error info", errorData);
-                        // // Перевірка, чи це рядок
-                        // let errorMessage = "";
-                        //
-                        // if (typeof errorData === 'string') {
-                        //     // Якщо це рядок, ми можемо безпосередньо працювати з ним
-                        //     errorMessage = errorData;
-                        // } else if (errorData.message)
-                        // {
-                        //     // Якщо це об'єкт з полем message
-                        //     errorMessage = errorData.message;
-                        // }
-                        //
-                        // console.log("Таке прийшло", errorMessage);
-                        //
-                        //
-                        //     // Знайшли відповідну помилку, виводимо її у span
-                        //     const spanElement = document.getElementById("errorSpan");
-                        //
-                        //     if (spanElement)
-                        //     {
-                        //         spanElement.textContent = mistake.error; // встановлюємо текст повідомлення
-                        //     }
-                         }
                     }
+                }
             });
     }
 
@@ -154,9 +133,9 @@ const LoginPage = () => {
 
                         </div>
 
-                        {mistake && (
+                        {badReqeust.error && (
                             <div className="error">
-                                <span id="errorSpan"></span>
+                                <span id="errorSpan">{badReqeust.error}</span>
                             </div>
                         )}
 
