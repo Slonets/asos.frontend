@@ -57,30 +57,30 @@ const LoginPage = () => {
                     if (badReqeust.response)
                     {
                         const errorData = badReqeust.response.data;
-
-                        // Перевірка, чи це рядок
-                        let errorMessage = "";
-
-                        if (typeof errorData === 'string') {
-                            // Якщо це рядок, ми можемо безпосередньо працювати з ним
-                            errorMessage = errorData;
-                        } else if (errorData.message)
-                        {
-                            // Якщо це об'єкт з полем message
-                            errorMessage = errorData.message;
-                        }
-
-                        console.log("Таке прийшло", errorMessage);
-
-
-                            // Знайшли відповідну помилку, виводимо її у span
-                            const spanElement = document.getElementById("errorSpan");
-
-                            if (spanElement)
-                            {
-                                spanElement.textContent = mistake.error; // встановлюємо текст повідомлення
-                            }
-                        }
+                        console.log("Error info", errorData);
+                        // // Перевірка, чи це рядок
+                        // let errorMessage = "";
+                        //
+                        // if (typeof errorData === 'string') {
+                        //     // Якщо це рядок, ми можемо безпосередньо працювати з ним
+                        //     errorMessage = errorData;
+                        // } else if (errorData.message)
+                        // {
+                        //     // Якщо це об'єкт з полем message
+                        //     errorMessage = errorData.message;
+                        // }
+                        //
+                        // console.log("Таке прийшло", errorMessage);
+                        //
+                        //
+                        //     // Знайшли відповідну помилку, виводимо її у span
+                        //     const spanElement = document.getElementById("errorSpan");
+                        //
+                        //     if (spanElement)
+                        //     {
+                        //         spanElement.textContent = mistake.error; // встановлюємо текст повідомлення
+                        //     }
+                         }
                     }
             });
     }
