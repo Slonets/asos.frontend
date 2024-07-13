@@ -2,19 +2,14 @@ import {ILoginPage, ILoginPageError, IUser} from "./type.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import http from "../../../http_common.ts";
 
-import { BiLogoFacebook } from "react-icons/bi";
-
 import setAuthToken from "../../../helpers/setAuthToken.ts";
-import {useGoogleLoginMutation} from "../../../services/user.ts";
-import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { store, useAppDispatch} from "../../../store";
-// import {setCredentials} from "../../../store/slice/userSlice.ts";
-// import {jwtParser} from "../../../utils/jwtParser.ts";
-// import {User} from "../../../interfaces/user";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../../store";
+import {useNavigate} from "react-router-dom";
 import {AuthUserActionType} from "../type.ts";
 import {jwtDecode} from "jwt-decode";
 import "./style.css";
+import axios from "axios";
+
 
 const LoginPage = () => {
 
@@ -23,63 +18,25 @@ const LoginPage = () => {
         email: "",
         password: ""
     };
+
+    const respons: ILoginPageError = {
+        error:"",
+    };
+
     const navigate = useNavigate();
-    const location = useLocation();
     const dispatch = useAppDispatch();
-    const [googleLogin] = useGoogleLoginMutation();
 
-    const authSuccess = async (credentialResponse: CredentialResponse) => {
-        const resp = await googleLogin({
-            credential: credentialResponse.credential || "",
-        });
-
-        if (resp && "data" in resp && resp.data)
-        {
-            // localStorage.setItem("authToken", res.data.token);
-            // console.log(res.data.token);
-
-            // dispatch(
-            //     setCredentials({
-            //         user: jwtParser(res.data.token) as User,
-            //         token: res.data.token,
-            //     }),
-            // );
-
-            const token = resp.data.token as string;
-
-            setAuthToken(token);
-
-            const user = jwtDecode<IUser>(token);
-
-            console.log("Вхід успішний", user);
-
-            dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
-
-            const { from } = location.state || { from: { pathname: "/" } };
-            navigate(from);
-        }
-        else
-        {
-            console.log("Error login. Check login data!");
-
-            dispatch({type: AuthUserActionType.LOGOUT_USER});
-        }
-    };
-    const authError = () =>
-    {
-        console.log("Error login.");
-    };
 
     //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
     const [data, setData] = useState<ILoginPage>(init);
+    const [mistake, setMistake]= useState<ILoginPageError>(respons);
 
-    const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+        const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // console.log("Приходять дані", data);
         http.post("api/account/login", data)
-            .then(resp =>
-            {
+            .then(resp => {
                 const token = resp.data.token as string;
 
                 setAuthToken(token);
@@ -93,10 +50,38 @@ const LoginPage = () => {
                 navigate("/");
 
             })
-            .catch(badReqeust=>{
+            .catch(badReqeust => {
 
-                const errors=badReqeust.response.data.errors as ILoginPageError;
-                console.log("Помилки", errors);
+                if (axios.isAxiosError(badReqeust))
+                {
+                    if (badReqeust.response)
+                    {
+                        const errorData = badReqeust.response.data;
+
+                        // Перевірка, чи це рядок
+                        let errorMessage = "";
+
+                        if (typeof errorData === 'string') {
+                            // Якщо це рядок, ми можемо безпосередньо працювати з ним
+                            errorMessage = errorData;
+                        } else if (errorData.message)
+                        {
+                            // Якщо це об'єкт з полем message
+                            errorMessage = errorData.message;
+                        }
+
+                        console.log("Таке прийшло", errorMessage);
+
+
+                            // Знайшли відповідну помилку, виводимо її у span
+                            const spanElement = document.getElementById("errorSpan");
+
+                            if (spanElement)
+                            {
+                                spanElement.textContent = mistake.error; // встановлюємо текст повідомлення
+                            }
+                        }
+                    }
             });
     }
 
@@ -104,106 +89,109 @@ const LoginPage = () => {
         setData({...data, [e.target.name]: e.target.value});
     }
 
-    const handleLogout = () =>
-    {
-        setAuthToken(null as any);
-        store.dispatch({type: AuthUserActionType.LOGOUT_USER});
-    }
+    const togglePasswordVisibility = () => {
 
+        const passwordInput = document.querySelector('.Input-Password');
+
+        if (passwordInput && passwordInput instanceof HTMLInputElement) {  // Перевірка на null і правильний тип елемента
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+    };
 
     return (
         <>
-            <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
-                <form onSubmit={onSubmitHandler}>
-                <div className="md:w-1/3 max-w-sm">
-                    <div className="text-center md:text-left">
-                        <label className="mr-1">Sign in with</label>
-                        <button
-                            type="button"
-                            className="mx-1 h-9 w-9  rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-[0_4px_9px_-4px_#3b71ca]"
-                        >
-                            <BiLogoFacebook
-                                size={20}
-                                className="flex justify-center items-center w-full"
-                            />
-                        </button>
-                        <div className="flex justify-center items-center">
+            <div className="orLogInwithEmail">
 
+                <span className="orLogInwithEmail-text">or Log In with Email</span>
 
-                            <GoogleLogin
-                                useOneTap
-                                locale="uk"
-                                size="large"
-                                onSuccess={authSuccess}
-                                onError={authError}
+            </div>
+
+            <form onSubmit={onSubmitHandler}>
+
+                <div className="Frame25">
+
+                    <div className="Frame11">
+
+                        <label className="Label-Email">Email</label>
+
+                        <input className="Input-Email"
+                               type="text"
+                               placeholder="Email Address"
+                               value={data.email}
+                               name={"email"}
+                               onChange={onChangeHandler}
+                        />
+
+                    </div>
+
+                    <div className="Frame24">
+
+                        <div className="Frame16">
+
+                            <label className="Label-Password">Password</label>
+
+                            <input
+                                className="Input-Password"
+                                type="password"
+                                value={data.password}
+                                name={"password"}
+                                onChange={onChangeHandler}
                             />
+
+                            <div className="Frame15">
+
+                                <div className="ForgotPassword-Div">
+
+                                    <button className="ForgotPassword-Button">Forgot your password?</button>
+
+                                </div>
+
+                            </div>
+
                         </div>
-                    </div>
-                    <div
-                        className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
-                        <p className="mx-4 mb-0 text-center font-semibold text-slate-500">
-                            Or
-                        </p>
-                    </div>
-                    <input
-                        className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
-                        type="text"
-                        placeholder="Email Address"
-                        value={data.email}
-                        name={"email"}
-                        onChange={onChangeHandler}
-                    />
-                    <input
-                        className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
-                        type="password"
-                        placeholder="Password"
-                        value={data.password}
-                        name={"password"}
-                        onChange={onChangeHandler}
-                    />
-                    <div className="mt-4 flex justify-between font-semibold text-sm">
-                        <label className="flex text-slate-500 hover:text-slate-600 cursor-pointer">
-                            <input className="mr-1" type="checkbox" />
-                            <span>Remember Me</span>
-                        </label>
-                        <a
-                            className="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4"
-                            href="#"
-                        >
-                            Forgot Password?
-                        </a>
-                    </div>
-                    <div className="text-center md:text-left">
-                        <button
-                            className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
-                            type="submit"
-                        >
-                            Login
-                        </button>
 
-                        {data && (
-                            <button
-                                className="mt-4 ml-4 bg-red-600 hover:bg-red-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
-                                type="button"
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </button>
+                        {mistake && (
+                            <div className="error">
+                                <span id="errorSpan"></span>
+                            </div>
                         )}
 
+                        <div  className="Frame23">
+
+                            <label className="inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" className="sr-only peer"/>
+                                <div id="my" className="absolute w-30 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 toggle-span">Remember me</span>
+                            </label>
+
+                        </div>
+
                     </div>
-                    <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
-                        Don&apos;t have an account?{" "}
-                        <a
-                            className="text-red-600 hover:underline hover:underline-offset-4"
-                            href="#"
-                        >
-                            Register
-                        </a>
-                    </div>
+
                 </div>
-                </form>
-            </section>
+
+                <div className="Button_action-Div">
+
+                    <button className="Button_Login">Log In</button>
+                </div>
+
+            </form>
+
+            <button onClick={togglePasswordVisibility} className="EyeVisibility">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                    <path
+                        d="M1 12.5C1 12.5 5 4.5 12 4.5C19 4.5 23 12.5 23 12.5C23 12.5 19 20.5 12 20.5C5 20.5 1 12.5 1 12.5Z"
+                        stroke="#707070" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path
+                        d="M12 15.5C13.6569 15.5 15 14.1569 15 12.5C15 10.8431 13.6569 9.5 12 9.5C10.3431 9.5 9 10.8431 9 12.5C9 14.1569 10.3431 15.5 12 15.5Z"
+                        stroke="#707070" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+            </button>
+
 
         </>
     )

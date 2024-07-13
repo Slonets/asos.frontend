@@ -6,9 +6,7 @@ export interface ILoginPage
 
 export interface ILoginPageError
 {
-    email:string[];
-    password:string[];
-    invalid:string;
+    error:string;
 }
 
 export interface IUser

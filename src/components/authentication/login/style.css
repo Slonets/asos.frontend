@@ -1,0 +1,380 @@
+
+.orLogInwithEmail
+{
+    align-self: stretch;
+
+    position: static;
+    width: 428px;
+    height: 35px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.orLogInwithEmail-text
+{
+    width: 100%;
+    height: auto;
+    align-self: stretch;
+    color: #F5F5F5;
+    text-align: center;
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.Frame25
+{
+    position: static;
+    width: 428px;
+    height: 278px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    order: 1;
+    align-self: stretch;
+
+    gap: 24px;
+}
+
+.Frame11
+{
+    position: static;
+    width: 428px;
+    height: 90px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    align-self: stretch;
+}
+
+.Label-Email
+{
+    position: static;
+    width: 35px;
+    height: 18px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    color: rgba(245, 245, 245, 0.70);
+
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.Input-Email
+{
+    /* log in google */
+    position: static;
+    width: 428px;
+    height: 72px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 18px 20px 18px;
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    flex-grow: 1;
+
+    gap: 15px;
+
+    border-radius: 4px;
+    background: #FFF;
+
+    color: rgb(13, 13, 13);
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 23px;
+    text-align: left;
+}
+
+.Frame24
+{
+    position: static;
+    width: 428px;
+    height: 164px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    flex: none;
+    order: 1;
+    align-self: stretch;
+
+    gap: 24px;
+}
+
+.Frame16
+{
+    position: static;
+    width: 428px;
+    height: 90px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    align-self: stretch;
+}
+
+.Label-Password
+{
+    position: static;
+    width: 60px;
+    height: 18px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    color: rgba(245, 245, 245, 0.7);
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+}
+
+.Input-Password
+{
+    position: static;
+    width: 428px;
+    height: 72px;
+    /* Auto layout */
+
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px 20px 18px;
+
+    order: 1;
+    flex-grow: 1;
+
+    border-radius: 4px;
+    background: rgb(255, 255, 255);
+
+}
+
+.EyeVisibility
+{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    top: 550px;
+    right: 120px;
+
+    cursor: pointer;
+}
+
+.Frame15
+{
+    /* Frame 15 */
+    position: static;
+    width: 428px;
+    height: 18px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 2;
+    flex-grow: 1;
+
+    gap: 225px;
+}
+
+.eror
+{
+    margin-top: 10px;
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+#errorSpan
+{
+    font-size: 14px;
+    color: red;
+}
+
+.ForgotPassword-Div
+{
+    /* Forgot password */
+    position: static;
+    width: 200px;
+    height: 18px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.ForgotPassword-Button
+{
+    /* Forgot your password? (Forgot password) */
+    width: 190px;
+    height: 18px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+    color: #F5F5F5;
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration-line: underline;
+
+}
+
+.ForgotPassword-Button:hover
+{
+    color: #0c1848;
+}
+
+.Frame23
+{
+    /* Frame 23 */
+    position: static;
+    width: 147px;
+    height: 32px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    gap: 10px;
+}
+
+#my
+{
+    width: 60px;
+    height: 25px;
+}
+
+.toggle-span
+{
+    /* Remember me */
+    position: static;
+    width: 170px;
+    height: 20px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+    color: rgb(245, 245, 245);
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+}
+
+.Button_action-Div
+{
+    /* Button_action */
+    position: static;
+    width: 269px;
+    height: 70px;
+    /* Auto layout */
+    margin: 30px auto;
+
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.Button_Login
+{
+    /* Button_action */
+    position: static;
+    width: 269px;
+    height: 70px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgb(13, 13, 13);
+    border-radius: 50px;
+
+    box-shadow: 4px 8px 0px 0px rgb(0, 0, 0);
+    background: rgb(200, 249, 84);
+
+    color: rgb(13, 13, 13);
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    text-transform: capitalize;
+}
+
+.Button_Login:hover
+{
+    background: rgb(118, 150, 42);
+}
