@@ -6,7 +6,7 @@ export interface IRegisterPage
     email:string;
     image:string;
     password:string;
-    confirmPassword: string;
+    birthday: Date | null;
 }
 
 export interface IRegisterError

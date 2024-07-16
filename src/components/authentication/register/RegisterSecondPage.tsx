@@ -1,16 +1,17 @@
-import "./style/identity_default.css";
-import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 import {useAppDispatch} from "../../../store";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
-import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {IUser} from "../../authentication/login/type.ts";
-import {AuthUserActionType} from "../../authentication/type.ts";
+import {IUser} from "../login/type.ts";
+import {AuthUserActionType} from "../type.ts";
+import "./style/styleSecondPage.css";
+import {IRegisterPage} from "./type.ts";
+import * as yup from "yup";
+import {useFormik} from "formik";
 
-
-
-const IdentityDefault = () => {
+const RegisterSecondPage = () => {
 
     const navigate = useNavigate();
 
@@ -46,7 +47,60 @@ const IdentityDefault = () => {
         console.log("Error login.");
     };
 
-    const googleButtonText = location.pathname === '/identity/register' ? 'Sign Up with Google' : 'Log In with Google';
+    const googleButtonText = location.pathname === '/register' ? 'Sign Up with Google' : 'Log In with Google';
+
+    const init: IRegisterPage = {
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        email: "",
+        image: "",
+        password: "",
+        birthday: null,
+    };
+
+    const onFormikSubmit = async (values: IRegisterPage) => {
+
+        const email = values.email;
+        const  password = values.password;
+
+        console.log("Прийшло", values);
+
+        localStorage.setItem('email', email);
+        localStorage.setItem('password',  password);
+
+        navigate("/register-third-page");
+    }
+
+
+    //Схема валідації даних полів IRegisterPage
+    // Validation schema for IRegisterPage fields
+    const registerSchema = yup.object({
+        email: yup.string()
+            .required("Please provide an email")
+            .email("Please enter a valid email address"),
+        password: yup
+            .string()
+            .min(5, "Password must be at least 5 characters long")
+            .matches(/[0-9a-zA-Z]/, "Password can only contain Latin letters and numbers")
+            .required("Password is required")
+    });
+
+
+    //спеціальний хук для валідації. Працює з обєктом init
+    const formik = useFormik({
+        initialValues: init,
+        onSubmit: onFormikSubmit,
+        validationSchema: registerSchema
+    });
+
+    // handleSubmit метод, що направляє дані після натиснення button
+    //handleChange метод, який міняє значення імпутів
+    //errors обєкт з formik, який містить помилки
+    //setFieldValue для того, щоб записати значення у formik, але для фото
+    const {values, touched, errors, handleSubmit, handleChange} = formik;
+
+
 
     return (
         <>
@@ -72,15 +126,15 @@ const IdentityDefault = () => {
                                         <div className="Frame12">
 
                                             <Link
-                                                to="/identity"
+                                                to="/login"
                                                 className="Frame4"
                                             >
                                                 <p className="LogIn">Log In</p>
                                             </Link>
 
                                             <Link
-                                                to="/identity/register"
-                                                 className="Frame3">
+                                                to="/register"
+                                                className="Frame3">
                                                 <p className="SignUp">Sign Up</p>
                                             </Link>
 
@@ -129,15 +183,15 @@ const IdentityDefault = () => {
                                         <div className="Frame13">
 
 
-                                                <GoogleLogin
-                                                    useOneTap
-                                                    locale="uk"
-                                                    size="large"
-                                                    width="300px"
-                                                    onSuccess={authSuccess}
-                                                    onError={authError}
+                                            <GoogleLogin
+                                                useOneTap
+                                                locale="uk"
+                                                size="large"
+                                                width="300px"
+                                                onSuccess={authSuccess}
+                                                onError={authError}
 
-                                                />
+                                            />
 
 
                                             {/*Тут соціальні кнопки приховані Google Facebook Android*/}
@@ -207,7 +261,197 @@ const IdentityDefault = () => {
 
                                     <div className="Frame26">
 
-                                        <Outlet/>
+                                        <form onSubmit={handleSubmit}>
+                                            <div className="Frame57">
+
+                                                <div className="Frame54">
+
+                                                    <div className="SignUpWithEmail-Div">
+                                                        <span
+                                                            className="SignUpWithEmail-Text">or Sign Up with Email</span>
+                                                    </div>
+
+                                                    <div className="Frame53">
+
+                                                        <div className="Frame11-2">
+
+                                                            <label className="Label-FirstName">Email</label>
+
+                                                            <input
+                                                                className="Input-FirstName"
+                                                                type="text"
+                                                                value={values.email}
+                                                                name={"email"}
+                                                                onChange={handleChange}
+                                                            />
+
+                                                            {errors.email && touched.email ? (
+                                                                <>
+                                                                    <div className="ErorButton-Div-False">
+                                                                        <button>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="24" height="25"
+                                                                                 viewBox="0 0 24 25" fill="none">
+                                                                                <path
+                                                                                    d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+                                                                                    stroke="#FF5050" strokeWidth="2"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"/>
+                                                                                <path d="M15 9.5L9 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                                <path d="M9 9.5L15 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <div className="Frame33">
+                                                                        <div className="Polygon3">
+                                                                            <svg id="open"
+                                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="26" height="30"
+                                                                                 viewBox="0 0 26 30" fill="none">
+                                                                                <path
+                                                                                    d="M0 15L25.5 0.277568L25.5 29.7224L0 15Z"
+                                                                                    fill="#2E38A2"/>
+                                                                            </svg>
+                                                                        </div>
+                                                                        <div className="Frame32">
+                                                                            <span
+                                                                                className="Text-Error">{errors.email}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <div className="ErorButton-Div-Ok">
+                                                                    <button>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="24" height="25" viewBox="0 0 24 25"
+                                                                             fill="none">
+                                                                            <path
+                                                                                d="M16.5 9.03845L10.3077 15.5385L8 13.1408"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                            <path
+                                                                                d="M12 22.0385C17.5228 22.0385 22 17.5613 22 12.0385C22 6.5156 17.5228 2.03845 12 2.03845C6.47715 2.03845 2 6.5156 2 12.0385C2 17.5613 6.47715 22.0385 12 22.0385Z"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            )}
+
+
+                                                        </div>
+
+                                                        <div className="Frame16">
+
+                                                            <label className="Label-LastName">Password</label>
+
+                                                            <input
+                                                                className="Input-LastName"
+                                                                type="text"
+                                                                value={values.password}
+                                                                name={"password"}
+                                                                onChange={handleChange}
+                                                            />
+
+
+                                                            {errors.password && touched.password ? (
+                                                                <>
+
+                                                                    <div className="ErorButton-Div-False2">
+
+                                                                        <button>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="24" height="25"
+                                                                                 viewBox="0 0 24 25" fill="none">
+                                                                                <path
+                                                                                    d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+                                                                                    stroke="#FF5050" strokeWidth="2"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"/>
+                                                                                <path d="M15 9.5L9 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                                <path d="M9 9.5L15 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <div className="Frame33-2">
+
+                                                                        <div className="Polygon2">
+                                                                            <svg id="open"
+                                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="26" height="30"
+                                                                                 viewBox="0 0 26 30" fill="none">
+                                                                                <path
+                                                                                    d="M-7.43094e-07 15L25.5 0.277568L25.5 29.7224L-7.43094e-07 15Z"
+                                                                                    fill="#2E38A2"/>
+                                                                            </svg>
+                                                                        </div>
+
+                                                                        <div className="Frame32-2">
+                                                                            <span
+                                                                                className="Text-Error">{errors.password}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <div className="ErorButton-Div-Ok-2">
+                                                                    <button>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="24" height="25" viewBox="0 0 24 25"
+                                                                             fill="none">
+                                                                            <path
+                                                                                d="M16.5 9.03845L10.3077 15.5385L8 13.1408"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                            <path
+                                                                                d="M12 22.0385C17.5228 22.0385 22 17.5613 22 12.0385C22 6.5156 17.5228 2.03845 12 2.03845C6.47715 2.03845 2 6.5156 2 12.0385C2 17.5613 6.47715 22.0385 12 22.0385Z"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            )}
+
+                                                            <div className="Frame30">
+
+                                                                <div className="Div-Button-Next-Step">
+
+                                                                    <button className="Button-Next-Step">Next Step
+                                                                    </button>
+
+                                                                    <div className="Steps1">
+                                                                        <span>Steps: 2 out of 4</span>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+
 
                                     </div>
 
@@ -228,4 +472,4 @@ const IdentityDefault = () => {
     )
 }
 
-export default IdentityDefault;
+export default RegisterSecondPage;

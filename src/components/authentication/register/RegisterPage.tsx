@@ -20,7 +20,7 @@ const RegisterPage = () => {
         email: "",
         image: "",
         password: "",
-        confirmPassword: "",
+        birthday: null,
     };
     const [error, setError] = useState<IRegisterError>();
 
@@ -116,12 +116,7 @@ const RegisterPage = () => {
             .string()
             .min(5, "Пароль повинен містити мінімум 5 символів")
             .matches(/[0-9a-zA-Z]/, "Пароль може містить латинські символи і цифри")
-            .required("Поле не повинне бути пустим"),
-        confirmPassword: yup
-            .string()
-            .min(5, "Пароль повинен містити мініму 5 символів")
-            .oneOf([yup.ref("password")], () => "Паролі повинні співпадати")
-            .required("Поле не повинне бути пустим"),
+            .required("Поле не повинне бути пустим")
     });
 
     //спеціальний хук для валідації. Працює з обєктом init
@@ -278,16 +273,6 @@ const RegisterPage = () => {
                         {(touched.password && errors.password) || error?.password ? <div
                             className="text-red-500 text-xs mt-1">{errors.password || error?.password}</div> : null}
 
-                        <input
-                            className={`text-sm w-full px-4 py-2 border border-solid rounded ${touched.confirmPassword && (errors.confirmPassword || error?.confirmPassword) ? 'border-red-500' : 'border-gray-300'}`}
-                            type="password"
-                            placeholder="Підтвердіть пароль"
-                            value={values.confirmPassword}
-                            name="confirmPassword"
-                            onChange={handleChange}
-                        />
-                        {(touched.confirmPassword && errors.confirmPassword) || error?.confirmPassword ? <div
-                            className="text-red-500 text-xs mt-1">{errors.confirmPassword || error?.confirmPassword}</div> : null}
 
                         <div className="text-center md:text-left">
                             <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
