@@ -4,12 +4,15 @@ import {useAppDispatch} from "../../../store";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {IUser} from "../login/type.ts";
+import {IUser, IValidLogin} from "../login/type.ts";
 import {AuthUserActionType} from "../type.ts";
 import "./style/styleSecondPage.css";
 import {IRegisterPage} from "./type.ts";
 import * as yup from "yup";
 import {useFormik} from "formik";
+import http from "../../../http_common.ts";
+import axios from "axios";
+import {useState} from "react";
 
 const RegisterSecondPage = () => {
 
@@ -52,26 +55,58 @@ const RegisterSecondPage = () => {
     const init: IRegisterPage = {
         firstName: "",
         lastName: "",
-        phoneNumber: "",
         email: "",
-        image: "",
-        password: "",
-        birthday: null,
+        password: ""
     };
+
+    const [valid, setValid] = useState<IValidLogin[]>([]);
 
     const onFormikSubmit = async (values: IRegisterPage) => {
 
-        const email = values.email;
-        const  password = values.password;
+        let storedFirstName: string | null = localStorage.getItem('firstName');
+        let storedLastName: string | null = localStorage.getItem('lastName');
 
-        console.log("Прийшло", values);
+        if (storedFirstName !== null)
+        {
+            // Тепер ми знаємо, що storedFirstName є string
+            values.firstName=storedFirstName;
+        }
 
-        localStorage.setItem('email', email);
-        localStorage.setItem('password',  password);
+        if (storedLastName !== null)
+        {
+            values.lastName=storedLastName;
+        }
 
-        navigate("/register-third-page");
+        console.log("Надсилаємо дані", values);
+
+        try {
+            const result = await http.post("api/Account/register", values
+                , {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+            console.log("Result server good", result);
+
+            localStorage.removeItem('firstName');
+            localStorage.removeItem('lastName');
+
+            navigate("/");
+
+        }
+        catch (error)
+        {
+            if (axios.isAxiosError(error))
+            {
+                if (error.response)
+                {
+                    const errorData = error.response.data;
+                    setValid(errorData);
+                }
+            }
+        }
     }
-
 
     //Схема валідації даних полів IRegisterPage
     // Validation schema for IRegisterPage fields
@@ -86,7 +121,6 @@ const RegisterSecondPage = () => {
             .required("Password is required")
     });
 
-
     //спеціальний хук для валідації. Працює з обєктом init
     const formik = useFormik({
         initialValues: init,
@@ -99,8 +133,6 @@ const RegisterSecondPage = () => {
     //errors обєкт з formik, який містить помилки
     //setFieldValue для того, щоб записати значення у formik, але для фото
     const {values, touched, errors, handleSubmit, handleChange} = formik;
-
-
 
     return (
         <>
@@ -192,65 +224,6 @@ const RegisterSecondPage = () => {
                                                 onError={authError}
 
                                             />
-
-
-                                            {/*Тут соціальні кнопки приховані Google Facebook Android*/}
-                                            {/*<button  className="Button_socials1">*/}
-
-                                            {/*    <svg className="Icon-Google" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
-                                            {/*        <g clipPath="url(#clip0_233_141)">*/}
-                                            {/*            <rect width="23.5198" height="24" transform="translate(0.5 0.5)" fill="#F5F5F5" />*/}
-                                            {/*            <path d="M12.4998 10.3181V14.9654H18.9579C18.6743 16.4599 17.8233 17.7254 16.547 18.5763L20.4415 21.5982C22.7106 19.5037 24.0197 16.4273 24.0197 12.7728C24.0197 11.9219 23.9433 11.1036 23.8015 10.3182L12.4998 10.3181Z" fill="#4285F4" />*/}
-                                            {/*            <path d="M5.77461 14.784L4.89625 15.4564L1.78711 17.8782C3.76165 21.7945 7.80862 24.5 12.4995 24.5C15.7394 24.5 18.4557 23.4309 20.4412 21.5982L16.5467 18.5764C15.4776 19.2963 14.114 19.7328 12.4995 19.7328C9.37951 19.7328 6.72868 17.6273 5.77952 14.7909L5.77461 14.784Z" fill="#34A853" />*/}
-                                            {/*            <path d="M1.78718 7.12183C0.969042 8.73631 0.5 10.5581 0.5 12.4999C0.5 14.4417 0.969042 16.2636 1.78718 17.878C1.78718 17.8889 5.77997 14.7799 5.77997 14.7799C5.53998 14.0599 5.39812 13.2963 5.39812 12.4998C5.39812 11.7033 5.53998 10.9398 5.77997 10.2198L1.78718 7.12183Z" fill="#FBBC05" />*/}
-                                            {/*            <path d="M12.4997 5.27818C14.267 5.27818 15.8379 5.88907 17.0925 7.06727L20.5288 3.63095C18.4452 1.68917 15.7398 0.5 12.4997 0.5C7.80887 0.5 3.76165 3.19454 1.78711 7.12183L5.77978 10.22C6.72882 7.38362 9.37976 5.27818 12.4997 5.27818Z" fill="#EA4335" />*/}
-                                            {/*        </g>*/}
-                                            {/*        <defs>*/}
-                                            {/*            <clipPath id="clip0_233_141">*/}
-                                            {/*                <rect width="24" height="24" fill="white" transform="translate(0.5 0.5)" />*/}
-                                            {/*            </clipPath>*/}
-                                            {/*        </defs>*/}
-                                            {/*    </svg>*/}
-
-                                            {/*    <span className="Text-Button_Google">Google</span>*/}
-                                            {/*</button>*/}
-
-                                            {/*<a className="Button_socials2">*/}
-
-                                            {/*    <svg className="Icon-Apple" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
-                                            {/*        <g clipPath="url(#clip0_42_97)">*/}
-                                            {/*            <path d="M22.292 19.2035C21.929 20.042 21.4994 20.8139 21.0016 21.5235C20.3231 22.4908 19.7676 23.1605 19.3395 23.5323C18.6758 24.1426 17.9647 24.4552 17.2032 24.473C16.6566 24.473 15.9973 24.3175 15.23 24.0019C14.4601 23.6878 13.7525 23.5323 13.1056 23.5323C12.4271 23.5323 11.6994 23.6878 10.9211 24.0019C10.1415 24.3175 9.51355 24.4819 9.03342 24.4982C8.30322 24.5293 7.57539 24.2078 6.8489 23.5323C6.38521 23.1279 5.80523 22.4345 5.11043 21.4524C4.36498 20.4035 3.75211 19.1872 3.27198 17.8006C2.75777 16.3029 2.5 14.8526 2.5 13.4484C2.5 11.8401 2.84754 10.4528 3.54367 9.29035C4.09076 8.3566 4.81859 7.62003 5.72953 7.07931C6.64046 6.53858 7.62473 6.26304 8.68469 6.24541C9.26467 6.24541 10.0252 6.42481 10.9704 6.77739C11.9129 7.13116 12.5181 7.31056 12.7834 7.31056C12.9817 7.31056 13.654 7.10079 14.7937 6.68258C15.8714 6.29474 16.781 6.13415 17.5262 6.19741C19.5454 6.36037 21.0624 7.15634 22.0712 8.59037C20.2654 9.68456 19.3721 11.2171 19.3898 13.1831C19.4061 14.7145 19.9617 15.9888 21.0535 17.0006C21.5483 17.4703 22.1009 17.8332 22.7156 18.091C22.5823 18.4776 22.4416 18.848 22.292 19.2035ZM17.661 0.980381C17.661 2.18066 17.2225 3.30135 16.3484 4.33865C15.2937 5.5718 14.0179 6.28437 12.6343 6.17193C12.6167 6.02793 12.6065 5.87638 12.6065 5.71713C12.6065 4.56487 13.1081 3.33172 13.9989 2.32345C14.4436 1.81295 15.0092 1.38847 15.6951 1.04986C16.3796 0.716299 17.0269 0.531833 17.6358 0.500244C17.6536 0.660702 17.661 0.82117 17.661 0.980365V0.980381Z" fill="#0D0D0D" />*/}
-                                            {/*        </g>*/}
-                                            {/*        <defs>*/}
-                                            {/*            <clipPath id="clip0_42_97">*/}
-                                            {/*                <rect width="24" height="24" fill="white" transform="translate(0.5 0.5)" />*/}
-                                            {/*            </clipPath>*/}
-                                            {/*        </defs>*/}
-                                            {/*    </svg>*/}
-
-                                            {/*    <span className="Text-Button_Apple">Apple</span>*/}
-
-                                            {/*</a>*/}
-
-                                            {/*<a className="Button_socials3">*/}
-
-                                            {/*    <svg className="Icon-Facebook" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
-                                            {/*        <g clipPath="url(#clip0_233_27)">*/}
-                                            {/*            <path d="M24 12.5C24 5.87264 18.6274 0.5 12 0.5C5.37264 0.5 0 5.87264 0 12.5C0 18.1275 3.87456 22.8498 9.10128 24.1467V16.1672H6.62688V12.5H9.10128V10.9198C9.10128 6.83552 10.9498 4.9424 14.9597 4.9424C15.72 4.9424 17.0318 5.09168 17.5685 5.24048V8.56448C17.2853 8.53472 16.7933 8.51984 16.1822 8.51984C14.2147 8.51984 13.4544 9.26528 13.4544 11.203V12.5H17.3741L16.7006 16.1672H13.4544V24.4122C19.3963 23.6946 24.0005 18.6354 24.0005 12.5H24Z" fill="#0866FF" />*/}
-                                            {/*            <path d="M16.7002 16.1672L17.3737 12.5H13.454V11.203C13.454 9.26526 14.2143 8.51982 16.1818 8.51982C16.7929 8.51982 17.2849 8.5347 17.5681 8.56446V5.24046C17.0314 5.09118 15.7196 4.94238 14.9593 4.94238C10.9493 4.94238 9.10087 6.8355 9.10087 10.9198V12.5H6.62646V16.1672H9.10087V24.1467C10.0292 24.3771 11.0002 24.5 11.9996 24.5C12.4916 24.5 12.9769 24.4697 13.4535 24.4121V16.1672H16.6997H16.7002Z" fill="white" />*/}
-                                            {/*        </g>*/}
-                                            {/*        <defs>*/}
-                                            {/*            <clipPath id="clip0_233_27">*/}
-                                            {/*                <rect width="24" height="24" fill="white" transform="translate(0 0.5)" />*/}
-                                            {/*            </clipPath>*/}
-
-                                            {/*        </defs>*/}
-                                            {/*    </svg>*/}
-
-                                            {/*    <span className="Text-Button_Facebook">Facebook</span>*/}
-
-                                            {/*</a>*/}
-
                                         </div>
 
                                     </div>
@@ -433,11 +406,19 @@ const RegisterSecondPage = () => {
 
                                                                 <div className="Div-Button-Next-Step">
 
-                                                                    <button className="Button-Next-Step">Next Step
-                                                                    </button>
+                                                                    <button className="Button-Next-Step">Sign Up</button>
+
+                                                                    {valid.length > 0 &&
+                                                                        (
+                                                                            <div className="error">
+                                                                                {valid.map((err, index) => (
+                                                                                    <p id="errorSpan" key={index}>{err.errorMessage}</p>
+                                                                                ))}
+                                                                            </div>
+                                                                        )}
 
                                                                     <div className="Steps1">
-                                                                        <span>Steps: 2 out of 4</span>
+                                                                        <span>Steps: 2 out of 2</span>
                                                                     </div>
 
                                                                 </div>

@@ -52,11 +52,8 @@ const RegisterFirstPage = () => {
     const init: IRegisterPage = {
         firstName: "",
         lastName: "",
-        phoneNumber: "",
         email: "",
-        image: "",
-        password: "",
-        birthday: null,
+        password: ""
     };
 
     const onFormikSubmit = async (values: IRegisterPage) => {
@@ -64,7 +61,7 @@ const RegisterFirstPage = () => {
         const firstName = values.firstName;
         const lastName = values.lastName;
 
-        console.log("Прийшло", values);
+        console.log("Перша форма", values);
 
         localStorage.setItem('firstName', firstName);
         localStorage.setItem('lastName', lastName);
@@ -367,16 +364,6 @@ const RegisterFirstPage = () => {
                                                                 onChange={handleChange}
                                                             />
 
-                                                            {/*<div className="ErorButton-Div-Ok2">*/}
-
-                                                            {/*    <button>*/}
-                                                            {/*        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">*/}
-                                                            {/*            <path d="M16.5 9.03845L10.3077 15.5385L8 13.1408" stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>*/}
-                                                            {/*            <path d="M12 22.0385C17.5228 22.0385 22 17.5613 22 12.0385C22 6.5156 17.5228 2.03845 12 2.03845C6.47715 2.03845 2 6.5156 2 12.0385C2 17.5613 6.47715 22.0385 12 22.0385Z" stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>*/}
-                                                            {/*        </svg>*/}
-                                                            {/*    </button>*/}
-                                                            {/*</div>*/}
-
 
                                                             {errors.lastName && touched.lastName ? (
                                                                 <>
@@ -448,11 +435,10 @@ const RegisterFirstPage = () => {
 
                                                                 <div className="Div-Button-Next-Step">
 
-                                                                    <button className="Button-Next-Step">Next Step
-                                                                    </button>
+                                                                    <button className="Button-Next-Step">Next Step</button>
 
                                                                     <div className="Steps1">
-                                                                        <span>Steps: 1 out of 4</span>
+                                                                        <span>Steps: 1 out of 2</span>
                                                                     </div>
 
                                                                 </div>

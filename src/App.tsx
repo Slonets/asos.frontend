@@ -9,7 +9,6 @@ import HomePage from "./components/home/HomePage.tsx";
 import AllUsers from "./page/AdminPanel/AllUsers.tsx";
 import RegisterFirstPage from './components/authentication/register/RegisterFirstPage.tsx';
 import RegisterSecondPage from './components/authentication/register/RegisterSecondPage.tsx';
-import ThirdPage from "./components/authentication/register/ThirdPage.tsx";
 
 function App() {
 
@@ -22,7 +21,7 @@ function App() {
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterFirstPage/>}/>
                     <Route path="register-second-page" element={<RegisterSecondPage/>}/>
-                    <Route path="register-third-page" element={<ThirdPage/>}/>
+
 
                     <Route path="user-info" element={<InfoUserLayout/>}>
                         <Route path="profile" element={<UserProfile/>}/>
