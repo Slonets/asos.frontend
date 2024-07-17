@@ -1,19 +1,17 @@
-import {ILoginPage, ILoginPageError, IUser, IValidLogin} from "./type.ts";
-import {ChangeEvent, FormEvent, useState} from "react";
-import http from "../../../http_common.ts";
-
-import setAuthToken from "../../../helpers/setAuthToken.ts";
-import {useAppDispatch} from "../../../store";
+import {IRegisterPage} from "./type.ts";
+import {useFormik} from "formik";
+import * as yup from "yup";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {AuthUserActionType} from "../type.ts";
-import {jwtDecode} from "jwt-decode";
-import axios from "axios";
-import "./style-Login.css"
-import {useGoogleLoginMutation} from "../../../services/user.ts";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
+import {useAppDispatch} from "../../../store";
+import {useGoogleLoginMutation} from "../../../services/user.ts";
+import setAuthToken from "../../../helpers/setAuthToken.ts";
+import {jwtDecode} from "jwt-decode";
+import {IUser} from "../login/type.ts";
+import {AuthUserActionType} from "../type.ts";
+import "./style/styleRegiserFirstPage.css"
 
-
-const LoginPage = () => {
+const RegisterFirstPage = () => {
 
     const navigate = useNavigate();
 
@@ -49,82 +47,62 @@ const LoginPage = () => {
         console.log("Error login.");
     };
 
-    const googleButtonText = location.pathname === '/identity/register' ? 'Sign Up with Google' : 'Log In with Google';
+    const googleButtonText = location.pathname === '/register' ? 'Sign Up with Google' : 'Log In with Google';
 
-    //створили конкретний екземлеяр на основі нашого інтерфейсу
-    const init: ILoginPage = {
+    const init: IRegisterPage = {
+        firstName: "",
+        lastName: "",
         email: "",
         password: ""
     };
 
+    const onFormikSubmit = async (values: IRegisterPage) => {
 
-    //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
-    const [data, setData] = useState<ILoginPage>(init);
-    const [badRequest, setBadbadRequest] = useState<ILoginPageError>({
-        error: "",
-        isSuccess: false,
+        const firstName = values.firstName;
+        const lastName = values.lastName;
+
+        console.log("Перша форма", values);
+
+        localStorage.setItem('firstName', firstName);
+        localStorage.setItem('lastName', lastName);
+
+        navigate("/register-second-page");
+    }
+
+
+    //Схема валідації даних полів IRegisterPage
+    // Validation schema for IRegisterPage fields
+    const registerSchema = yup.object({
+        firstName: yup.string()
+            .required("Please enter your first name")
+            .notOneOf([''], "Field is empty") // equivalent to .NotEmpty()
+            .max(24, "First name cannot be longer than 24 characters")
+            .min(5, "First name must be at least 5 characters long")
+            .matches(/[A-Z]/, "First name must contain at least one uppercase letter")
+            .matches(/[a-z]/, "First name must contain at least one lowercase letter"),
+        lastName: yup.string()
+            .required("Please enter your last name")
+            .notOneOf([''], "Field is empty") // equivalent to .NotEmpty()
+            .max(24, "Last name cannot be longer than 24 characters")
+            .min(5, "Last name must be at least 5 characters long")
+            .matches(/[A-Z]/, "Last name must contain at least one uppercase letter")
+            .matches(/[a-z]/, "Last name must contain at least one lowercase letter"),
     });
 
-    const [valid, setValid] = useState<IValidLogin[]>([]);
 
-    const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    //спеціальний хук для валідації. Працює з обєктом init
+    const formik = useFormik({
+        initialValues: init,
+        onSubmit: onFormikSubmit,
+        validationSchema: registerSchema
+    });
 
-        // console.log("Приходять дані", data);
-        http.post("api/account/login", data)
-            .then(resp => {
-                const token = resp.data.token as string;
+    // handleSubmit метод, що направляє дані після натиснення button
+    //handleChange метод, який міняє значення імпутів
+    //errors обєкт з formik, який містить помилки
+    //setFieldValue для того, щоб записати значення у formik, але для фото
+    const {values, touched, errors, handleSubmit, handleChange} = formik;
 
-                setAuthToken(token);
-
-                const user = jwtDecode<IUser>(token);
-
-                console.log("Вхід успішний", user);
-
-                dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
-
-                navigate("/");
-
-            })
-            .catch(badRequest => {
-
-                if (axios.isAxiosError(badRequest)) {
-                    if (badRequest.response) {
-                        const errorData = badRequest.response.data;
-
-                        if (typeof errorData.error === 'string') {
-                            setBadbadRequest(errorData);
-                            setValid([]); // Очистити valid при встановленні badRequest
-
-                            console.log("Одна помилка", errorData);
-
-                        } else if (Array.isArray(errorData)) {
-                            setValid(errorData);
-                            setBadbadRequest({error: "", isSuccess: false});
-                            console.log("Багато помилок", errorData);
-
-                        }
-                    }
-                }
-            });
-    }
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setData({...data, [e.target.name]: e.target.value});
-    }
-
-    const togglePasswordVisibility = () => {
-
-        const passwordInput = document.querySelector('.Input-Password');
-
-        if (passwordInput && passwordInput instanceof HTMLInputElement) {  // Перевірка на null і правильний тип елемента
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-            } else {
-                passwordInput.type = 'password';
-            }
-        }
-    };
 
     return (
         <>
@@ -285,110 +263,199 @@ const LoginPage = () => {
 
                                     <div className="Frame26">
 
-                                        <div className="orLogInwithEmail">
+                                        <form onSubmit={handleSubmit}>
+                                            <div className="Frame57">
 
-                                            <span className="orLogInwithEmail-text">or Log In with Email</span>
+                                                <div className="Frame54">
 
-                                        </div>
+                                                    <div className="SignUpWithEmail-Div">
+                                                        <span
+                                                            className="SignUpWithEmail-Text">or Sign Up with Email</span>
+                                                    </div>
 
-                                        <form onSubmit={onSubmitHandler}>
+                                                    <div className="Frame53">
 
-                                            <div className="Frame25">
+                                                        <div className="Frame11-2">
 
-                                                <div className="Frame11">
+                                                            <label className="Label-FirstName">First Name</label>
 
-                                                    <label className="Label-Email">Email</label>
+                                                            <input
+                                                                className="Input-FirstName"
+                                                                type="text"
+                                                                value={values.firstName}
+                                                                name={"firstName"}
+                                                                onChange={handleChange}
+                                                            />
 
-                                                    <input className="Input-Email"
-                                                           type="text"
-                                                           placeholder="Email Address"
-                                                           value={data.email}
-                                                           name={"email"}
-                                                           onChange={onChangeHandler}
-                                                    />
+                                                            {errors.firstName && touched.firstName ? (
+                                                                <>
+                                                                    <div className="ErorButton-Div-False">
+                                                                        <button>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="24" height="25"
+                                                                                 viewBox="0 0 24 25" fill="none">
+                                                                                <path
+                                                                                    d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+                                                                                    stroke="#FF5050" strokeWidth="2"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"/>
+                                                                                <path d="M15 9.5L9 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                                <path d="M9 9.5L15 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
 
-                                                </div>
+                                                                    <div className="Frame33">
+                                                                        <div className="Polygon3">
+                                                                            <svg id="open"
+                                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="26" height="30"
+                                                                                 viewBox="0 0 26 30" fill="none">
+                                                                                <path
+                                                                                    d="M0 15L25.5 0.277568L25.5 29.7224L0 15Z"
+                                                                                    fill="#2E38A2"/>
+                                                                            </svg>
+                                                                        </div>
+                                                                        <div className="Frame32">
+                                                                            <span
+                                                                                className="Text-Error">{errors.firstName}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <div className="ErorButton-Div-Ok">
+                                                                    <button>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="24" height="25" viewBox="0 0 24 25"
+                                                                             fill="none">
+                                                                            <path
+                                                                                d="M16.5 9.03845L10.3077 15.5385L8 13.1408"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                            <path
+                                                                                d="M12 22.0385C17.5228 22.0385 22 17.5613 22 12.0385C22 6.5156 17.5228 2.03845 12 2.03845C6.47715 2.03845 2 6.5156 2 12.0385C2 17.5613 6.47715 22.0385 12 22.0385Z"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            )}
 
-                                                <div className="Frame24">
 
-                                                    <div className="Frame16">
+                                                        </div>
 
-                                                        <label className="Label-Password">Password</label>
+                                                        <div className="Frame16">
 
-                                                        <input
-                                                            className="Input-Password"
-                                                            type="password"
-                                                            value={data.password}
-                                                            name={"password"}
-                                                            onChange={onChangeHandler}
-                                                        />
+                                                            <label className="Label-LastName">Last Name</label>
 
-                                                        <div className="Frame15">
+                                                            <input
+                                                                className="Input-LastName"
+                                                                type="text"
+                                                                value={values.lastName}
+                                                                name={"lastName"}
+                                                                onChange={handleChange}
+                                                            />
 
-                                                            <div className="ForgotPassword-Div">
 
-                                                                <button className="ForgotPassword-Button">Forgot your
-                                                                    password?
-                                                                </button>
+                                                            {errors.lastName && touched.lastName ? (
+                                                                <>
+
+                                                                    <div className="ErorButton-Div-False2">
+
+                                                                        <button>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="24" height="25"
+                                                                                 viewBox="0 0 24 25" fill="none">
+                                                                                <path
+                                                                                    d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+                                                                                    stroke="#FF5050" strokeWidth="2"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"/>
+                                                                                <path d="M15 9.5L9 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                                <path d="M9 9.5L15 15.5"
+                                                                                      stroke="#FF5050" strokeWidth="2"
+                                                                                      strokeLinecap="round"
+                                                                                      strokeLinejoin="round"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <div className="Frame33-2">
+
+                                                                        <div className="Polygon2">
+                                                                            <svg id="open"
+                                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                                 width="26" height="30"
+                                                                                 viewBox="0 0 26 30" fill="none">
+                                                                                <path
+                                                                                    d="M-7.43094e-07 15L25.5 0.277568L25.5 29.7224L-7.43094e-07 15Z"
+                                                                                    fill="#2E38A2"/>
+                                                                            </svg>
+                                                                        </div>
+
+                                                                        <div className="Frame32-2">
+                                                                            <span
+                                                                                className="Text-Error">{errors.lastName}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <div className="ErorButton-Div-Ok-2">
+                                                                    <button>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="24" height="25" viewBox="0 0 24 25"
+                                                                             fill="none">
+                                                                            <path
+                                                                                d="M16.5 9.03845L10.3077 15.5385L8 13.1408"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                            <path
+                                                                                d="M12 22.0385C17.5228 22.0385 22 17.5613 22 12.0385C22 6.5156 17.5228 2.03845 12 2.03845C6.47715 2.03845 2 6.5156 2 12.0385C2 17.5613 6.47715 22.0385 12 22.0385Z"
+                                                                                stroke="#0D0D0D" strokeWidth="2"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            )}
+
+                                                            <div className="Frame30">
+
+                                                                <div className="Div-Button-Next-Step">
+
+                                                                    <button className="Button-Next-Step">Next Step</button>
+
+                                                                    <div className="Steps1">
+                                                                        <span>Steps: 1 out of 2</span>
+                                                                    </div>
+
+                                                                </div>
 
                                                             </div>
 
+
                                                         </div>
 
                                                     </div>
 
-                                                    <div className="Frame23">
-
-                                                        <label className="inline-flex items-center cursor-pointer">
-                                                            <input type="checkbox" value="" className="sr-only peer"/>
-                                                            <div id="my"
-                                                                 className="absolute w-30 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                                            <span
-                                                                className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 toggle-span">Remember me</span>
-                                                        </label>
-
-                                                    </div>
 
                                                 </div>
 
-                                                {badRequest.error && (
-                                                    <div className="error">
-                                                        <p id="errorSpan">{badRequest.error}</p>
-                                                    </div>
-                                                )}
-
-                                                {valid.length > 0 &&
-                                                    (
-                                                        <div className="error">
-                                                            {valid.map((err, index) => (
-                                                                <p id="errorSpan" key={index}>{err.errorMessage}</p>
-                                                            ))}
-                                                        </div>
-                                                    )}
-
 
                                             </div>
-
-                                            <div className="Button_action-Div">
-
-                                                <button className="Button_Login">Log In</button>
-                                            </div>
-
                                         </form>
-
-                                        <button onClick={togglePasswordVisibility} className="EyeVisibility">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25"
-                                                 viewBox="0 0 24 25" fill="none">
-                                                <path
-                                                    d="M1 12.5C1 12.5 5 4.5 12 4.5C19 4.5 23 12.5 23 12.5C23 12.5 19 20.5 12 20.5C5 20.5 1 12.5 1 12.5Z"
-                                                    stroke="#707070" strokeWidth="2" strokeLinecap="round"
-                                                    strokeLinejoin="round"/>
-                                                <path
-                                                    d="M12 15.5C13.6569 15.5 15 14.1569 15 12.5C15 10.8431 13.6569 9.5 12 9.5C10.3431 9.5 9 10.8431 9 12.5C9 14.1569 10.3431 15.5 12 15.5Z"
-                                                    stroke="#707070" strokeWidth="2" strokeLinecap="round"
-                                                    strokeLinejoin="round"/>
-                                            </svg>
-                                        </button>
 
                                     </div>
 
@@ -405,8 +472,8 @@ const LoginPage = () => {
                 </div>
             </div>
 
-
         </>
     )
 }
-export default LoginPage;
+
+export default RegisterFirstPage;
