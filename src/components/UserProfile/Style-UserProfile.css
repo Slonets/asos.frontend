@@ -1,0 +1,71 @@
+@font-face {
+    font-family: 'Marbley Free';
+    src: url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap') format('truetype');
+
+}
+
+body {
+    background-color: #F5F5F5; /* Колір фону */
+
+}
+.header{
+    height:100px;
+    width:1740px;
+    background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Marbley Free', sans-serif;
+    font-size: 28px;
+
+}
+.centered-div {
+    display: flex;
+    justify-content: center; /* Горизонтальне вирівнювання по центру */
+    width: 100%; /* Забезпечує, що div займає всю ширину сторінки */
+
+}
+.container{
+    position: relative;
+    max-width: 1920px;
+    height: 1080px;
+}
+.logo-img{
+    width: 89px;
+    height: 71px;
+}
+.img-div{
+    width: 540px;
+    height: 190px;
+    border: 2px solid #000;
+    display: inline-block;
+    margin-left: 90px;
+    margin-top: 20px;
+    padding-bottom: 44px;
+    padding-left: 41px;
+    padding-top: 10px;
+
+
+}
+.image {
+    max-width: 150px;
+    height: auto;
+}
+.image-container {
+    position: relative;
+}
+.image-label {
+    display: inline-block;
+    background-color:  #C8F954;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.placeholder {
+    color: black;
+    font-size: 24px;
+}

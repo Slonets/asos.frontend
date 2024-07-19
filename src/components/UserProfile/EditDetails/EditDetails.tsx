@@ -1,21 +1,23 @@
-
 import {ChangeEventHandler, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../store";
+import {RootState} from "../../../store";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import {IRegisterError} from "../../components/authentication/register/type.ts";
-import http from "../../http_common.ts";
+import {IRegisterError} from "../../../components/authentication/register/type.ts";
+import http from "../../../http_common.ts";
 import axios from "axios";
-import {IUser} from "../../components/authentication/login/type.ts";
-import {APP_ENV} from "../../env";
-import {AuthUserActionType} from "../../components/authentication/type.ts";
-import {IChangePassword} from "../../interfaces/user";
-// import {useNavigate} from "react-router-dom";
+import {IUser} from "../../../components/authentication/login/type.ts";
+import {APP_ENV} from "../../../env";
+import {AuthUserActionType} from "../../../components/authentication/type.ts";
+import {IChangePassword} from "../../../interfaces/user";
+import DefaultHeader from "../default/DefaultHeader.tsx";
+import DefaultSideBar from "../default/DefaultSideBar.tsx";
+import "../Style-UserProfile.css";
 
 
 
-const ChangeUserProfile = () => {
+
+const EditDetails = () => {
 
     const baseUrl = APP_ENV.BASE_URL;
 
@@ -36,10 +38,10 @@ const ChangeUserProfile = () => {
         }
 
     const dataPassword : IChangePassword=
-    {
-        currentPassword:"",
-        newPassword:"",
-    }
+        {
+            currentPassword:"",
+            newPassword:"",
+        }
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
@@ -79,8 +81,8 @@ const ChangeUserProfile = () => {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
-                   }
-                );
+                }
+            );
             console.log("Result server good", result);
 
             dispatch({
@@ -201,13 +203,13 @@ const ChangeUserProfile = () => {
                 currentPassword: Currentpassword.currentPassword
             },{
                 headers:{
-                        "Content-Type": "multipart/form-data"
-                  }})
+                    "Content-Type": "multipart/form-data"
+                }})
 
             console.log("Пароль змінено успішно", result);
 
         } catch (error)
-            {
+        {
             console.error('Помилка зміни паролю:', error);
 
             if (axios.isAxiosError(error))
@@ -225,21 +227,28 @@ const ChangeUserProfile = () => {
 
     return (
         <>
+            <div className="container">
+                <div className="centered-div">
+                <DefaultHeader/>
+
+                </div>
+
+                <DefaultSideBar/>
             <div className="containerChange">
                 <div className="photo-container" >
 
                     <label htmlFor={"pickFoto"} >
-                    <img
+                        <img
 
-                        src={
-                            user.image
-                                ? `${baseUrl}avatars/${user.image}`
-                                : `${baseUrl}avatars/user404.png`
-                        }
-                        alt={`${user.firstName} ${user.lastName}`}
-                        className="image"
-                        style={{ cursor: "pointer" }}
-                    />
+                            src={
+                                user.image
+                                    ? `${baseUrl}avatars/${user.image}`
+                                    : `${baseUrl}avatars/user404.png`
+                            }
+                            alt={`${user.firstName} ${user.lastName}`}
+                            className="image"
+                            style={{ cursor: "pointer" }}
+                        />
                     </label>
 
                     <input
@@ -328,8 +337,9 @@ const ChangeUserProfile = () => {
                     <button type="submit" className="button">Змінити пароль</button>
                 </form>
             </div>
+            </div>
         </>
     )
 };
 
-export default ChangeUserProfile;
+export default EditDetails;
