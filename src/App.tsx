@@ -5,10 +5,10 @@ import LoginPage from "./components/authentication/login/LoginPage.tsx";
 import UserProfile from "./page/UserService/UserProfile.tsx";
 import InfoUserLayout from "./page/UserService/InfoUserLayout.tsx"
 import ProductCreatePage from "./components/products/create/ProductCreatePage.tsx";
-import HomePage from "./components/home/HomePage.tsx";
 import AllUsers from "./page/AdminPanel/AllUsers.tsx";
 import RegisterFirstPage from './components/authentication/register/RegisterFirstPage.tsx';
 import RegisterSecondPage from './components/authentication/register/RegisterSecondPage.tsx';
+import MainClothes from "./page/MainClothes.tsx";
 
 function App() {
 
@@ -16,7 +16,7 @@ function App() {
         <>
             <Routes>
                 <Route path="/" element={<DefaultLayout />}>
-                    <Route index element={<HomePage/>}/>
+                    <Route index element={<MainClothes/>}/>
                     <Route path="admin" element={<AllUsers/>}/>
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterFirstPage/>}/>

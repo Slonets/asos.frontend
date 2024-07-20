@@ -1,0 +1,132 @@
+.MainPageclothes
+{
+    /* Main page clothes */
+    position: relative;
+    width: 1920px;
+    height: 11869px;
+}
+
+.Div-Img
+{
+    width: 1920px;
+    height: 1000px;
+    flex-shrink: 0;
+
+    background: url("public/MainClothesImage.png");
+}
+
+.Frame292
+{
+    /* Frame 292 */
+    position: absolute;
+    width: 1593px;
+    height: 96px;
+    left: 200px;
+    top: 250px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 61px;
+}
+
+.get-in
+{
+    /* get in */
+    position: static;
+    width: 368px;
+    height: 96px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    color: #C8F954;
+
+    /*leading-trim: both;*/
+
+    /*text-edge: cap;*/
+
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 100px; /* 104.167% */
+    text-transform: uppercase;
+}
+
+.Frame291
+{
+    /* Frame 291 */
+    position: static;
+    width: 1000px;
+    height: 96px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.gor-
+{
+    /* gor- */
+    position: static;
+    width: 259px;
+    height: 65px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+    color: #C8F954;
+
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 100px; /* 104.167% */
+    text-transform: uppercase;
+}
+
+.geous
+{
+    /* geous, */
+    position: static;
+    width: 365px;
+    height: 65px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+    color:  #C8F954;
+
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 100px; /* 104.167% */
+    text-transform: uppercase;
+}
