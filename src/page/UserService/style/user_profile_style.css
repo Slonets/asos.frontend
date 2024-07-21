@@ -20,6 +20,8 @@ table
     width: 100%;
     display: flex;
     flex-direction: row;
+    background: #F5F5F5;
+;
 }
 
 .foto
