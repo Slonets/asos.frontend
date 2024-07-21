@@ -1,20 +1,18 @@
-@font-face {
-    font-family: 'Outfit';
-    src: url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap') format('truetype');
-}
-
-body {
+body
+{
     background-color: #F5F5F5; /* Колір фону */
-
 }
-.header{
+
+.header
+{
+
     height:100px;
     width:1740px;
     background-color: #F5F5F5;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", "Marbley Free","Inter", sans-serif;
     font-size: 28px;
 
 }
@@ -53,11 +51,13 @@ body {
     max-width: 150px;
     height: auto;
 }
-.image-container {
+.image-container
+{
     display: flex;
     align-items: center;
 }
-.image-label {
+.image-label
+{
     display: inline-block;
     background-color:  #C8F954;
     width: 150px;
@@ -74,12 +74,12 @@ body {
 }
 .text-hi{
     color:gray;
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", "Marbley Free","Inter", sans-serif;
     font-size: 24px;
     margin-top: 10px;
 }
 .text-name{
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", "Marbley Free","Inter", sans-serif;
     font-size: 24px;
     margin-top: 10px;
 }
@@ -117,7 +117,7 @@ body {
 .button-in-block{
     width: 540px;
     height: 55px;
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", "Marbley Free","Inter", sans-serif;
     solid-color: #0D0D0D;
     display: flex;
     justify-content: flex-start;
@@ -140,7 +140,7 @@ body {
     width: 540px;
     height: 55px;
     border: 2px solid #000;
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", "Marbley Free","Inter", sans-serif;
     transition: background-color 0.5s ease, color 0.5s ease;
     display: flex;
     justify-content: flex-start;
@@ -227,7 +227,7 @@ h2{
     background: rgb(200, 249, 84);
 
     color: rgb(13, 13, 13);
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family:  "Outfit", "Marbley Free","Inter", sans-serif;
     font-size: 24px;
     font-weight: 500;
     line-height: 30px;
