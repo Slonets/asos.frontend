@@ -8,7 +8,6 @@ import "../Style-UserProfile.css";
 import { MdOutlinePhotoCamera } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { LuPackage } from "react-icons/lu";
-import "@fontsource/outfit";
 import { BsArrowReturnLeft } from "react-icons/bs";
 import { PiStarFour } from "react-icons/pi";
 import { FiHome } from "react-icons/fi";
