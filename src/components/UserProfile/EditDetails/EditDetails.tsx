@@ -1,4 +1,4 @@
-import {ChangeEventHandler, useEffect, useState} from "react";
+import React, {ChangeEventHandler, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import * as yup from "yup";
@@ -227,116 +227,106 @@ const EditDetails = () => {
 
     return (
         <>
-            <div className="container">
-                <div className="centered-div">
+            <div className="centered-div">
                 <DefaultHeader/>
-
-                </div>
-
-                <DefaultSideBar/>
-            <div className="containerChange">
-                <div className="photo-container" >
-
-                    <label htmlFor={"pickFoto"} >
-                        <img
-
-                            src={
-                                user.image
-                                    ? `${baseUrl}avatars/${user.image}`
-                                    : `${baseUrl}avatars/user404.png`
-                            }
-                            alt={`${user.firstName} ${user.lastName}`}
-                            className="image"
-                            style={{ cursor: "pointer" }}
-                        />
-                    </label>
-
-                    <input
-                        id="pickFoto"
-                        accept="image/*"
-                        type="file"
-                        name="image"
-                        onChange={handleChangeImage}
-                        className="file-input"
-                        style={{ display: 'none' }} // Приховуємо вхідний файл
-                    />
-                </div>
-
-
-                <form onSubmit={handleSubmit} className="form">
-                    <div className="input-group">
-                        <label className="label">Ім'я:</label>
-                        <input
-                            className={`text-sm w-full px-4 py-2 border border-solid rounded ${touched.firstName && (errors.firstName || error?.firstName) ? 'border-red-500' : 'border-gray-300'}`}
-                            type="text"
-                            name="firstName"
-                            value={values.firstName}
-                            onChange={handleChange}
-                        />
-                        {(touched.firstName && errors.firstName) || error?.firstName ? <div className="text-red-500 text-xs mt-1">{errors.firstName || error?.firstName}</div> : null}
-                    </div>
-                    <div className="input-group">
-                        <label className="label">Прізвище:</label>
-                        <input
-                            className={`text-sm w-full px-4 py-2 border border-solid rounded ${touched.lastName && (errors.lastName || error?.lastName) ? 'border-red-500' : 'border-gray-300'}`}
-                            type="text"
-                            name="lastName"
-                            value={values.lastName}
-                            onChange={handleChange}
-                        />
-                        {(touched.lastName && errors.lastName) || error?.lastName ? <div className="text-red-500 text-xs mt-1">{errors.lastName || error?.lastName}</div> : null}
-                    </div>
-                    <div className="input-group">
-                        <label className="label">Email:</label>
-                        <input
-                            className={`text-sm w-full px-4 py-2 border border-solid rounded ${touched.email && (errors.email || error?.email) ? 'border-red-500' : 'border-gray-300'}`}
-
-                            type="email"
-                            name="email"
-                            value={values.email}
-                            onChange={handleChange}
-                        />
-                        {(touched.email && errors.email) || error?.email ? <div className="text-red-500 text-xs mt-1">{errors.email || error?.email}</div> : null}
-                    </div>
-                    <div className="input-group">
-                        <label className="label">Телефон</label>
-                        <input
-                            className={`text-sm w-full px-4 py-2 border border-solid rounded ${touched.phoneNumber && (errors.phoneNumber || error?.phoneNumber) ? 'border-red-500' : 'border-gray-300'}`}
-                            type="text"
-                            name="phoneNumber"
-                            value={values.phoneNumber}
-                            onChange={handleChange}
-                        />
-                        {(touched.phoneNumber && errors.phoneNumber) || error?.phoneNumber ? <div className="text-red-500 text-xs mt-1">{errors.phoneNumber || error?.phoneNumber}</div> : null}
-                    </div>
-                    <button type="submit" className="button">Змінити</button>
-                </form>
-
-                <form onSubmit={handlePasswordSubmit} className="form">
-                    <div className="input-group">
-                        <label className="label">Теперішній пароль:</label>
-                        <input
-                            type="password"
-                            name="currentPassword"
-                            value={Currentpassword.currentPassword}
-                            onChange={handlePasswordChange}
-                            className="input"
-                        />
-                    </div>
-                    <div className="input-group">
-                        <label className="label">Новий пароль:</label>
-                        <input
-                            type="password"
-                            name="newPassword"
-                            value={Currentpassword.newPassword}
-                            onChange={handlePasswordChange}
-                            className="input"
-                        />
-                    </div>
-                    {passwordError && <div className="text-red-500 text-xs mt-1">{passwordError}</div>}
-                    <button type="submit" className="button">Змінити пароль</button>
-                </form>
             </div>
+
+            <div className="main-container">
+                <DefaultSideBar/>
+                <div className="content-container">
+                    <div className="div-with-text">
+                        <h2>Edit Details</h2>
+                        <p>You can edit any of your details below so<br/>
+                            your account info is as fresh as your looks!</p>
+                        <p className="blue-text">(*Indicates a required field).</p>
+                    </div>
+
+                    <div className="containerChange">
+                        <form onSubmit={handleSubmit} className="form">
+                            <div className="form-row">
+                                <div className="input-group">
+                                    <label className="blue-text label">First Name:</label>
+                                    <input
+                                        className={`input ${touched.firstName && (errors.firstName || error?.firstName) ? 'border-red-500' : 'border-gray-300'}`}
+                                        type="text"
+                                        name="firstName"
+                                        value={values.firstName}
+                                        onChange={handleChange}
+                                    />
+                                    {(touched.firstName && errors.firstName) || error?.firstName ? <div
+                                        className="text-red-500 text-xs mt-1">{errors.firstName || error?.firstName}</div> : null}
+                                </div>
+                                <div className="input-group">
+                                    <label className="blue-text label">Last Name:</label>
+                                    <input
+                                        className={`input ${touched.lastName && (errors.lastName || error?.lastName) ? 'border-red-500' : 'border-gray-300'}`}
+                                        type="text"
+                                        name="lastName"
+                                        value={values.lastName}
+                                        onChange={handleChange}
+                                    />
+                                    {(touched.lastName && errors.lastName) || error?.lastName ? <div
+                                        className="text-red-500 text-xs mt-1">{errors.lastName || error?.lastName}</div> : null}
+                                </div>
+                            </div>
+
+                            <div className="form-row">
+                                <div className="input-group">
+                                    <label className="blue-text label">Email:</label>
+                                    <input
+                                        className={`input ${touched.email && (errors.email || error?.email) ? 'border-red-500' : 'border-gray-300'}`}
+                                        type="email"
+                                        name="email"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                    />
+                                    {(touched.email && errors.email) || error?.email ?
+                                        <div
+                                            className="text-red-500 text-xs mt-1">{errors.email || error?.email}</div> : null}
+                                </div>
+                                <div className="input-group">
+                                    <label className="blue-text label">Phone Number:</label>
+                                    <input
+                                        className={`input ${touched.phoneNumber && (errors.phoneNumber || error?.phoneNumber) ? 'border-red-500' : 'border-gray-300'}`}
+                                        type="text"
+                                        name="phoneNumber"
+                                        value={values.phoneNumber}
+                                        onChange={handleChange}
+                                    />
+                                    {(touched.phoneNumber && errors.phoneNumber) || error?.phoneNumber ? <div
+                                        className="text-red-500 text-xs mt-1">{errors.phoneNumber || error?.phoneNumber}</div> : null}
+                                </div>
+                            </div>
+
+                            <div className="form-row">
+                                <div className="input-group">
+                                    <label className="blue-text label">Current Password:</label>
+                                    <input
+                                        type="password"
+                                        name="currentPassword"
+                                        value={Currentpassword.currentPassword}
+                                        onChange={handlePasswordChange}
+                                        className="input"
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <label className="blue-text label">Change Password:</label>
+                                    <input
+                                        type="password"
+                                        name="newPassword"
+                                        value={Currentpassword.newPassword}
+                                        onChange={handlePasswordChange}
+                                        className="input"
+                                    />
+                                </div>
+                            </div>
+                            {passwordError && <div className="text-red-500 text-xs mt-1">{passwordError}</div>}
+                            <div className="form-row button-container">
+                                <button type="submit" className="button save-button">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </>
     )

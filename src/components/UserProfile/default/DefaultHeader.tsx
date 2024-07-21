@@ -6,9 +6,11 @@ const DefaultHeader = () =>{
     return(
         <>
         <div className="header">
-            <GoArrowLeft size={56}  />
+            <button>
+                <GoArrowLeft size={56}  />
+            </button>
             <img className="logo-img" src={Logo} alt={"Logo"}/>
-            <h2>Account</h2>
+            <button>Account</button>
         </div>
 
 
