@@ -24,7 +24,7 @@ function App() {
 
 
                     <Route path="user-info">
-                        <Route path="profile" element={<EditDetails/>}/>
+                        <Route index element={<EditDetails/>}/>
                     </Route>
 
                     <Route path="dashboard">

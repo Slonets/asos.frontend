@@ -1,7 +1,6 @@
-import React, { ChangeEventHandler, useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
-import { APP_ENV } from "../../../env";
 import http from "../../../http_common";
 import { AuthUserActionType } from "../../authentication/type";
 import { IUser } from "../../authentication/login/type";
@@ -19,10 +18,13 @@ import { GoPeople } from "react-icons/go";
 import { IoGiftOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { PiSignOutFill } from "react-icons/pi";
+import {API_URL} from "../../../utils/getEnvData.ts";
 const DefaultSideBar = () => {
-    const baseUrl = APP_ENV.BASE_URL;
+
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.auth.user);
+
+    const baseUrl=API_URL;
 
     const init: IUser = {
         id: 0,
@@ -105,9 +107,17 @@ const DefaultSideBar = () => {
                     <div className="img-div">
                         <div className="image-container">
                             <label htmlFor="pickFoto" className="image-label">
-                                <div className="placeholder">
-                                    <MdOutlinePhotoCamera size={32}/>
-                                </div>
+
+                                {user.image ? (
+                                    <div className="placeholder">
+                                        <img src={`${baseUrl}avatars/${user.image}`}/>
+                                    </div>
+                                ) : (
+                                    <div className="placeholder">
+                                        <MdOutlinePhotoCamera size={32}/>
+                                    </div>
+                                )}
+
                             </label>
                             <input
                                 id="pickFoto"
