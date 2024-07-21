@@ -123,10 +123,8 @@ p
     /*margin: 54px 0px;*/
 }
 
-.Frame4
+#Frame4
 {
-    /* Frame 4 (Frame 3) */
-    position: static;
     width: 315px;
     height: 55px;
     /* Auto layout */
@@ -140,7 +138,7 @@ p
     opacity: 0.5;
 }
 
-.Frame4:focus
+#Frame4:focus
 {
     opacity: 2;
     background: rgba(255, 255, 255, 0.2);
@@ -730,7 +728,7 @@ p
 .Frame32
 {
     /* Frame 32 */
-    position: absolute;
+    position: static;
     width: 371px;
     height: 50px;
     left: 24px;
@@ -866,7 +864,7 @@ top:-19px;
 {
     position: absolute;
     width: 406px;
-    height: 50px;
+    height: 65px;
     /* Inside Auto Layout */
     left: 512px;
     top: 530px;
@@ -882,9 +880,9 @@ top:-19px;
 
 .Frame32-2
 {
-    position: absolute;
+    position: static;
     width: 371px;
-    height: 50px;
+    height: 65px;
     display: flex;
     flex-direction: row;
     justify-content: center;
