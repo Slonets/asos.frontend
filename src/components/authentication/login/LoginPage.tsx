@@ -8,7 +8,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {AuthUserActionType} from "../type.ts";
 import {jwtDecode} from "jwt-decode";
 import axios from "axios";
-import "./style-Login.css"
+import "./style-Login.css";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 
@@ -151,7 +151,7 @@ const LoginPage = () => {
 
                                             <Link
                                                 to="/login"
-                                                className="Frame4"
+                                                id="Frame4"
                                             >
                                                 <p className="LogIn">Log In</p>
                                             </Link>

@@ -22,7 +22,7 @@
     width: 1593px;
     height: 96px;
     left: 200px;
-    top: 250px;
+    top: 120px;
     /* Auto layout */
     display: flex;
     flex-direction: row;
@@ -129,4 +129,106 @@
     font-weight: 800;
     line-height: 100px; /* 104.167% */
     text-transform: uppercase;
+}
+
+.Frame293
+{
+    /* Frame 293 */
+    position: absolute;
+    width: 1000px;
+    height: 96px;
+    left: 300px;
+    top: 150px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Frame293>:nth-child(1)
+{
+    color: #C8F954;
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 100px; /* 104.167% */
+    text-transform: uppercase;
+}
+
+.Frame293>:nth-child(2)
+{
+    color: #C8F954;
+
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 100px; /* 104.167% */
+    text-transform: uppercase;
+    margin-left: 500px;
+}
+
+.shopping
+{
+    /* shopping! (Stroke) */
+    position: absolute;
+    width: 1372.23px;
+    height: 204.5px;
+    left: 350px;
+    right: 273.77px;
+    top: 460px;
+    bottom: 11091.5px;
+
+    display: flex;
+}
+
+.ShopNow
+{
+    color: black;
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 28px;
+    font-style: normal;
+    line-height: normal;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.Frame4
+{
+    /* Frame 4 */
+    position: absolute;
+    width: 315px;
+    height: 65px;
+    left: 900px;
+    top: 768px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid rgb(13, 13, 13);
+
+}
+
+.Frame4:hover
+{
+    background: rgb(239, 230, 230);
+    cursor: pointer;
+}
+
+.Frame319
+{
+    /* Frame 319 */
+    position: absolute;
+    width: 1520px;
+    height: 1477px;
+    left: 200px;
+    top: 1100px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }

@@ -129,7 +129,7 @@ const RegisterFirstPage = () => {
 
                                             <Link
                                                 to="/login"
-                                                className="Frame4"
+                                                id="Frame4"
                                             >
                                                 <p className="LogIn">Log In</p>
                                             </Link>
