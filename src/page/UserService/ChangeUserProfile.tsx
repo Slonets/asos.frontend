@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import {IRegisterError} from "../../components/authentication/register/type.ts";
 import http from "../../http_common.ts";
 import axios from "axios";
 import {IUser} from "../../components/authentication/login/type.ts";
