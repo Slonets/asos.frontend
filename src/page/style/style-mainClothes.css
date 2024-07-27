@@ -2,13 +2,13 @@
 {
     /* Main page clothes */
     position: relative;
-    width: 1920px;
+    width: 1900px;
     height: 11869px;
 }
 
 .Div-Img
 {
-    width: 1920px;
+    width: 1900px;
     height: 1000px;
     flex-shrink: 0;
 
@@ -49,7 +49,7 @@
 
     /*text-edge: cap;*/
 
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: 96px;
     font-style: normal;
     font-weight: 800;
@@ -96,7 +96,7 @@
 
     color: #C8F954;
 
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: 96px;
     font-style: normal;
     font-weight: 800;
@@ -123,7 +123,7 @@
 
     color:  #C8F954;
 
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: 96px;
     font-style: normal;
     font-weight: 800;
@@ -149,7 +149,7 @@
 .Frame293>:nth-child(1)
 {
     color: #C8F954;
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: 96px;
     font-style: normal;
     font-weight: 800;
@@ -161,7 +161,7 @@
 {
     color: #C8F954;
 
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: 96px;
     font-style: normal;
     font-weight: 800;
@@ -184,17 +184,6 @@
     display: flex;
 }
 
-.ShopNow
-{
-    color: black;
-    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
-    font-size: 28px;
-    font-style: normal;
-    line-height: normal;
-    text-transform: capitalize;
-    font-weight: bold;
-}
-
 .Frame4
 {
     /* Frame 4 */
@@ -208,17 +197,26 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    text-align: center;
     border: 5px solid rgb(13, 13, 13);
+    background: white;
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 28px;
+    font-style: normal;
+    line-height: normal;
+    text-transform: capitalize;
 
 }
 
 .Frame4:hover
 {
-    background: rgb(239, 230, 230);
+    background: #4848b6;
     cursor: pointer;
+    color: white;
 }
 
-.Frame319
+.Frame434
 {
     /* Frame 319 */
     position: absolute;
@@ -231,4 +229,1180 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+}
+
+.Frame302
+{
+    /* Frame 302 */
+    position: static;
+    width: 1520px;
+    height: 32px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    align-self: stretch;
+}
+
+.NewCollection
+{
+    /* new collection: */
+    position: static;
+    width: max-content;
+    height: 100%;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.AfterMidnight
+{
+    /* after midnight */
+    position: static;
+    width: max-content;
+    height: 55px;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+
+    color: rgb(13, 13, 13);
+    font-family:"Outfit", sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.AfterMidnight:hover
+{
+    color: #C8F954;
+    text-decoration: underline;
+}
+
+.Frame318
+{
+    /* Frame 318 */
+    position: static;
+    width: 1520px;
+    height: 1405px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    gap: 100px;
+}
+
+.Frame317
+{
+    /* Frame 317 */
+    position: static;
+    width: 1520px;
+    /*height: 633px;*/
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    /* Inside Auto Layout */
+    flex: none;
+    align-self: stretch;
+    gap: 88px;
+}
+
+.Frame215
+{
+    /* Frame 215 */
+    position: static;
+    width: 448px;
+    height: 700px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    /* Inside Auto Layout */
+    flex: none;
+    gap: 30px;
+}
+
+.Frame208
+{
+    /* Frame 208 */
+    position: static;
+    width: 448px;
+    height: 509px;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.Rectangle16 {
+    /* Rectangle 16 */
+    position: static;
+    width: 100%;
+    height: 100%;
+
+    object-fit:cover;
+    border-radius: 4px;
+
+    border: 2px solid rgb(112, 112, 112);
+    box-shadow: 4px 8px 0px 0px rgb(200, 249, 84);
+
+}
+
+.favorite
+{
+    /* favorite */
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 30px;
+    top: 50px;
+    border-radius: 0.75px;
+
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+
+}
+
+#star1:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame213
+{
+    /* Frame 213 */
+    position: static;
+    width: 448px;
+    height: max-content;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.Frame220
+{
+    /* Frame 220 */
+    position: static;
+    width: 457px;
+    height: max-content;
+
+    gap: 38px;
+
+    display: flex;
+
+}
+
+.Frame207
+{
+    /* Frame 207 */
+    position: static;
+    width: 85%;
+    height: max-content;
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.Frame206
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    align-self: stretch;
+
+    /* Frame 206 */
+    position: static;
+    width: 100%;
+    height: 72px;
+    /* Auto layout */
+
+    justify-content: flex-start;
+}
+
+.Frame206>:nth-child(1)
+{
+    color: black;
+    font-family: "Outfit",sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 550;
+    width: 100%;
+    text-transform: uppercase;
+
+    text-align: left;
+    line-height: 30px;
+}
+
+.Frame206>:nth-child(2)
+{
+    color: #707070;
+    font-family: "Outfit",sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame206>:nth-child(3)
+{
+    color: #0D0D0D;
+    font-family: "Outfit",sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame70
+{
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 350px;
+    top: 650px;
+}
+
+.Frame70:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame214
+{
+    /* Frame 214 */
+    position: absolute;
+    width: 448px;
+    height: 700px;
+    left: 536px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    gap: 30px;
+}
+
+.Frame211
+{
+    /* Frame 211 */
+    position: static;
+    width: 448px;
+    height: 509px;
+    /* Inside Auto Layout */
+    flex: none;
+
+}
+
+.favorite2
+{
+    /* favorite */
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 30px;
+    top: 20px;
+    border-radius: 0.75px;
+
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+
+}
+
+#star2:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame212
+{
+    /* Frame 213 */
+    position: static;
+    width: 448px;
+    height: max-content;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.Frame210
+{
+    /* Frame 220 */
+    position: static;
+    width: 457px;
+    height: max-content;
+
+    gap: 38px;
+
+    display: flex;
+}
+
+.Frame70-2
+{
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 360px;
+    top: 610px;
+}
+
+.Frame70-2:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame316
+{
+    /* Frame 316 */
+    position: absolute;
+    width: 448px;
+    height: 700px;
+    left: 1072px;
+}
+
+.position
+{
+    width: 100%;
+    height: 73%;
+}
+
+.foto3
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Men
+{
+    /* men (Stroke) */
+    position: absolute;
+    width: 175.96px;
+    height: 479.09px;
+    left: 20px;
+    right: 252.04px;
+    top: 15px;
+    bottom: 14.91px;
+}
+
+.Men>:nth-child(1)
+{
+    margin-top: 10px;
+}
+
+.Frame431
+{
+    width: 100%;
+    height: 27%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    /*align-items: center;*/
+    margin-top: 20px;
+}
+
+.ShowAll>:nth-child(1)
+{
+    color: rgb(13, 13, 13);
+    font-family: "Outfit",sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.Frame70-3
+{
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 360px;
+    top: 510px;
+}
+
+.Frame70-3:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame433
+{
+    /* Frame 433 */
+    position: absolute;
+    width: 1520px;
+    height: 672px;
+    left: 0;
+    top: 805px;
+}
+
+.Frame305
+{
+    width: 448px;
+    height: 700px;
+    flex-shrink: 0;
+}
+
+.RectangleWoman
+{
+    width: 100%;
+    height: 509px;
+}
+
+.ImageRectangleWoman
+{
+    width: 100%;
+    height: 509px;
+    object-fit:cover;
+}
+
+.Women-Stroke
+{
+    /* women (Stroke) */
+    position: absolute;
+    width: 97.6px;
+    height: 480.81px;
+    left: 336.84px;
+    right: 13.56px;
+    top: 19.01px;
+    bottom: 9.18px;
+}
+
+.Frame432
+{
+    position:static;;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.Frame432>:nth-child(1)
+{
+    margin-top: 30px;
+    color: rgb(13, 13, 13);
+    font-family: "Outfit", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.Frame432>:nth-child(2):hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+    cursor: pointer;
+}
+
+.Frame306
+{
+    /* Frame 306 */
+    position: absolute;
+    width: 448px;
+    height: 700px;
+    left: 536px;
+    top: 0;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.Frame211
+{
+    /* Frame 211 */
+    position: static;
+    width: 448px;
+    height: 509px;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.foto4
+{
+    width: 448px;
+    object-fit:cover;
+    height: 509px;
+    border-radius: 4px;
+    border: 2px solid rgb(112, 112, 112);
+    box-shadow: 4px 8px 0px 0px rgb(200, 249, 84);
+}
+
+.favorite3
+{
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 30px;
+    top: 30px;
+    border-radius: 0.75px;
+
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+}
+
+#star3:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame212
+{
+    display: flex;
+    margin-top: 20px;
+    gap: 38px;
+    align-self: stretch;
+    flex-direction: row;
+}
+
+.Frame210-3
+{
+    /* Frame 210 */
+    position: static;
+    width: 90%;
+    height: 124px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.Frame210-3>:nth-child(1)
+{
+    color: #0D0D0D;
+    font-family: "Outfit",sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+
+.Frame210-3>:nth-child(2)
+{
+    color: #707070;
+    font-family: "Outfit",sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame210-3>:nth-child(3)
+{
+    margin-top: 30px;
+    color: #0D0D0D;
+    font-family: "Outfit",sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame70-4
+{
+    /* Frame 70 */
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 376px;
+    top: 600px;
+}
+
+.Frame70-4:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame70-6
+{
+    /* Frame 70 */
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 376px;
+    top: 650px;
+}
+
+.Frame70-6:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame304
+{
+    /* Frame 304 */
+    position: absolute;
+    width: 448px;
+    height: 672px;
+    left: 1072px;
+    top: 0;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.Frame311
+{
+    /* Frame 311 */
+    position: absolute;
+    width: 1920px;
+    height: 785px;
+    left: 0;
+    top: 2727px;
+}
+
+.Frame311>:nth-child(1)
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Frame311>:nth-child(2)
+{
+    color: #C8F954;
+    font-family: "Outfit",sans-serif;
+    font-size: 110px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+
+    /* freestyle */
+    position: absolute;
+    width: 587px;
+    height: 74px;
+    top: 340px;
+    transform: rotate(-55.85deg);
+}
+
+.Frame311>:nth-child(3)
+{
+    /* spirit */
+    position: absolute;
+    width: 330px;
+    height: 74px;
+    left: 1223.81px;
+    top: 280px;
+    transform: rotate(23.76deg);
+
+    color: rgb(200, 249, 84);
+    font-family: "Outfit",sans-serif;
+    font-size: 110px;
+    font-weight: 600;
+    line-height: 139px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.Frame310
+{
+    /* Frame 310 (Frame 4) */
+    position: absolute;
+    width: 409.5px;
+    height: 85px;
+    left: 755px;
+    top: 610px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 19.5px 13px 19.5px 13px;
+
+    border: 5.2px solid rgb(13, 13, 13);
+    background: rgb(245, 245, 245);
+
+    color: rgb(13, 13, 13);
+    font-family: "Outfit",sans-serif;
+    font-size: 36.4px;
+    font-weight: 400;
+    line-height: 46px;
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.Frame310:hover
+{
+    background-color: #2E38A1;
+    color: #F5F5F5;
+    cursor: pointer;
+}
+
+.Frame334
+{
+    /* Frame 334 */
+    position: absolute;
+    width: 1520px;
+    height: 1528px;
+    left: 200px;
+    top: 3600px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.Frame333
+{
+    position: static;
+    width: 1520px;
+    height: max-content;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+}
+
+.SpecialConteiner1
+{
+    position: static;
+    width: max-content;
+    height: 100%;
+}
+
+.SellingFast
+{
+    font-family: "Outfit",sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100px; /* 312.5% */
+    text-transform: uppercase;
+}
+
+.SpecialConteiner
+{
+    position: static;
+    width: max-content;
+    height: 100%;
+    margin-left: 1020px;
+}
+
+.Women
+{
+    color:black;
+    font-family: "Outfit",sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100px;
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+
+.Man
+{
+    color: #707070;
+    font-family: "Outfit",sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100px;
+    text-transform: uppercase;
+}
+
+.Frame332
+{
+    /* Frame 332 */
+    position: static;
+    width: 1520px;
+    height: 1456px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.Frame331
+{
+    /* Frame 331 */
+    position: static;
+    width: 1520px;
+    height: 1316px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.Frame329
+{
+    /* Frame 329 */
+    position: static;
+    width: 1520px;
+    height: max-content;
+    /* Auto layout */
+
+
+    justify-content: flex-start;
+
+
+    /* Inside Auto Layout */
+    flex: none;
+    align-self: stretch;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* три столбца одинаковой ширины */
+    grid-template-rows: auto; /* высота строк будет автоматически подстраиваться */
+    gap: 10px; /* отступы между элементами сетки */
+}
+
+.Frame215
+{
+    position: static;
+    width: 448px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.Frame215-4
+{
+    position: static;
+    width: 448px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.Frame208-2
+{
+    position: static;
+    width: 448px;
+    height: 509px;
+}
+
+.Rectangle208
+{
+    position: static;
+    width: 100%;
+    height: 100%;
+
+    object-fit:cover;
+    border-radius: 4px;
+
+    border: 2px solid rgb(112, 112, 112);
+    box-shadow: 4px 8px 0px 0px rgb(200, 249, 84);
+}
+
+.favorite7
+{
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 30px;
+    top: 120px;
+    border-radius: 0.75px;
+
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+}
+
+
+#star7:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.favorite8
+{
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 550px;
+    top: 120px;
+    border-radius: 0.75px;
+
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+}
+
+
+#star8:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.favorite9
+{
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 1050px;
+    top: 120px;
+    border-radius: 0.75px;
+
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+}
+
+
+#star9:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame213-2
+{
+    /* Frame 213 */
+    position: static;
+    width: 448px;
+    height: 180px;
+    /* Inside Auto Layout */
+    flex: none;
+
+    align-self: stretch;
+}
+
+.Frame207-2
+{
+    /* Frame 207 */
+    position: static;
+    width: 90%;
+    height: 100%;
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.Frame207-2>:nth-child(1)
+{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 550;
+    width: 100%;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.Frame207-2>:nth-child(2)
+{
+margin-top: 10px;
+    color: #707070;
+    font-family: "Outfit", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+
+.Frame207-2>:nth-child(3)
+{
+    margin-top: 15px;
+    color: rgb(13, 13, 13);
+    font-family: "Outfit", sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 40px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.Frame70-4
+{
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 360px;
+    top: 730px;
+}
+
+.Frame70-4:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame215-5
+{
+    position: static;
+    width: 448px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.Frame207-3 {
+    /* Frame 207 */
+    position: static;
+    width: 90%;
+    height: 100%;
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+}
+
+.Frame207-3>:nth-child(1)
+{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 550;
+    width: 100%;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.Frame207-3>:nth-child(2)
+{
+    margin-top: 10px;
+    color: #707070;
+    font-family: "Outfit", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+
+.Frame207-3>:nth-child(3)
+{
+    margin-top: 15px;
+    color: rgb(13, 13, 13);
+    font-family: "Outfit", sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 40px;
+    text-align: left;
+    text-transform: uppercase;
+
+}
+
+.Frame70-5
+{
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 880px;
+    top: 730px;
+}
+
+.Frame70-5:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame70-7
+{
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    left: 1400px;
+    top: 730px;
+}
+
+.Frame70-7:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
 }

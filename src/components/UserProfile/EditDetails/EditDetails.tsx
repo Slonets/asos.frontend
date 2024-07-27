@@ -4,7 +4,7 @@ import {RootState} from "../../../store";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import http from "../../../http_common";
-import "../Style-UserProfile.css";
+import "../Style-UserProfile.scss";
 import ProfileDefaultHeader from "../default/ProfileDefaultHeader";
 import DefaultSideBar from "../default/DefaultSideBar";
 import {IUser} from "../../authentication/login/type.ts";

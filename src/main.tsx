@@ -11,6 +11,7 @@ import {IUser} from "./components/authentication/login/type.ts";
 import {jwtDecode} from "jwt-decode";
 import {AuthUserActionType} from "./components/authentication/type.ts";
 
+
 // Якщо сторінка перезавантажується на F5, то токен знову перезаписується
 if(localStorage.token) {
     setAuthToken(localStorage.token);
