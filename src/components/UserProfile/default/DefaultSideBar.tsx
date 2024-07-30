@@ -4,7 +4,7 @@ import { RootState } from "../../../store";
 import http from "../../../http_common";
 import { AuthUserActionType } from "../../authentication/type";
 import { IUser } from "../../authentication/login/type";
-import "../Style-UserProfile.css";
+import "../Style-UserProfile.scss";
 import { MdOutlinePhotoCamera } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { LuPackage } from "react-icons/lu";

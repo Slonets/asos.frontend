@@ -1,4 +1,4 @@
-import "../Style-UserProfile.css";
+import "../Style-UserProfile.scss";
 import Logo from '../../../../src/assets/logo.png';
 import {GoArrowLeft} from "react-icons/go";
 
