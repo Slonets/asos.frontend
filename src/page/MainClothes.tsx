@@ -820,7 +820,100 @@ const MainClothes = () => {
 
                     </div>
 
-                    <div  className="Frame290">
+                    <div className="Frame290">
+
+                        <div className="Frame284">
+
+                            <span>HELP & INFORMATION</span>
+
+                            <Link
+                                className="Special-Link" to=""> Help
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">Track order
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">Delivery & returns
+
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">10% Student Discount
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">popular faqs
+                            </Link>
+
+                        </div>
+
+                        <div className="Frame286">
+
+                            <span>about</span>
+
+                            <Link
+                                className="Special-Link" to=""> About us
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">Careers at urbncore
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">Corporate responsibility
+
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">Investors' site
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">Cyber Security
+                            </Link>
+
+                        </div>
+
+                        <div className="Frame287">
+
+                            <span>other</span>
+
+                            <Link
+                                className="Special-Link" to="">privacy policy
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">terms of service
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">contact us
+
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">help center
+                            </Link>
+
+                            <Link
+                                to=""
+                                className="Special-Link">Cyber Security
+                            </Link>
+
+                        </div>
 
                     </div>
 
