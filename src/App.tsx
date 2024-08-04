@@ -9,6 +9,7 @@ import RegisterFirstPage from './components/authentication/register/RegisterFirs
 import RegisterSecondPage from './components/authentication/register/RegisterSecondPage.tsx';
 import MainClothes from "./page/MainClothes.tsx";
 import EditDetails from "./components/UserProfile/EditDetails/EditDetails.tsx";
+import FaceBody from "./page/FaceBody.tsx";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<DefaultLayout />}>
                     <Route index element={<MainClothes/>}/>
+                    <Route path="face&body" element={<FaceBody/>}/>
                     <Route path="admin" element={<AllUsers/>}/>
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterFirstPage/>}/>

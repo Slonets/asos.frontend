@@ -1,0 +1,693 @@
+.MainBody
+{
+    position: relative;
+    width: 100%;
+    height: 13700px;
+    display: flex;
+    flex-direction: column;
+}
+
+.Rectangle10
+{
+    width: 100%;
+    height: 1000px;
+    background: url("public/Ragtangel10.jpeg") lightgray 0px -507.529px / 100% 288% no-repeat;
+}
+
+.Rectangle10>:nth-child(1)
+{
+    /* rebel */
+    position: absolute;
+    width: 922px;
+    height: 203px;
+    left: 91px;
+    top: 40px;
+
+    font-family: "Outfit",sans-serif;
+    font-size: 300px;
+    font-weight: 700;
+    line-height: 378px;
+    text-align: left;
+    text-transform: uppercase;
+
+    color: transparent; /* робить текст прозорим */
+    -webkit-text-stroke-width: 12px; /* ширина обвідки */
+    -webkit-text-stroke-color: #C8F954;
+}
+
+.Rectangle10>:nth-child(2)
+{
+    /* glam */
+    position: absolute;
+    width: 872px;
+    height: 203px;
+    left: 900px;
+    top: 360px;
+
+    font-family: "Outfit",sans-serif;
+    font-size: 300px;
+    font-weight: 700;
+    line-height: 378px;
+    text-align: left;
+    text-transform: uppercase;
+
+    color: transparent; /* робить текст прозорим */
+    -webkit-text-stroke-width: 12px; /* ширина обвідки */
+    -webkit-text-stroke-color: #C8F954;
+}
+
+.Rectangle10>:nth-child(3)
+{
+    /* Frame 4 */
+    position: absolute;
+    width: 315px;
+    height: 65px;
+    left: 803px;
+    top: 750px;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 10px 15px 10px;
+
+    border: 4px solid rgb(13, 13, 13);
+    background: rgb(245, 245, 245);
+
+    color: rgb(13, 13, 13);
+    font-family: "Outfit",sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 35px;
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.Rectangle10>:nth-child(3):hover
+{
+    background:#2E38A1;
+    color: white;
+}
+
+.Frame335
+{
+    margin: 80px auto 0 auto;
+    display: flex;
+    width: 80%;
+    height: max-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.Frame200
+{
+    width: 100%;
+    height: 362px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* чотири столбца одинаковой ширины */
+    grid-template-rows: auto; /* высота строк будет автоматически подстраиваться */
+    gap: 30px;
+}
+
+.Frame199
+{
+    position: static;
+    width: 319px;
+    height: 362px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 0 40px 0;
+
+    background: url("public/Body/MakeUp.jpeg") no-repeat center center;
+
+    background-size: cover;
+
+    color:  #C8F954;
+    text-align: center;
+    font-family:  "Outfit", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+
+.Weve
+{
+    margin: 40px auto 0 auto;
+    width: 60%;
+    height: 40%;
+    text-align: center;
+    align-items: center;
+
+}
+
+.Weve>:nth-child(1) {
+    color: rgb(0, 0, 0);
+    font-family: "Outfit", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 40px;
+    text-align: center;
+}
+
+.Frame199:hover,
+.Frame198:hover,
+.Frame197:hover,
+.Frame196:hover
+{
+    border: 5px solid rgb(171, 30, 30);
+}
+
+.Frame198
+{
+    position: static;
+    width: 319px;
+    height: 362px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 0 40px 0;
+
+    background: url("public/Body/Frame198.jpeg") no-repeat center center;
+
+    background-size: cover;
+
+    color:  #C8F954;
+    text-align: center;
+    font-family:  "Outfit", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame197
+{
+    position: static;
+    width: 319px;
+    height: 362px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 0 40px 0;
+
+    background: url("public/Body/Frame197.jpeg") no-repeat center center;
+
+    background-size: cover;
+
+    color:  #C8F954;
+    text-align: center;
+    font-family:  "Outfit", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame196
+{
+    position: static;
+    width: 319px;
+    height: 362px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 0 40px 0;
+
+    background: url("public/Body/Frame196.jpeg") no-repeat center center;
+
+    background-size: cover;
+
+    color:  #C8F954;
+    text-align: center;
+    font-family:  "Outfit", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame222
+{
+    margin: 80px auto 0 auto;
+    width: 80%;
+
+
+    display: inline-flex;
+    padding-bottom: 31px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 50px;
+}
+
+.Frame222>:nth-child(1)
+{
+    color:  #0D0D0D;
+    text-align: center;
+    font-family: "Outfit", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame221
+{
+    width: 100%;
+    height: 1366px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 100px;
+}
+
+.Frame216
+{
+   width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* nhb столбца одинаковой ширины */
+    grid-template-rows: auto; /* высота строк будет автоматически подстраиваться */
+    gap: 30px;
+}
+
+.Frame215
+{
+    display: flex;
+    width: 448px;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.Frame208-1
+{
+    position: relative; /* додано */
+    height: 509px;
+    width: 100%;
+    display: block; /* виправлено з static */
+    border-radius: 4px;
+    border: 2px solid #707070;
+    box-shadow: 4px 8px 0px 0px #C8F954;
+
+}
+
+.Foto-208
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.favorite208
+{
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 15%; /* центрируем по горизонтали */
+    top: 13%; /* центрируем по вертикали */
+    transform: translate(-50%, -50%); /* коррекция для точного центрирования */
+    border-radius: 0.75px;
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+
+}
+
+#star208-1:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Frame213-3
+{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-self: stretch;
+}
+
+.Frame220-2
+{
+    width: 457px;
+    height: 125px;
+}
+
+.Frame207-4
+{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.Frame206-2
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    align-self: stretch;
+}
+
+.Frame206-2>:nth-child(1)
+{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 550;
+    width: 100%;
+    text-transform: uppercase;
+    text-align: left;
+    line-height: 30px;
+}
+
+.Frame206-2>:nth-child(2)
+{
+
+    color: grey;
+    font-family: "Outfit", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Example
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: max-content;
+    justify-content: space-between;
+}
+
+.FramePrice
+{
+    margin-top: 30px;
+    color:  #0D0D0D;
+    font-family: "Outfit", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Arrow1
+{
+    position: static;
+    width: 84px;
+    height: 84px;
+}
+
+.Arrow1:hover path
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.Wild
+{
+    position: static;
+    flex-shrink: 0;
+    flex: none;
+
+    width: 448px;
+    height: 509px;
+
+    border-radius: 4px;
+    background-image: url('public/Body/Wild.jpeg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.Free
+{
+    flex-shrink: 0;
+    flex: none;
+
+    width: 448px;
+    height: 509px;
+
+    border-radius: 4px;
+    background-image: url('public/Body/Free.png');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.Wild span
+{
+    position: static;
+    display: flex;
+
+    margin-top: 30px;
+    margin-right: 250px;
+
+
+    transform: rotate(90deg);
+    color: transparent; /* робить текст прозорим */
+    -webkit-text-stroke-width: 8px; /* ширина обвідки */
+    -webkit-text-stroke-color: #C8F954;
+
+    font-family: "Outfit", sans-serif;
+    font-size: 170px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame219
+{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 30px;
+
+    position: static;
+
+    flex: none;
+    order: 1;
+    align-self: stretch;
+
+}
+
+.Free>:nth-child(1)
+{
+
+    position: static;
+    display: flex;
+    margin-top: 450px;
+    width: 30px;
+    height: 30px;
+
+
+    transform: rotate(-90deg);
+
+    color: transparent; /* робить текст прозорим */
+    -webkit-text-stroke-width: 8px; /* ширина обвідки */
+    -webkit-text-stroke-color: #C8F954;
+
+    font-family: "Outfit", sans-serif;
+    font-size: 170px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame225
+{
+    margin-top: 264px;
+    width: 100%;
+    height: 785px;
+    flex-shrink: 0;
+
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.30) 100%), url('public/Body/WomanBlack.jpeg') lightgray 50% / cover no-repeat;
+}
+
+.Frame224
+{
+    display: flex;
+    width: 1084px;
+    height: 537px;
+
+    flex-direction: column;
+    align-items: center;
+    gap: 200px;
+    margin: 114px 736px 134px 100px;
+}
+
+.Frame223
+{
+    width: 1050px;
+    flex: none;
+    height: max-content;
+
+}
+
+.ShopNow
+{
+    display: flex;
+    width: 409.5px;
+    padding: 19.5px 13px;
+    justify-content: center;
+    align-items: center;
+
+    border: 5.2px solid  #0D0D0D;
+    background:  #F5F5F5;
+
+    color:  #0D0D0D;
+    font-family: "Outfit", sans-serif;
+    font-size: 36.4px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.ShopNow:hover
+{
+    color:  white;
+    background:#2E38A1;
+}
+
+.Frame223>:nth-child(1)
+{
+    color:  #C8F954;
+    font-family: "Outfit", sans-serif;
+    font-size: 80px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame223>:nth-child(2)
+{
+
+    font-family: "Outfit", sans-serif;
+    color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #C8F954;
+    font-size: 100px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame430
+{
+    margin: 130px auto 0 auto;
+    width: 80%;
+    height: 894px;
+    flex-shrink: 0;
+}
+
+.Frame250
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* nhb столбца одинаковой ширины */
+    grid-template-rows: auto; /* высота строк будет автоматически подстраиваться */
+    gap: 84px;
+}
+
+.Frame249-1
+{
+    display: flex;
+    position: relative;
+    padding: 90px 0px 0px 90px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.Component1
+{
+    position: absolute; /* Використовуємо absolute для накладання */
+    top: 30px;
+    left: 30px;
+    z-index: 1;
+    width: 170px;
+    height: 170px;
+    transform: rotate(-15.00deg);
+    border-radius: 2px;
+    text-align: center;
+    align-content: center;
+}
+
+.Top-1
+{
+    /* top */
+    position: absolute;
+    top: 70px;
+    left: 45px;
+    z-index: 2;
+
+    width: 48px;
+    height: 16px;
+    transform: rotate(-15.00deg);
+
+    color: rgb(0, 0, 0);
+    font-family: "Outfit", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+
+.Frame228
+{
+    display: flex;
+
+    z-index: 0;
+
+
+    height: 509px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+
+    width: 448px;
+    flex-shrink: 0;
+
+    border-radius: 4px;
+    border: 2px solid  #707070;
+    background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+
+    /* decorative shadows/green */
+    box-shadow: 4px 8px 0px 0px #C8F954;
+}

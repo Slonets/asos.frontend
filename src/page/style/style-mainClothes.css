@@ -552,17 +552,20 @@
     stroke: #FFD700;
 }
 
-.Frame212
+.Frame212-3
 {
     /* Frame 213 */
     position: static;
     width: 448px;
     height: max-content;
     /* Inside Auto Layout */
+
+    margin-top: 20px;
     flex: none;
     order: 1;
     align-self: stretch;
     flex-grow: 0;
+
 }
 
 .Frame210
@@ -798,7 +801,7 @@
     stroke: #FFD700;
 }
 
-.Frame212
+.Frame212-2
 {
     display: flex;
     margin-top: 20px;
@@ -831,6 +834,8 @@
     line-height: normal;
     text-transform: uppercase;
 }
+
+
 
 
 .Frame210-3>:nth-child(2)

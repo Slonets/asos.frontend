@@ -332,7 +332,7 @@ const MainClothes = () => {
 
                                 </div>
 
-                                <div className="Frame212">
+                                <div className="Frame212-2">
 
                                     <div className="Frame210-3">
 
@@ -369,7 +369,7 @@ const MainClothes = () => {
 
                                 </div>
 
-                                <div className="Frame212">
+                                <div className="Frame212-3">
 
                                     <div className="Frame210-3">
 
