@@ -17,13 +17,13 @@ import { GoPeople } from "react-icons/go";
 import { IoGiftOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { PiSignOutFill } from "react-icons/pi";
-import {API_URL} from "../../../utils/getEnvData.ts";
-const DefaultSideBar = () => {
+import { API_URL } from "../../../utils/getEnvData.ts";
 
+const DefaultSideBar = () => {
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
-    const baseUrl=API_URL;
+    const baseUrl = API_URL;
 
     const init: IUser = {
         id: 0,
@@ -37,6 +37,7 @@ const DefaultSideBar = () => {
     };
 
     const [user, setUser] = useState<IUser>(init);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     useEffect(() => {
         if (currentUser) {
@@ -71,6 +72,10 @@ const DefaultSideBar = () => {
             return;
         }
 
+        // Оновлення стану для відображення вибраного зображення
+        const imageUrl = URL.createObjectURL(file);
+        setSelectedImage(imageUrl);
+
         try {
             const formData = new FormData();
             formData.append('Image', file);
@@ -98,95 +103,91 @@ const DefaultSideBar = () => {
     };
 
     return (
-        <>
-
-
-            <div className="main-container">
-                <div>
-                    <div className="img-div">
-                        <div className="image-container">
-                            <label htmlFor="pickFoto" className="image-label">
-
-                                {user.image ? (
-                                    <div className="placeholder">
-                                        <img src={`${baseUrl}avatars/${user.image}`}/>
-                                    </div>
-                                ) : (
-                                    <div className="placeholder">
-                                        <MdOutlinePhotoCamera size={32}/>
-                                    </div>
-                                )}
-
-                            </label>
-                            <input
-                                id="pickFoto"
-                                accept="image/*"
-                                type="file"
-                                name="image"
-                                onChange={handleChangeImage}
-                                className="file-input"
-                                style={{display: 'none'}} // Приховуємо вхідний файл
-                            />
-                        </div>
-                        <div className="divtext-sidebar">
-                            <div className="text-container">
-                                <p className="text-hi">Hi there,</p>
-                                <p className="text-name">{`${user.firstName} ${user.lastName}`}</p>
-                            </div>
-                            <button className="edit-button">
-                                <FaEdit size={24}/>
-                            </button>
-                        </div>
+        <div className="main-container">
+            <div>
+                <div className="img-div">
+                    <div className="image-container">
+                        <label htmlFor="pickFoto" className="image-label">
+                            {selectedImage ? (
+                                <div className="placeholder">
+                                    <img src={selectedImage} alt="Selected" className="avatar-image" />
+                                </div>
+                            ) : (
+                                <div className="placeholder">
+                                    {user.image ? (
+                                        <img src={`${baseUrl}avatars/${user.image}`} alt="User avatar" className="avatar-image" />
+                                    ) : (
+                                        <MdOutlinePhotoCamera size={32} />
+                                    )}
+                                </div>
+                            )}
+                        </label>
+                        <input
+                            id="pickFoto"
+                            accept="image/*"
+                            type="file"
+                            name="image"
+                            onChange={handleChangeImage}
+                            className="file-input"
+                            style={{ display: 'none' }} // Приховуємо вхідний файл
+                        />
                     </div>
-
-                    <div className="second-block">
-                        <button className="button-in-block">
-                            <LuPackage size={24}/>
-                            <p className="text-name">My Orders</p>
-                        </button>
-                        <button className="button-in-block">
-                            <BsArrowReturnLeft size={24}/>
-                            <p className="text-name">Returns</p>
-                        </button>
-                        <button className="button-in-block">
-                            <PiStarFour size={24}/>
-                            <p className="text-name">Favourites</p>
-                        </button>
-                        <button className="button-in-block">
-                            <FiHome size={24}/>
-                            <p className="text-name">Address Information</p>
-                        </button>
-                        <button className="button-in-block">
-                            <FiCreditCard size={24}/>
-                            <p className="text-name">Payment Method</p>
-                        </button>
-                        <button className="button-in-block">
-                            <FiMessageCircle size={24}/>
-                            <p className="text-name">Mailing Preferences</p>
-                        </button>
-                        <button className="button-in-block">
-                            <GoPeople size={24}/>
-                            <p className="text-name">Socials</p>
-                        </button>
-                        <button className="button-in-block">
-                            <IoGiftOutline size={24}/>
-                            <p className="text-name">Gift Cards</p>
-                        </button>
-                        <button className="button-in-block">
-                            <IoIosInformationCircleOutline size={24}/>
-                            <p className="text-name">Help Centre</p>
+                    <div className="divtext-sidebar">
+                        <div className="text-container">
+                            <p className="text-hi">Hi there,</p>
+                            <p className="text-name">{`${user.firstName} ${user.lastName}`}</p>
+                        </div>
+                        <button className="edit-button">
+                            <FaEdit size={24} />
                         </button>
                     </div>
-                    <button className="sign-out-button">
-                        <PiSignOutFill size={24}/>
-                        <p className="text-name">Sign Out</p>
-                    </button>
                 </div>
 
+                <div className="second-block">
+                    <button className="button-in-block">
+                        <LuPackage size={24} />
+                        <p className="text-name">My Orders</p>
+                    </button>
+                    <button className="button-in-block">
+                        <BsArrowReturnLeft size={24} />
+                        <p className="text-name">Returns</p>
+                    </button>
+                    <button className="button-in-block">
+                        <PiStarFour size={24} />
+                        <p className="text-name">Favourites</p>
+                    </button>
+                    <button className="button-in-block">
+                        <FiHome size={24} />
+                        <p className="text-name">Address Information</p>
+                    </button>
+                    <button className="button-in-block">
+                        <FiCreditCard size={24} />
+                        <p className="text-name">Payment Method</p>
+                    </button>
+                    <button className="button-in-block">
+                        <FiMessageCircle size={24} />
+                        <p className="text-name">Mailing Preferences</p>
+                    </button>
+                    <button className="button-in-block">
+                        <GoPeople size={24} />
+                        <p className="text-name">Socials</p>
+                    </button>
+                    <button className="button-in-block">
+                        <IoGiftOutline size={24} />
+                        <p className="text-name">Gift Cards</p>
+                    </button>
+                    <button className="button-in-block">
+                        <IoIosInformationCircleOutline size={24} />
+                        <p className="text-name">Help Centre</p>
+                    </button>
+                </div>
+                <button className="sign-out-button">
+                    <PiSignOutFill size={24} />
+                    <p className="text-name">Sign Out</p>
+                </button>
             </div>
-
-        </>
+        </div>
     );
-}
+};
 
 export default DefaultSideBar;
