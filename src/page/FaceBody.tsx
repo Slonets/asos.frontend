@@ -488,6 +488,64 @@ const FaceBody=()=>{
 
                 </div>
 
+                <div className="Frame429">
+
+                    <div className="Frame424">
+
+                        <div className="Frame243">
+
+                            <div className="Frame199-2"></div>
+
+                            <div className="Frame231"></div>
+
+                        </div>
+
+                        <div className="Frame234">
+
+                            <div className="Frame233">
+
+                                <span>your perfect match...</span>
+
+                                <span>NARS’ Light Reflecting Foundation is your new go-to beauty essential, delivering a flawless complexion and perfect coverage inspired by the diversity of natural skin tones.</span>
+
+                            </div>
+
+                            <Link
+                            to=""
+                            className="BuyFoundation">buy foundation
+
+                            </Link>
+
+                        </div>
+
+                    </div>
+
+                    <div className="Frame426">
+
+                        <div className="Frame223-2">
+
+                            <span>and a little cover-up!</span>
+
+                            <span>NARS’ Radiant Creamy Concealer is an ultimate solution for achieving a flawless, radiant complexion. Its innovative formula is designed to cater to a wide array of skin tones. Whether you need to cover blemishes, dark circles, or redness, this concealer  has got you covered.</span>
+
+                        </div>
+
+                        <div className="Frame425">
+
+                            <Link
+                            to=""
+                            className="BuyConcealer">buy concealer</Link>
+
+                            <div className="Frame236"></div>
+
+                            <div className="Frame235"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </section>
         </>
     )
