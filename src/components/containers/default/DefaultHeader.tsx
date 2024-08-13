@@ -1,7 +1,10 @@
-const DefaultHeader = () =>{
-    return(
+import "./header-style.css";
+const DefaultHeader = () => {
+    return (
         <>
+            <section className="basic-container">
 
+            </section>
         </>
     )
 }

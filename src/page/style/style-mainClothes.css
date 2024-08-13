@@ -8,21 +8,24 @@
 
 .Div-Img
 {
+    position: static;
+    display: flex;
     width:  100%;
     height: 1000px;
-    flex-shrink: 0;
+    flex-direction: column;
 
     background: url("public/MainClothesImage.png");
+    background-size: cover;
+
 }
 
 .Frame292
 {
     /* Frame 292 */
-    position: absolute;
-    width: 1593px;
+    position: relative;
+    width: max-content;
     height: 96px;
-    left: 200px;
-    top: 120px;
+    margin: 120px auto 0 auto;
     /* Auto layout */
     display: flex;
     flex-direction: row;
@@ -34,20 +37,10 @@
 
 .get-in
 {
-    /* get in */
-    position: static;
     width: 368px;
     height: 96px;
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
 
     color: #C8F954;
-
-    /*leading-trim: both;*/
-
-    /*text-edge: cap;*/
 
     font-family: "Outfit", sans-serif;
     font-size: 96px;
@@ -57,36 +50,10 @@
     text-transform: uppercase;
 }
 
-.Frame291
-{
-    /* Frame 291 */
-    position: static;
-    width: 1000px;
-    height: 96px;
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-
-    /* Inside Auto Layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-}
-
 .gor-
 {
-    /* gor- */
-    position: static;
     width: 259px;
-    height: 65px;
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    height: 100%;
 
 
     /* Inside Auto Layout */
@@ -106,15 +73,11 @@
 
 .geous
 {
-    /* geous, */
-    position: static;
+
     width: 365px;
-    height: 65px;
+    height: 100%;
     /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    margin-left: 550px;
 
     /* Inside Auto Layout */
     flex: none;
@@ -134,11 +97,11 @@
 .Frame293
 {
     /* Frame 293 */
-    position: absolute;
-    width: 1000px;
-    height: 96px;
-    left: 300px;
-    top: 150px;
+    position: relative;
+    width: max-content;
+    height: max-content;
+    margin: 60px auto 0 500px;
+
     /* Auto layout */
     display: flex;
     flex-direction: row;
@@ -173,13 +136,10 @@
 .shopping
 {
     /* shopping! (Stroke) */
-    position: absolute;
+    position: static;
     width: 1372.23px;
     height: 204.5px;
-    left: 350px;
-    right: 273.77px;
-    top: 460px;
-    bottom: 11091.5px;
+    margin: 130px auto 100px auto;
 
     display: flex;
 }
@@ -187,11 +147,10 @@
 .Frame4
 {
     /* Frame 4 */
-    position: absolute;
+    position: static;
     width: 315px;
     height: 65px;
-    left: 900px;
-    top: 768px;
+    margin: 0 auto;
     /* Auto layout */
     display: flex;
     flex-direction: row;

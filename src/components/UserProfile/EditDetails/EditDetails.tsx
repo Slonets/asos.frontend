@@ -10,6 +10,7 @@ import DefaultSideBar from "../default/DefaultSideBar";
 import {IUser} from "../../authentication/login/type.ts";
 import {AuthUserActionType} from "../../authentication/type.ts";
 import axios from "axios";
+import {DatePicker} from "antd";
 
 const EditDetails = () => {
 
@@ -24,14 +25,17 @@ const EditDetails = () => {
         image: "",
         roles: "",
         IsLockedOut: false,
+        birthday:"",
     };
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
     const [user, setUser] = useState<IUser>(init);
+    const [CurrentBirthday, setBirthday]=useState<string>("");
 
     useEffect(() => {
-        if (currentUser) {
+        if (currentUser)
+        {
             setUser(currentUser);
             console.log("Прийшов user", user);
         }
@@ -47,9 +51,25 @@ const EditDetails = () => {
             .string()
             .min(2, "Прізвище повинно містити мінімум 2 символи")
             .max(20, "Прізвище повинно містити не більше 20 символів"),
+
+        phoneNumber: yup.string(), // Необов'язкове поле, дозволяє порожнє значення
+        image: yup.string(),
     });
 
     const onFormikSubmit = async (values: IUser) => {
+
+        values.birthday=CurrentBirthday;
+
+        // Перевірка на порожні значення
+        if (!values.phoneNumber)
+        {
+            values.phoneNumber = ""; // Залишити порожнім рядком
+        }
+        if (!values.image)
+        {
+            values.image = ""; // Залишити порожнім рядком
+        }
+
         console.log("Відправляємо на сервер", values);
         try {
             const result = await http.put("api/Account/edit-user", values, {
@@ -67,6 +87,7 @@ const EditDetails = () => {
                     lastName: values.lastName,
                     email: values.email,
                     phoneNumber: values.phoneNumber,
+                    birthday: values.birthday
                 },
             });
         } catch (error) {
@@ -88,9 +109,18 @@ const EditDetails = () => {
             setFieldValue("firstName", currentUser.firstName);
             setFieldValue("lastName", currentUser.lastName);
             setFieldValue("email", currentUser.email);
-            setFieldValue("phoneNumber", currentUser.phoneNumber);
-            setFieldValue("image", currentUser.image);
+
+            if (values.phoneNumber)
+            {
+                setFieldValue("phoneNumber", values.phoneNumber);
+            }
+            if (values.image)
+            {
+                setFieldValue("image", values.image);
+            }
+
             setFieldValue("roles", currentUser.roles);
+            setFieldValue('birthday', currentUser.birthday);
         }
     }, [currentUser, setFieldValue]);
 
@@ -125,10 +155,14 @@ const EditDetails = () => {
             }
         }
     };
-
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword({...Currentpassword, [e.target.name]: e.target.value});
         setPasswordError("");
+    };
+
+    const handleDateChange = (date:string) => {
+        setFieldValue("birthday", date);
+        setBirthday(date);
     };
 
     return (
@@ -194,19 +228,33 @@ const EditDetails = () => {
                                         <div className="text-red-500 text-xs mt-1">{errors.email}</div>
                                     ) : null}
                                 </div>
+
+                                {/*<div className="input-group">*/}
+                                {/*    <label className="blue-text label">Phone Number:</label>*/}
+                                {/*    <input*/}
+                                {/*        className={`input ${touched.phoneNumber && errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}*/}
+                                {/*        type="text"*/}
+                                {/*        name="phoneNumber"*/}
+                                {/*        value={values.phoneNumber}*/}
+                                {/*        onChange={handleChange}*/}
+                                {/*    />*/}
+                                {/*    {touched.phoneNumber && errors.phoneNumber ? (*/}
+                                {/*        <div className="text-red-500 text-xs mt-1">{errors.phoneNumber}</div>*/}
+                                {/*    ) : null}*/}
+                                {/*</div>*/}
+
                                 <div className="input-group">
-                                    <label className="blue-text label">Phone Number:</label>
-                                    <input
-                                        className={`input ${touched.phoneNumber && errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
+                                    <label className="blue-text label">Date Of Birth*</label>
+                                    <DatePicker
+                                        format="DD-MM-YYYY"
+                                        name="birthday"
                                         type="text"
-                                        name="phoneNumber"
-                                        value={values.phoneNumber}
-                                        onChange={handleChange}
+                                        className={`input border-gray-300`}
+                                        value={CurrentBirthday}
+                                        onChange={handleDateChange}
                                     />
-                                    {touched.phoneNumber && errors.phoneNumber ? (
-                                        <div className="text-red-500 text-xs mt-1">{errors.phoneNumber}</div>
-                                    ) : null}
                                 </div>
+
                             </div>
 
                             <div className="form-row button-container">

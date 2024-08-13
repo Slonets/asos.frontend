@@ -22,8 +22,9 @@ export interface IUser
     firstName: string,
     lastName: string,
     email: string,
-    phoneNumber: string,
-    image:string,
+    phoneNumber?: string,
+    image?:string,
     roles:string,
     IsLockedOut:boolean,
+    birthday?:string; // Додано поле birthday
 }

@@ -18,6 +18,8 @@ import { IoGiftOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { PiSignOutFill } from "react-icons/pi";
 import { API_URL } from "../../../utils/getEnvData.ts";
+import setAuthToken from "../../../helpers/setAuthToken.ts";
+import {jwtDecode} from "jwt-decode";
 
 const DefaultSideBar = () => {
     const dispatch = useDispatch();
@@ -86,14 +88,24 @@ const DefaultSideBar = () => {
                 }
             });
 
-            const newImage = resp.data;
+            const result = resp.data;
 
             dispatch({
                 type: AuthUserActionType.UPDATE_USER,
                 payload: {
-                    image: newImage
+                    image: result.image
                 }
             });
+
+            const token = result.token as string;
+
+            setAuthToken(token);
+
+            const user = jwtDecode<IUser>(token);
+
+            console.log("Вхід успішний", user);
+
+            dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
 
             console.log("Прийшло фото", resp.data);
 
@@ -101,6 +113,7 @@ const DefaultSideBar = () => {
             console.error('Помилка з фото User:', error);
         }
     };
+    console.log("Фото",user);
 
     return (
         <div className="main-container">
