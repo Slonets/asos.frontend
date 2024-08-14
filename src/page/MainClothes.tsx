@@ -13,21 +13,17 @@ const MainClothes = () => {
 
                         <span className="get-in">get in</span>
 
-                        <div className="Frame291">
+                        <span className="gor-">gor-</span>
 
-                            <span className="gor-">gor-</span>
+                        <span className="geous">geous,</span>
 
-                            <span className="geous">geous,</span>
+                    </div>
 
-                        </div>
+                    <div className="Frame293">
 
-                        <div className="Frame293">
+                        <span>we’re</span>
 
-                            <span>we’re</span>
-
-                            <span>going</span>
-
-                        </div>
+                        <span>going</span>
 
                     </div>
 
@@ -332,7 +328,7 @@ const MainClothes = () => {
 
                                 </div>
 
-                                <div className="Frame212">
+                                <div className="Frame212-2">
 
                                     <div className="Frame210-3">
 
@@ -369,7 +365,7 @@ const MainClothes = () => {
 
                                 </div>
 
-                                <div className="Frame212">
+                                <div className="Frame212-3">
 
                                     <div className="Frame210-3">
 

@@ -10,6 +10,11 @@ import DefaultSideBar from "../default/DefaultSideBar";
 import {IUser} from "../../authentication/login/type.ts";
 import {AuthUserActionType} from "../../authentication/type.ts";
 import axios from "axios";
+import {DatePicker} from "antd";
+import 'react-datepicker/dist/react-datepicker.css';
+import dayjs, { Dayjs } from 'dayjs';
+import setAuthToken from "../../../helpers/setAuthToken.ts";
+import {jwtDecode} from "jwt-decode";
 
 const EditDetails = () => {
 
@@ -24,16 +29,35 @@ const EditDetails = () => {
         image: "",
         roles: "",
         IsLockedOut: false,
+        birthday:null,
     };
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
     const [user, setUser] = useState<IUser>(init);
+    const [CurrentBirthday, setBirthday] = useState<Dayjs | null>(dayjs(`01-01-2015`, "DD-MM-YYYY"));
 
     useEffect(() => {
-        if (currentUser) {
+        if (currentUser)
+        {
             setUser(currentUser);
-            console.log("Прийшов user", user);
+            console.log("Прийшов такий user", user);
+
+            if (currentUser.birthday)
+            {
+                const parsedBirthday = dayjs(currentUser.birthday); // Преобразуем в Dayjs объект
+
+                if (parsedBirthday.isValid())
+                {
+                    setBirthday(parsedBirthday);
+                    console.log("Оновилася дата", parsedBirthday.format("DD-MM-YYYY"));
+                }
+                else
+                {
+                    console.log("Невірна дата в currentUser.birthday", currentUser.birthday);
+                }
+            }
+
         }
     }, [currentUser]);
 
@@ -50,6 +74,8 @@ const EditDetails = () => {
     });
 
     const onFormikSubmit = async (values: IUser) => {
+
+
         console.log("Відправляємо на сервер", values);
         try {
             const result = await http.put("api/Account/edit-user", values, {
@@ -57,7 +83,7 @@ const EditDetails = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("Result server good", result);
+
 
             dispatch({
                 type: AuthUserActionType.UPDATE_USER,
@@ -67,9 +93,22 @@ const EditDetails = () => {
                     lastName: values.lastName,
                     email: values.email,
                     phoneNumber: values.phoneNumber,
+                    birthday: values.birthday
                 },
             });
-        } catch (error) {
+
+            const token = result.data.token as string;
+
+            setAuthToken(token);
+
+            const user = jwtDecode<IUser>(token);
+
+            console.log("Оновлений користувач", user);
+
+            dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+        }
+        catch (error)
+        {
             console.error("Помилка при відправці на сервер:", error);
         }
     };
@@ -83,14 +122,17 @@ const EditDetails = () => {
     const {values, touched, errors, handleSubmit, handleChange, setFieldValue} = formik;
 
     useEffect(() => {
-        if (currentUser) {
+
+        if (currentUser)
+        {
             setFieldValue("id", currentUser.id);
             setFieldValue("firstName", currentUser.firstName);
             setFieldValue("lastName", currentUser.lastName);
             setFieldValue("email", currentUser.email);
-            setFieldValue("phoneNumber", currentUser.phoneNumber);
-            setFieldValue("image", currentUser.image);
+            setFieldValue("phoneNumber", values.phoneNumber);
+            setFieldValue("image", values.image);
             setFieldValue("roles", currentUser.roles);
+            setFieldValue('birthday', currentUser.birthday);
         }
     }, [currentUser, setFieldValue]);
 
@@ -117,18 +159,48 @@ const EditDetails = () => {
 
             console.log("Пароль змінено успішно", result);
 
-        } catch (error) {
+        } catch (error)
+        {
             console.error('Помилка зміни паролю:', error);
 
-            if (axios.isAxiosError(error)) {
+            if (axios.isAxiosError(error))
+            {
                 setPasswordError(error.response?.data?.message || 'Помилка зміни паролю');
             }
         }
     };
-
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword({...Currentpassword, [e.target.name]: e.target.value});
         setPasswordError("");
+    };
+
+    const handleDateChange = (date: Dayjs | null) => {
+
+         setBirthday(date);
+
+        if (date)
+        {
+            const formattedDate = date.toISOString(); // Преобразование Dayjs в строку ISO
+            setFieldValue("birthday", formattedDate);
+
+            dispatch({
+                type: AuthUserActionType.UPDATE_USER,
+                payload: {
+                    birthday: formattedDate
+                },
+            });
+
+        }
+        else
+        {
+            setFieldValue("birthday", null);
+            dispatch({
+                type: AuthUserActionType.UPDATE_USER,
+                payload: {
+                    birthday: null
+                },
+            });
+        }
     };
 
     return (
@@ -194,19 +266,17 @@ const EditDetails = () => {
                                         <div className="text-red-500 text-xs mt-1">{errors.email}</div>
                                     ) : null}
                                 </div>
+
                                 <div className="input-group">
-                                    <label className="blue-text label">Phone Number:</label>
-                                    <input
-                                        className={`input ${touched.phoneNumber && errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
-                                        type="text"
-                                        name="phoneNumber"
-                                        value={values.phoneNumber}
-                                        onChange={handleChange}
+                                    <label className="blue-text label">Date Of Birth*</label>
+                                    <DatePicker
+                                        format="DD-MM-YYYY"
+                                        className="input border-gray-300"
+                                        value={CurrentBirthday}
+                                        onChange={handleDateChange}// Преобразуем Dayjs в Date
                                     />
-                                    {touched.phoneNumber && errors.phoneNumber ? (
-                                        <div className="text-red-500 text-xs mt-1">{errors.phoneNumber}</div>
-                                    ) : null}
                                 </div>
+
                             </div>
 
                             <div className="form-row button-container">

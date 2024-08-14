@@ -18,6 +18,8 @@ import { IoGiftOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { PiSignOutFill } from "react-icons/pi";
 import { API_URL } from "../../../utils/getEnvData.ts";
+import setAuthToken from "../../../helpers/setAuthToken.ts";
+import {jwtDecode} from "jwt-decode";
 
 const DefaultSideBar = () => {
     const dispatch = useDispatch();
@@ -33,7 +35,8 @@ const DefaultSideBar = () => {
         phoneNumber: "",
         image: "",
         roles: "",
-        IsLockedOut: false
+        IsLockedOut: false,
+        birthday:null
     };
 
     const [user, setUser] = useState<IUser>(init);
@@ -86,18 +89,29 @@ const DefaultSideBar = () => {
                 }
             });
 
-            const newImage = resp.data;
+            const result = resp.data;
 
             dispatch({
                 type: AuthUserActionType.UPDATE_USER,
                 payload: {
-                    image: newImage
+                    image: result.image
                 }
             });
 
-            console.log("Прийшло фото", resp.data);
+            const token = result.token as string;
 
-        } catch (error) {
+            setAuthToken(token);
+
+            const user = jwtDecode<IUser>(token);
+
+            console.log("Фото оновилося", user);
+
+            dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+
+
+        }
+        catch (error)
+        {
             console.error('Помилка з фото User:', error);
         }
     };
