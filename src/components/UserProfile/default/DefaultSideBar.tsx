@@ -35,7 +35,8 @@ const DefaultSideBar = () => {
         phoneNumber: "",
         image: "",
         roles: "",
-        IsLockedOut: false
+        IsLockedOut: false,
+        birthday:null
     };
 
     const [user, setUser] = useState<IUser>(init);
@@ -103,17 +104,17 @@ const DefaultSideBar = () => {
 
             const user = jwtDecode<IUser>(token);
 
-            console.log("Вхід успішний", user);
+            console.log("Фото оновилося", user);
 
             dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
 
-            console.log("Прийшло фото", resp.data);
 
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Помилка з фото User:', error);
         }
     };
-    console.log("Фото",user);
 
     return (
         <div className="main-container">

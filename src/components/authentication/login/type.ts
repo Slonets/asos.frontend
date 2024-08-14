@@ -23,8 +23,8 @@ export interface IUser
     lastName: string,
     email: string,
     phoneNumber?: string,
-    image?:string,
+    image:string,
     roles:string,
     IsLockedOut:boolean,
-    birthday?:string; // Додано поле birthday
+    birthday:Date|null; // Додано поле birthday
 }
