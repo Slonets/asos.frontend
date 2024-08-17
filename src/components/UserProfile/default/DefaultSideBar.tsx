@@ -20,6 +20,7 @@ import { PiSignOutFill } from "react-icons/pi";
 import { API_URL } from "../../../utils/getEnvData.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
+import {Link} from "react-router-dom";
 
 const DefaultSideBar = () => {
     const dispatch = useDispatch();
@@ -170,10 +171,10 @@ const DefaultSideBar = () => {
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>
                     </button>
-                    <button className="button-in-block">
+                    <Link to="address" className="button-in-block">
                         <FiHome size={24} />
                         <p className="text-name">Address Information</p>
-                    </button>
+                    </Link>
                     <button className="button-in-block">
                         <FiCreditCard size={24} />
                         <p className="text-name">Payment Method</p>
