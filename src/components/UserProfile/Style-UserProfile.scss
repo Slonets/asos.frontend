@@ -224,6 +224,7 @@ h2{
 }
 .input-group:last-child {
     margin-right: 0;
+
 }
 .label {
     margin-bottom: 5px;
@@ -274,4 +275,13 @@ p
     object-fit: cover;
     border-radius: 50%;
 
+}
+
+.input.small {
+
+    margin-left: 10px;
+    width: 200px;
+}
+.margin10{
+    margin-left: 10px;
 }
