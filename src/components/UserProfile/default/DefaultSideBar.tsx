@@ -20,11 +20,10 @@ import { PiSignOutFill } from "react-icons/pi";
 import { API_URL } from "../../../utils/getEnvData.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const DefaultSideBar = () => {
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
