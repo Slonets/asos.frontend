@@ -35,7 +35,8 @@ const EditDetails = () => {
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
     const [user, setUser] = useState<IUser>(init);
-    const [CurrentBirthday, setBirthday] = useState<Dayjs | null>(dayjs(`01-01-2015`, "DD-MM-YYYY"));
+
+    const [CurrentBirthday, setBirthday] = useState<Dayjs | null>(dayjs(currentUser?.birthday, "DD-MM-YYYY"));
 
     useEffect(() => {
         if (currentUser)

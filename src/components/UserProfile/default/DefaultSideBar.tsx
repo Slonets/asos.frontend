@@ -20,9 +20,11 @@ import { PiSignOutFill } from "react-icons/pi";
 import { API_URL } from "../../../utils/getEnvData.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const DefaultSideBar = () => {
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
@@ -196,10 +198,18 @@ const DefaultSideBar = () => {
                         <p className="text-name">Help Centre</p>
                     </button>
                 </div>
-                <button className="sign-out-button">
+                <Link to="/logout"
+                    className="sign-out-button"
+                      onClick={(e) => {
+                          e.preventDefault();
+                          localStorage.removeItem("token");
+                          window.location.href="/";
+                      }}
+
+                >
                     <PiSignOutFill size={24} />
                     <p className="text-name">Sign Out</p>
-                </button>
+                </Link>
             </div>
         </div>
     );

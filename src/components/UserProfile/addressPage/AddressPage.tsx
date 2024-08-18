@@ -120,14 +120,6 @@ const AddressPage = () => {
         }
     }, [currentUser, setFieldValue]);
 
-
-
-
-
-
-
-
-
     return (
         <>
             <div className="centered-div">

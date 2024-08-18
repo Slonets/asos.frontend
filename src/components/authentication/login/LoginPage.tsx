@@ -214,7 +214,6 @@ const LoginPage = () => {
                                                 width="300px"
                                                 onSuccess={authSuccess}
                                                 onError={authError}
-
                                             />
 
 

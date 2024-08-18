@@ -16,8 +16,7 @@ const DefaultHeader = () => {
             logOut(userState);
         }
 
-        },[userState]);
-
+        },[userState,login]);
 
 
     return (
