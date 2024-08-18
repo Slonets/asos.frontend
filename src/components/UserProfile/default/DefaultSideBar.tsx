@@ -38,7 +38,11 @@ const DefaultSideBar = () => {
         image: "",
         roles: "",
         IsLockedOut: false,
-        birthday:null
+        birthday:null,
+        address:"",
+        country:"",
+        town:"",
+        postcode:0
     };
 
     const [user, setUser] = useState<IUser>(init);
@@ -153,9 +157,11 @@ const DefaultSideBar = () => {
                             <p className="text-hi">Hi there,</p>
                             <p className="text-name">{`${user.firstName} ${user.lastName}`}</p>
                         </div>
-                        <button className="edit-button">
+
+                        <Link className="edit-button" to="/user-info">
                             <FaEdit size={24} />
-                        </button>
+                        </Link>
+
                     </div>
                 </div>
 

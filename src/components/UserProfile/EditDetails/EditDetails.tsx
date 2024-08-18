@@ -30,37 +30,19 @@ const EditDetails = () => {
         roles: "",
         IsLockedOut: false,
         birthday:null,
+        address:"",
+        country:"",
+        town:"",
+        postcode:0
     };
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
-    const [user, setUser] = useState<IUser>(init);
-
-    const [CurrentBirthday, setBirthday] = useState<Dayjs | null>(dayjs(currentUser?.birthday, "DD-MM-YYYY"));
-
-    useEffect(() => {
-        if (currentUser)
-        {
-            setUser(currentUser);
-            console.log("Прийшов такий user", user);
-
-            if (currentUser.birthday)
-            {
-                const parsedBirthday = dayjs(currentUser.birthday); // Преобразуем в Dayjs объект
-
-                if (parsedBirthday.isValid())
-                {
-                    setBirthday(parsedBirthday);
-                    console.log("Оновилася дата", parsedBirthday.format("DD-MM-YYYY"));
-                }
-                else
-                {
-                    console.log("Невірна дата в currentUser.birthday", currentUser.birthday);
-                }
-            }
-
-        }
-    }, [currentUser]);
+    const [CurrentBirthday, setBirthday] = useState<Dayjs | null>(
+        currentUser?.birthday
+            ? dayjs(currentUser?.birthday, "DD-MM-YYYY")
+            : null
+    );
 
     const changeSchema = yup.object({
         email: yup.string().email("Введіть коректно пошту"),
@@ -76,6 +58,10 @@ const EditDetails = () => {
 
     const onFormikSubmit = async (values: IUser) => {
 
+        if(CurrentBirthday)
+        {
+            values.birthday=CurrentBirthday.toDate();
+        }
 
         console.log("Відправляємо на сервер", values);
         try {
@@ -85,7 +71,6 @@ const EditDetails = () => {
                 },
             });
 
-
             dispatch({
                 type: AuthUserActionType.UPDATE_USER,
                 payload: {
@@ -93,8 +78,7 @@ const EditDetails = () => {
                     firstName: values.firstName,
                     lastName: values.lastName,
                     email: values.email,
-                    phoneNumber: values.phoneNumber,
-                    birthday: values.birthday
+                    phoneNumber: values.phoneNumber
                 },
             });
 
@@ -130,8 +114,8 @@ const EditDetails = () => {
             setFieldValue("firstName", currentUser.firstName);
             setFieldValue("lastName", currentUser.lastName);
             setFieldValue("email", currentUser.email);
-            setFieldValue("phoneNumber", values.phoneNumber);
-            setFieldValue("image", values.image);
+            setFieldValue("phoneNumber", currentUser.phoneNumber);
+            setFieldValue("image", currentUser.image);
             setFieldValue("roles", currentUser.roles);
             setFieldValue('birthday', currentUser.birthday);
         }
