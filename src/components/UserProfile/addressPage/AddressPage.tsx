@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import * as yup from "yup";
@@ -27,34 +27,28 @@ const AddressPage = () => {
         roles: "",
         IsLockedOut: false,
         birthday:null,
+        address:"",
+        country:"",
+        town:"",
+        postcode:0
     };
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
-    const [user, setUser] = useState<IUser>(init);
-
-
-    useEffect(() => {
-        if (currentUser)
-        {
-            setUser(currentUser);
-            console.log("Прийшов такий user", user);
-
-
-
-        }
-    }, [currentUser]);
-
     const changeSchema = yup.object({
-        email: yup.string().email("Введіть коректно пошту"),
-        firstName: yup
+
+        phoneNumber: yup
             .string()
-            .min(2, "Ім'я повинно містити мінімум 2 символи")
-            .max(20, "Ім'я повинно містити не більше 20 символів"),
-        lastName: yup
+            .min(2, "Ім'я повинно містити мінімум 2 символи"),
+
+        address: yup
             .string()
             .min(2, "Прізвище повинно містити мінімум 2 символи")
             .max(20, "Прізвище повинно містити не більше 20 символів"),
+
+        town: yup
+            .string()
+            .min(2, "Ім'я повинно містити мінімум 2 символи")
     });
 
     const onFormikSubmit = async (values: IUser) => {
@@ -68,7 +62,6 @@ const AddressPage = () => {
                 },
             });
 
-
             dispatch({
                 type: AuthUserActionType.UPDATE_USER,
                 payload: {
@@ -77,7 +70,11 @@ const AddressPage = () => {
                     lastName: values.lastName,
                     email: values.email,
                     phoneNumber: values.phoneNumber,
-                    birthday: values.birthday
+                    birthday: values.birthday,
+                    address:values.address,
+                    country:values.country,
+                    town:values.town,
+                    postcode:values.postcode
                 },
             });
 
@@ -113,20 +110,15 @@ const AddressPage = () => {
             setFieldValue("firstName", currentUser.firstName);
             setFieldValue("lastName", currentUser.lastName);
             setFieldValue("email", currentUser.email);
-            setFieldValue("phoneNumber", values.phoneNumber);
-            setFieldValue("image", values.image);
+            setFieldValue("phoneNumber", currentUser.phoneNumber);
+            setFieldValue("phoneNumber", currentUser.birthday);
+            setFieldValue("image", currentUser.image);
             setFieldValue("roles", currentUser.roles);
-            setFieldValue('birthday', currentUser.birthday);
+            setFieldValue('birthday', currentUser.address);
+            setFieldValue('birthday', currentUser.town);
+            setFieldValue('birthday', currentUser.country);
         }
     }, [currentUser, setFieldValue]);
-
-
-
-
-
-
-
-
 
     return (
         <>
@@ -157,9 +149,7 @@ const AddressPage = () => {
                                         value={values.firstName}
                                         onChange={handleChange}
                                     />
-                                    {touched.firstName && errors.firstName ? (
-                                        <div className="text-red-500 text-xs mt-1">{errors.firstName}</div>
-                                    ) : null}
+
                                 </div>
                                 <div className="input-group">
                                     <label className="blue-text label">Last Name:</label>
@@ -170,9 +160,6 @@ const AddressPage = () => {
                                         value={values.lastName}
                                         onChange={handleChange}
                                     />
-                                    {touched.lastName && errors.lastName ? (
-                                        <div className="text-red-500 text-xs mt-1">{errors.lastName}</div>
-                                    ) : null}
                                 </div>
                             </div>
 
@@ -186,7 +173,7 @@ const AddressPage = () => {
                                         value={values.phoneNumber}
                                         onChange={handleChange}
                                     />
-                                    {touched.email && errors.email ? (
+                                    {touched.phoneNumber && errors.phoneNumber ? (
                                         <div className="text-red-500 text-xs mt-1">{errors.email}</div>
                                     ) : null}
                                 </div>
@@ -196,16 +183,24 @@ const AddressPage = () => {
                                     <input
                                         type="text"
                                         className="input border-gray-300 small"
-
                                     />
+
+
                                 </div>
                                 <div className="input-group">
                                     <label className="blue-text label margin10">City:</label>
                                     <input
                                         type="text"
+                                        name="town"
+                                        value={values.town}
+                                        onChange={handleChange}
                                         className="input border-gray-300 small"
-
                                     />
+
+                                    {touched.town && errors.town ? (
+                                        <div className="text-red-500 text-xs mt-1">{errors.town}</div>
+                                    ) : null}
+
                                 </div>
 
 
@@ -218,14 +213,24 @@ const AddressPage = () => {
                                     <input
                                         className={`input 'border-red-500' : 'border-gray-300'}`}
                                         type="text"
-
+                                        name="address"
+                                        value={values.address}
+                                        onChange={handleChange}
                                     />
+
+                                    {touched.address && errors.address ? (
+                                        <div className="text-red-500 text-xs mt-1">{errors.address}</div>
+                                    ) : null}
+
                                 </div>
                                 <div className="input-group">
                                     <label className="blue-text label">PostCode:</label>
                                     <input
                                         className={`input  'border-red-500' : 'border-gray-300'}`}
-                                        type="text"
+                                        type="number"
+                                        name="postcode"
+                                        value={values.postcode}
+                                        onChange={handleChange}
                                     />
                                 </div>
                             </div>

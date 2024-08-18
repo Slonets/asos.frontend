@@ -23,6 +23,7 @@ import {jwtDecode} from "jwt-decode";
 import {Link} from "react-router-dom";
 
 const DefaultSideBar = () => {
+
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
@@ -37,7 +38,11 @@ const DefaultSideBar = () => {
         image: "",
         roles: "",
         IsLockedOut: false,
-        birthday:null
+        birthday:null,
+        address:"",
+        country:"",
+        town:"",
+        postcode:0
     };
 
     const [user, setUser] = useState<IUser>(init);
@@ -152,9 +157,11 @@ const DefaultSideBar = () => {
                             <p className="text-hi">Hi there,</p>
                             <p className="text-name">{`${user.firstName} ${user.lastName}`}</p>
                         </div>
-                        <button className="edit-button">
+
+                        <Link className="edit-button" to="/user-info">
                             <FaEdit size={24} />
-                        </button>
+                        </Link>
+
                     </div>
                 </div>
 
@@ -196,10 +203,18 @@ const DefaultSideBar = () => {
                         <p className="text-name">Help Centre</p>
                     </button>
                 </div>
-                <button className="sign-out-button">
+                <Link to="/logout"
+                    className="sign-out-button"
+                      onClick={(e) => {
+                          e.preventDefault();
+                          localStorage.removeItem("token");
+                          window.location.href="/";
+                      }}
+
+                >
                     <PiSignOutFill size={24} />
                     <p className="text-name">Sign Out</p>
-                </button>
+                </Link>
             </div>
         </div>
     );
