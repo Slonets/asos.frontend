@@ -11,6 +11,7 @@ import MainClothes from "./page/MainClothes.tsx";
 import EditDetails from "./components/UserProfile/EditDetails/EditDetails.tsx";
 import FaceBody from "./page/FaceBody.tsx";
 import AddressPage from "./components/UserProfile/addressPage/AddressPage.tsx";
+import Orders from "./components/UserProfile/userOrders/Orders.tsx";
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
                     <Route path="user-info">
                         <Route index element={<EditDetails/>}/>
                         <Route path="address" element={<AddressPage/>}/>
+                        <Route path="orders" element={<Orders/>}/>
                     </Route>
 
                     <Route path="dashboard">
