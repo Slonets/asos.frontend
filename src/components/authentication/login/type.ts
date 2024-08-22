@@ -26,5 +26,9 @@ export interface IUser
     image:string,
     roles:string,
     IsLockedOut:boolean,
-    birthday:Date|null; // Додано поле birthday
+    birthday:Date|null;
+    address:string,
+    country:string,
+    town:string,
+    postcode:number
 }
