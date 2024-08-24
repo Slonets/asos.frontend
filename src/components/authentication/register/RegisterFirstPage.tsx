@@ -7,8 +7,7 @@ import {useAppDispatch} from "../../../store";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {IUser} from "../login/type.ts";
-import {AuthUserActionType} from "../type.ts";
+import {AuthUserActionType, IUserToken} from "../type.ts";
 import "./style/styleRegiserFirstPage.css"
 
 const RegisterFirstPage = () => {
@@ -29,7 +28,7 @@ const RegisterFirstPage = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Вхід успішний", user);
 

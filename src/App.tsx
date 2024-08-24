@@ -4,7 +4,6 @@ import DefaultLayout from "./components/containers/default/DefaultLayout.tsx";
 import LoginPage from "./components/authentication/login/LoginPage.tsx";
 
 import ProductCreatePage from "./components/products/create/ProductCreatePage.tsx";
-import AllUsers from "./page/AdminPanel/AllUsers.tsx";
 import RegisterFirstPage from './components/authentication/register/RegisterFirstPage.tsx';
 import RegisterSecondPage from './components/authentication/register/RegisterSecondPage.tsx';
 import MainClothes from "./page/MainClothes.tsx";
@@ -20,7 +19,6 @@ function App() {
                 <Route path="/" element={<DefaultLayout />}>
                     <Route index element={<MainClothes/>}/>
                     <Route path="face&body" element={<FaceBody/>}/>
-                    <Route path="admin" element={<AllUsers/>}/>
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterFirstPage/>}/>
                     <Route path="register-second-page" element={<RegisterSecondPage/>}/>

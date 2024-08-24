@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import * as yup from "yup";
@@ -7,30 +7,25 @@ import http from "../../../http_common";
 import "../Style-UserProfile.scss";
 import ProfileDefaultHeader from "../default/ProfileDefaultHeader";
 import DefaultSideBar from "../default/DefaultSideBar";
-import {IUser} from "../../authentication/login/type.ts";
-import {AuthUserActionType} from "../../authentication/type.ts";
+import {AuthUserActionType, IUserToken} from "../../authentication/type.ts";
 import 'react-datepicker/dist/react-datepicker.css';
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
+import {IEditAddressUser} from "../types.ts";
 
 const AddressPage = () => {
 
     const dispatch = useDispatch();
 
-    const init: IUser = {
-        id: 0,
+    const init: IEditAddressUser = {
+        id:0,
         firstName: "",
         lastName: "",
-        email: "",
         phoneNumber: "",
-        image: "",
-        roles: "",
-        IsLockedOut: false,
-        birthday:null,
-        address:"",
-        country:"",
+        country:0,
         town:"",
-        postcode:0
+        address:"",
+        postCode:0
     };
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -39,24 +34,58 @@ const AddressPage = () => {
 
         phoneNumber: yup
             .string()
-            .min(2, "Ім'я повинно містити мінімум 2 символи"),
+            .required("Phone number cannot be empty")
+            .min(2, "Телефон повиннен містити мінімум 5 символів"),
 
         address: yup
             .string()
-            .min(2, "Прізвище повинно містити мінімум 2 символи")
+            .required("Address cannot be empty")
+            .min(2, "Адреса повинно містити мінімум 2 символи")
             .max(20, "Прізвище повинно містити не більше 20 символів"),
 
         town: yup
             .string()
-            .min(2, "Ім'я повинно містити мінімум 2 символи")
+            .required("Town cannot be empty")
+            .min(2, "Місто повинно містити мінімум 2 символи")
+            .max(20, "Прізвище повинно містити не більше 20 символів"),
     });
 
-    const onFormikSubmit = async (values: IUser) => {
+    interface Country {
+        id: number;
+        nameCountry: string;
+    }
 
+    const[Countries, setCountries]=useState<Country[]>([]);
+
+    useEffect(() => {
+
+        http.get("api/Country/GetAllCountries").then(resp=>{
+
+            setCountries(resp.data);
+            console.log("Прийшли країни", resp.data);
+        })
+
+    }, []);
+
+
+    const [countryId, setCountryId] = useState<number>(1);
+
+    const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newValue = Number(e.target.value);
+        console.log("Прийшло значення:", newValue);
+        setCountryId(newValue);
+    };
+
+    const onFormikSubmit = async (values: IEditAddressUser) => {
+
+        if(countryId!=null)
+        {
+            values.country=countryId;
+        }
 
         console.log("Відправляємо на сервер", values);
         try {
-            const result = await http.put("api/Account/edit-user", values, {
+            const result = await http.put("api/Account/edit-adrress", values, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -65,16 +94,13 @@ const AddressPage = () => {
             dispatch({
                 type: AuthUserActionType.UPDATE_USER,
                 payload: {
-                    image: values.image,
                     firstName: values.firstName,
                     lastName: values.lastName,
-                    email: values.email,
                     phoneNumber: values.phoneNumber,
-                    birthday: values.birthday,
-                    address:values.address,
                     country:values.country,
                     town:values.town,
-                    postcode:values.postcode
+                    address:values.address,
+                    postCode:values.postCode
                 },
             });
 
@@ -82,7 +108,7 @@ const AddressPage = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Оновлений користувач", user);
 
@@ -104,21 +130,24 @@ const AddressPage = () => {
 
     useEffect(() => {
 
+        console.log("Прийшов користувач", currentUser);
+
         if (currentUser)
         {
             setFieldValue("id", currentUser.id);
             setFieldValue("firstName", currentUser.firstName);
             setFieldValue("lastName", currentUser.lastName);
-            setFieldValue("email", currentUser.email);
             setFieldValue("phoneNumber", currentUser.phoneNumber);
-            setFieldValue("phoneNumber", currentUser.birthday);
-            setFieldValue("image", currentUser.image);
-            setFieldValue("roles", currentUser.roles);
-            setFieldValue('birthday', currentUser.address);
-            setFieldValue('birthday', currentUser.town);
-            setFieldValue('birthday', currentUser.country);
+            setFieldValue("town", currentUser.town);
+            setFieldValue("address", currentUser.address);
+            setFieldValue("postCode", currentUser.postCode);
+
+            setCountryId(currentUser.country);
+
         }
-    }, [currentUser, setFieldValue]);
+    }, [currentUser]);
+
+
 
     return (
         <>
@@ -174,19 +203,32 @@ const AddressPage = () => {
                                         onChange={handleChange}
                                     />
                                     {touched.phoneNumber && errors.phoneNumber ? (
-                                        <div className="text-red-500 text-xs mt-1">{errors.email}</div>
+                                        <div className="text-red-500 text-xs mt-1">{errors.phoneNumber}</div>
                                     ) : null}
                                 </div>
 
                                 <div className="input-group">
                                     <label className="blue-text label margin10 ">Country:</label>
-                                    <input
-                                        type="text"
-                                        className="input border-gray-300 small"
-                                    />
 
+                                    <select className="input border-gray-300 small"
+
+                                      value={countryId}
+
+                                     onChange={(e) => {
+                                                console.log("Зміна селектора", e.target.value);
+                                                handleCountryChange(e);
+                                            }}
+
+                                    >
+                                        {Countries.map((country) => (
+                                            <option key={country.id} value={country.id} >
+                                                {country.nameCountry}
+                                            </option>
+                                        ))}
+                                    </select>
 
                                 </div>
+
                                 <div className="input-group">
                                     <label className="blue-text label margin10">City:</label>
                                     <input
@@ -223,13 +265,14 @@ const AddressPage = () => {
                                     ) : null}
 
                                 </div>
+
                                 <div className="input-group">
                                     <label className="blue-text label">PostCode:</label>
                                     <input
                                         className={`input  'border-red-500' : 'border-gray-300'}`}
                                         type="number"
-                                        name="postcode"
-                                        value={values.postcode}
+                                        name="postCode"
+                                        value={values.postCode}
                                         onChange={handleChange}
                                     />
                                 </div>

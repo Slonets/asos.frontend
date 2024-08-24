@@ -25,10 +25,5 @@ export interface IUser
     phoneNumber?: string,
     image:string,
     roles:string,
-    IsLockedOut:boolean,
-    birthday:Date|null;
-    address:string,
-    country:string,
-    town:string,
-    postcode:number
+    birthday:string;
 }

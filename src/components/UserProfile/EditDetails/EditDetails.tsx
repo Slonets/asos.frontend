@@ -7,33 +7,26 @@ import http from "../../../http_common";
 import "../Style-UserProfile.scss";
 import ProfileDefaultHeader from "../default/ProfileDefaultHeader";
 import DefaultSideBar from "../default/DefaultSideBar";
-import {IUser} from "../../authentication/login/type.ts";
-import {AuthUserActionType} from "../../authentication/type.ts";
+import {AuthUserActionType, IUserToken} from "../../authentication/type.ts";
 import axios from "axios";
 import {DatePicker} from "antd";
 import 'react-datepicker/dist/react-datepicker.css';
 import dayjs, { Dayjs } from 'dayjs';
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
+import {IEditUser} from "../types.ts";
 
 const EditDetails = () => {
 
     const dispatch = useDispatch();
 
-    const init: IUser = {
+    const init: IEditUser = {
         id: 0,
         firstName: "",
         lastName: "",
         email: "",
-        phoneNumber: "",
         image: "",
-        roles: "",
-        IsLockedOut: false,
-        birthday:null,
-        address:"",
-        country:"",
-        town:"",
-        postcode:0
+        birthday:"",
     };
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -56,11 +49,11 @@ const EditDetails = () => {
             .max(20, "Прізвище повинно містити не більше 20 символів"),
     });
 
-    const onFormikSubmit = async (values: IUser) => {
+    const onFormikSubmit = async (values: IEditUser) => {
 
         if(CurrentBirthday)
         {
-            values.birthday=CurrentBirthday.toDate();
+            values.birthday=CurrentBirthday.toISOString();
         }
 
         console.log("Відправляємо на сервер", values);
@@ -77,8 +70,7 @@ const EditDetails = () => {
                     image: values.image,
                     firstName: values.firstName,
                     lastName: values.lastName,
-                    email: values.email,
-                    phoneNumber: values.phoneNumber
+                    email: values.email
                 },
             });
 
@@ -86,7 +78,7 @@ const EditDetails = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Оновлений користувач", user);
 
@@ -116,8 +108,6 @@ const EditDetails = () => {
             setFieldValue("email", currentUser.email);
             setFieldValue("phoneNumber", currentUser.phoneNumber);
             setFieldValue("image", currentUser.image);
-            setFieldValue("roles", currentUser.roles);
-            setFieldValue('birthday', currentUser.birthday);
         }
     }, [currentUser, setFieldValue]);
 
