@@ -3,7 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import DefaultLayout from "./components/containers/default/DefaultLayout.tsx";
 import LoginPage from "./components/authentication/login/LoginPage.tsx";
 
-import ProductCreatePage from "./components/products/create/ProductCreatePage.tsx";
+
 import AllUsers from "./page/AdminPanel/AllUsers.tsx";
 import RegisterFirstPage from './components/authentication/register/RegisterFirstPage.tsx';
 import RegisterSecondPage from './components/authentication/register/RegisterSecondPage.tsx';
@@ -12,6 +12,7 @@ import EditDetails from "./components/UserProfile/EditDetails/EditDetails.tsx";
 import FaceBody from "./page/FaceBody.tsx";
 import AddressPage from "./components/UserProfile/addressPage/AddressPage.tsx";
 import Orders from "./components/UserProfile/userOrders/Orders.tsx";
+import AddProduct from "./components/adminPanel/product/AddProduct.tsx";
 
 function App() {
 
@@ -34,7 +35,9 @@ function App() {
                     </Route>
 
                     <Route path="dashboard">
-                        <Route path="product/create" element={<ProductCreatePage/>}/>
+                       {/* <Route path="product/create" element={<ProductCreatePage/>}/>*/}
+                        <Route path="product/create" element={<AddProduct/>}/>
+
                     </Route>
 
                 </Route>
