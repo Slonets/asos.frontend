@@ -708,20 +708,20 @@ p
     left: 2px;
 }
 
-.ErorButton-Div-False:hover+ .Frame33
+.ErorButton-Div-False:hover+ .Frame33-3
 {
     display: block; /* Показати при наведенні мишки на чек кнопку */
 }
 
-.Frame33
+.Frame33-3
 {
     /* Frame 33 */
     position: absolute;
     width: 406px;
     height: 50px;
     /* Inside Auto Layout */
-    left: 512px;
-    top:450px;
+    left: 530px;
+    top:430px;
     display: none;
 }
 
@@ -853,9 +853,10 @@ p
     display: block; /* Показати при наведенні мишки на чек кнопку */
 }
 
-.Polygon3
+.Polygon3-3
 {
-    top:-10px;
+    top:8px;
+    left: -20px;
     position: absolute;
 }
 

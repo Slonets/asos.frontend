@@ -288,7 +288,7 @@ const RegisterFirstPage = () => {
 
                                                             {errors.firstName && touched.firstName ? (
                                                                 <>
-                                                                    <div className="ErorButton-Div-False">
+                                                                    <div className="ErorButton-Div-False-1">
                                                                         <button>
                                                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                                                  width="24" height="25"
@@ -310,8 +310,8 @@ const RegisterFirstPage = () => {
                                                                         </button>
                                                                     </div>
 
-                                                                    <div className="Frame33">
-                                                                        <div className="Polygon3">
+                                                                    <div className="Frame33-1">
+                                                                        <div className="Polygon3-1">
                                                                             <svg id="open"
                                                                                  xmlns="http://www.w3.org/2000/svg"
                                                                                  width="26" height="30"
@@ -321,7 +321,7 @@ const RegisterFirstPage = () => {
                                                                                     fill="#2E38A2"/>
                                                                             </svg>
                                                                         </div>
-                                                                        <div className="Frame32">
+                                                                        <div className="Frame32-1">
                                                                             <span
                                                                                 className="Text-Error">{errors.firstName}</span>
                                                                         </div>
