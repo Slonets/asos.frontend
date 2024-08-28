@@ -4,29 +4,24 @@ import {RootState} from "../../../store";
 import "../Style-UserProfile.scss";
 import ProfileDefaultHeader from "../default/ProfileDefaultHeader";
 import DefaultSideBar from "../default/DefaultSideBar";
-import {IUser} from "../../authentication/login/type.ts";
 import 'react-datepicker/dist/react-datepicker.css';
 import { FiPackage } from "react-icons/fi";
+import {IEditUser} from "../types.ts";
 
 const Orders = () => {
 
-
-
-    const init: IUser = {
+    const init: IEditUser = {
         id: 0,
         firstName: "",
         lastName: "",
         email: "",
-        phoneNumber: "",
         image: "",
-        roles: "",
-        IsLockedOut: false,
-        birthday:null,
+        birthday:""
     };
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
-    const [user, setUser] = useState<IUser>(init);
+    const [user, setUser] = useState<IEditUser>(init);
 
 
     useEffect(() => {
@@ -34,13 +29,8 @@ const Orders = () => {
         {
             setUser(currentUser);
             console.log("Прийшов такий user", user);
-
-
-
         }
     }, [currentUser]);
-
-
 
 
     return (
