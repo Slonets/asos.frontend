@@ -142,7 +142,10 @@ const AddressPage = () => {
             setFieldValue("address", currentUser.address);
             setFieldValue("postCode", currentUser.postCode);
 
-            setCountryId(currentUser.country);
+            if(currentUser.country)
+            {
+                setCountryId(currentUser.country);
+            }
 
         }
     }, [currentUser]);
