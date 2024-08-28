@@ -1,11 +1,11 @@
-import {ILoginPage, ILoginPageError, IUser, IValidLogin} from "./type.ts";
+import {ILoginPage, ILoginPageError, IValidLogin} from "./type.ts";
 import {ChangeEvent, FormEvent, useState} from "react";
 import http from "../../../http_common.ts";
 
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {useAppDispatch} from "../../../store";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {AuthUserActionType} from "../type.ts";
+import {AuthUserActionType, IUserToken} from "../type.ts";
 import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 import "./style-Login.css";
@@ -31,7 +31,7 @@ const LoginPage = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Вхід успішний", user);
 
@@ -77,7 +77,7 @@ const LoginPage = () => {
 
                 setAuthToken(token);
 
-                const user = jwtDecode<IUser>(token);
+                const user = jwtDecode<IUserToken>(token);
 
                 console.log("Вхід успішний", user);
 

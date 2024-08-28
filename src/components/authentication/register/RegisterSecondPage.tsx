@@ -4,8 +4,8 @@ import {useAppDispatch} from "../../../store";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {IUser, IValidLogin} from "../login/type.ts";
-import {AuthUserActionType} from "../type.ts";
+import {IValidLogin} from "../login/type.ts";
+import {AuthUserActionType, IUserToken} from "../type.ts";
 import "./style/styleSecondPage.css";
 import {IRegisterPage} from "./type.ts";
 import * as yup from "yup";
@@ -32,7 +32,7 @@ const RegisterSecondPage = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Вхід успішний", user);
 

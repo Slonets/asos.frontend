@@ -2,8 +2,7 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import http from "../../../http_common";
-import { AuthUserActionType } from "../../authentication/type";
-import { IUser } from "../../authentication/login/type";
+import {AuthUserActionType, IUserToken} from "../../authentication/type";
 import "../Style-UserProfile.scss";
 import { MdOutlinePhotoCamera } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
@@ -21,6 +20,7 @@ import { API_URL } from "../../../utils/getEnvData.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
 import {Link} from "react-router-dom";
+import {IEditUser} from "../types.ts";
 
 const DefaultSideBar = () => {
 
@@ -29,23 +29,16 @@ const DefaultSideBar = () => {
 
     const baseUrl = API_URL;
 
-    const init: IUser = {
+    const init: IEditUser = {
         id: 0,
         firstName: "",
         lastName: "",
         email: "",
-        phoneNumber: "",
         image: "",
-        roles: "",
-        IsLockedOut: false,
-        birthday:null,
-        address:"",
-        country:"",
-        town:"",
-        postcode:0
+        birthday:""
     };
 
-    const [user, setUser] = useState<IUser>(init);
+    const [user, setUser] = useState<IEditUser>(init);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     useEffect(() => {
@@ -108,7 +101,7 @@ const DefaultSideBar = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Фото оновилося", user);
 
@@ -166,10 +159,10 @@ const DefaultSideBar = () => {
                 </div>
 
                 <div className="second-block">
-                    <button className="button-in-block">
+                    <Link className="button-in-block" to="orders">
                         <LuPackage size={24} />
                         <p className="text-name">My Orders</p>
-                    </button>
+                    </Link>
                     <button className="button-in-block">
                         <BsArrowReturnLeft size={24} />
                         <p className="text-name">Returns</p>
