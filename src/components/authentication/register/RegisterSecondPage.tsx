@@ -282,8 +282,8 @@ const RegisterSecondPage = () => {
                                                                         </button>
                                                                     </div>
 
-                                                                    <div className="Frame33">
-                                                                        <div className="Polygon3">
+                                                                    <div className="Frame33-3">
+                                                                        <div className="Polygon3-3">
                                                                             <svg id="open"
                                                                                  xmlns="http://www.w3.org/2000/svg"
                                                                                  width="26" height="30"
