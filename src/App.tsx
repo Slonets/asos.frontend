@@ -8,8 +8,12 @@ import MainClothes from "./page/MainClothes.tsx";
 import EditDetails from "./components/UserProfile/EditDetails/EditDetails.tsx";
 import FaceBody from "./page/FaceBody.tsx";
 import AddressPage from "./components/UserProfile/addressPage/AddressPage.tsx";
-import Orders from "./components/UserProfile/userOrders/Orders.tsx";
 import AddProduct from "./components/adminPanel/product/AddProduct.tsx";
+import DefaultAdminSideBar from "./components/adminPanel/default/DefaultAdminSideBar.tsx";
+import AdminLayout from "./components/adminPanel/AdminLayout.tsx";
+import UserLayout from "./components/UserProfile/UserLayout.tsx";
+import Orders from "./components/UserProfile/userOrders/Orders.tsx";
+import ForbiddenPage from "./page/Eror-403/ForbiddenPage.tsx";
 
 function App() {
 
@@ -22,18 +26,22 @@ function App() {
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterFirstPage/>}/>
                     <Route path="register-second-page" element={<RegisterSecondPage/>}/>
+                </Route>
+
+                <Route path={"/pages"}>
+                    <Route path={"403"} element={<ForbiddenPage/>} />
+                </Route>
+
+                <Route path="/admin" element={<AdminLayout/>}>
+                    <Route index element={<DefaultAdminSideBar/>}/>
+                    <Route path="create" element={<AddProduct/>}/>
+                </Route>
 
 
-                    <Route path="user-info">
-                        <Route index element={<EditDetails/>}/>
-                        <Route path="address" element={<AddressPage/>}/>
-                        <Route path="orders" element={<Orders/>}/>
-                    </Route>
-
-                    <Route path="dashboard">
-                        <Route path="product/create" element={<AddProduct/>}/>
-                    </Route>
-
+                <Route path="/user-info" element={<UserLayout/>}>
+                    <Route index element={<EditDetails/>}/>
+                    <Route path="address" element={<AddressPage/>}/>
+                    <Route path="orders" element={<Orders/>}/>
                 </Route>
 
             </Routes>
