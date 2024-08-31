@@ -159,7 +159,7 @@ const DefaultSideBar = () => {
                 </div>
 
                 <div className="second-block">
-                    <Link className="button-in-block" to="orders">
+                    <Link to="/user-info/orders" className="button-in-block" >
                         <LuPackage size={24} />
                         <p className="text-name">My Orders</p>
                     </Link>
@@ -171,7 +171,7 @@ const DefaultSideBar = () => {
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>
                     </button>
-                    <Link to="address" className="button-in-block">
+                    <Link to="/user-info/address" className="button-in-block">
                         <FiHome size={24} />
                         <p className="text-name">Address Information</p>
                     </Link>

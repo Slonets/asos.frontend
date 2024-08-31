@@ -151,7 +151,7 @@ const DefaultAdminSideBar = () => {
                             <p className="text-name">{`${user.firstName} ${user.lastName}`}</p>
                         </div>
 
-                        <Link className="edit-button" to="/user-info">
+                        <Link className="edit-button" to="/admin">
                             <FaEdit size={24} />
                         </Link>
 
@@ -159,10 +159,10 @@ const DefaultAdminSideBar = () => {
                 </div>
 
                 <div className="second-block">
-                    <button className="button-in-block">
+                    <Link className="button-in-block" to="/admin/create">
                         <LuPackage size={24} />
                         <p className="text-name">Add Product</p>
-                    </button>
+                    </Link>
                     <button className="button-in-block">
                         <BsArrowReturnLeft size={24} />
                         <p className="text-name">Returns</p>
@@ -171,7 +171,7 @@ const DefaultAdminSideBar = () => {
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>
                     </button>
-                    <Link to="address" className="button-in-block">
+                    <Link to="" className="button-in-block">
                         <FiHome size={24} />
                         <p className="text-name">Address Information</p>
                     </Link>
