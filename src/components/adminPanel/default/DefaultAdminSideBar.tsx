@@ -159,14 +159,22 @@ const DefaultAdminSideBar = () => {
                 </div>
 
                 <div className="second-block">
+
+                    <Link to="/admin/users" className="button-in-block">
+                        <GoPeople size={24} />
+                        <p className="text-name">Users</p>
+                    </Link>
+
+                    <Link to="/admin" className="button-in-block">
+                        <BsArrowReturnLeft size={24} />
+                        <p className="text-name">Returns</p>
+                    </Link>
+
                     <Link className="button-in-block" to="/admin/create">
                         <LuPackage size={24} />
                         <p className="text-name">Add Product</p>
                     </Link>
-                    <button className="button-in-block">
-                        <BsArrowReturnLeft size={24} />
-                        <p className="text-name">Returns</p>
-                    </button>
+
                     <button className="button-in-block">
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>
@@ -182,10 +190,6 @@ const DefaultAdminSideBar = () => {
                     <button className="button-in-block">
                         <FiMessageCircle size={24} />
                         <p className="text-name">Mailing Preferences</p>
-                    </button>
-                    <button className="button-in-block">
-                        <GoPeople size={24} />
-                        <p className="text-name">Socials</p>
                     </button>
                     <button className="button-in-block">
                         <IoGiftOutline size={24} />
