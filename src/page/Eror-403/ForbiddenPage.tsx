@@ -8,8 +8,8 @@ const ForbiddenPage = () => {
         <div className={"forbidden"}>
             <header className="intro">
                 <h1 className="intro__headline">403</h1>
-                <p className="intro__subhead">Вам відмовлено в доступі</p>
-                <Link className="magic-light" to="/" >Повернутися на головну</Link>
+                <p className="intro__subhead">Denial of access</p>
+                <Link className="magic-light" to="/" >Return to the main page</Link>
             </header>
         </div>
         </div>

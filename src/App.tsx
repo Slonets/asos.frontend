@@ -14,6 +14,8 @@ import AdminLayout from "./components/adminPanel/AdminLayout.tsx";
 import UserLayout from "./components/UserProfile/UserLayout.tsx";
 import Orders from "./components/UserProfile/userOrders/Orders.tsx";
 import ForbiddenPage from "./page/Eror-403/ForbiddenPage.tsx";
+import NotFound from "./page/NotFound.tsx";
+import Users from './components/adminPanel/block-users/Users.tsx';
 
 function App() {
 
@@ -35,6 +37,7 @@ function App() {
                 <Route path="/admin" element={<AdminLayout/>}>
                     <Route index element={<DefaultAdminSideBar/>}/>
                     <Route path="create" element={<AddProduct/>}/>
+                    <Route path="users" element={<Users/>}/>
                 </Route>
 
 
@@ -43,6 +46,8 @@ function App() {
                     <Route path="address" element={<AddressPage/>}/>
                     <Route path="orders" element={<Orders/>}/>
                 </Route>
+
+                <Route path="*" element={<NotFound />} />
 
             </Routes>
         </>

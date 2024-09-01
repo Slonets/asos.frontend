@@ -26,4 +26,5 @@ export interface IUser
     image:string,
     roles:string,
     birthday:string;
+    lockoutEnabled:boolean
 }

@@ -163,10 +163,10 @@ const DefaultSideBar = () => {
                         <LuPackage size={24} />
                         <p className="text-name">My Orders</p>
                     </Link>
-                    <button className="button-in-block">
+                    <Link to="/user-info" className="button-in-block">
                         <BsArrowReturnLeft size={24} />
                         <p className="text-name">Returns</p>
-                    </button>
+                    </Link>
                     <button className="button-in-block">
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>

@@ -1,6 +1,5 @@
 import "../../UserProfile/Style-UserProfile.scss";
 import ProfileDefaultHeader from "../../UserProfile/default/ProfileDefaultHeader.tsx";
-import DefaultSideBar from "../default/DefaultAdminSideBar.tsx";
 import 'react-datepicker/dist/react-datepicker.css';
 import {useEffect, useState} from "react";
 import {
@@ -18,6 +17,7 @@ import http_common from "../../../http_common.ts";
 import TextArea from "antd/es/input/TextArea";
 import type {UploadChangeParam} from "antd/es/upload";
 import {PlusOutlined} from "@ant-design/icons";
+import DefaultAdminSideBar from "../default/DefaultAdminSideBar.tsx";
 const AddProduct = () => {
 
 
@@ -116,7 +116,7 @@ const AddProduct = () => {
             </div>
 
             <div className="main-container">
-                <DefaultSideBar/>
+                <DefaultAdminSideBar/>
                 <div className="content-container">
                     <div className="div-with-text">
                         <h2>Create Product</h2>
