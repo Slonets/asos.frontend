@@ -18,6 +18,7 @@ import NotFound from "./page/NotFound.tsx";
 import Users from './components/adminPanel/block-users/Users.tsx';
 import AllProducts from "./components/adminPanel/product/AllProducts.tsx";
 import AddCategory from "./components/adminPanel/category/AddCategory.tsx";
+import AllCategory from "./components/adminPanel/category/AllCategory.tsx";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
                     <Route path="createCategory" element={<AddCategory/>}/>
                     <Route path="users" element={<Users/>}/>
                     <Route path="allproducts" element={<AllProducts/>}/>
+                    <Route path="allcategory" element={<AllCategory/>}/>
                 </Route>
 
 

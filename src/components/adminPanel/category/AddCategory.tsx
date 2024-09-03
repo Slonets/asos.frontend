@@ -77,7 +77,7 @@ const AddProduct = () => {
                             </div>
 
                             <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button style={{ margin: 10 }} type="default" htmlType="submit">
+                                <Button style={{ margin: 10 }} type="default"  htmlType="submit" >
                                     Add
                                 </Button>
                                 <Button style={{ margin: 10 }} htmlType="button" onClick={() => navigate('/')}>

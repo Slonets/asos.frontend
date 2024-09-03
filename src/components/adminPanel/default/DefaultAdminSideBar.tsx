@@ -184,11 +184,11 @@ const DefaultAdminSideBar = () => {
                         <PiStarFour size={24} />
                         <p className="text-name">Add Category</p>
                     </Link>
-
-                    <button className="button-in-block">
+                    <Link className="button-in-block" to="/admin/allcategory">
                         <FiCreditCard size={24} />
-                        <p className="text-name">Payment Method</p>
-                    </button>
+                        <p className="text-name">All Category</p>
+                    </Link>
+
                     <button className="button-in-block">
                         <FiMessageCircle size={24} />
                         <p className="text-name">Mailing Preferences</p>

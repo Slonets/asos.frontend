@@ -24,6 +24,10 @@ export interface IProductCreate {
 export interface ICategoryCreate{
     Name:string;
 }
+export interface IGetAllCategory{
+    id:number;
+    name:string;
+}
 export interface IGetAllProducts{
     id: number,
     name: string;
