@@ -1,3 +1,5 @@
+
+
 export interface ICategoryName {
     id: number,
     name: string,
@@ -18,6 +20,9 @@ export interface IProductCreate {
     SizeAndFit:string;
     Amount:number;
     ImageUrls: File[];
+}
+export interface ICategoryCreate{
+    Name:string;
 }
 export interface IGetAllProducts{
     id: number,
