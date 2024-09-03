@@ -8,7 +8,6 @@ import {
     IGenderName,
     IProductCreate,
     ISizeName,
-    ISubCategoryName,
     IUploadedFile
 } from "../../types.ts";
 import {useNavigate} from "react-router-dom";
@@ -25,8 +24,7 @@ const AddProduct = () => {
         const [brands, setBrands] = useState<IBrandName[]>([]);
         const [sizes, setSizes] = useState<ISizeName[]>([]);
         const [genders, setGenders] = useState<IGenderName[]>([]);
-        const [subcategories, setSubcategories] = useState<ISubCategoryName[]>([]);
-        const [filteredSubcategories, setFilteredSubcategories] = useState<ISubCategoryName[]>([]);
+
 
         const navigate = useNavigate();
         const [form] = Form.useForm<IProductCreate>();
@@ -36,7 +34,7 @@ const AddProduct = () => {
             fetchBrands();
             fetchSizes();
             fetchGenders();
-            fetchSubcategories(); // Додано виклик функції для завантаження підкатегорій
+
         }, []);
 
         const fetchCategories = async () => {
@@ -75,23 +73,13 @@ const AddProduct = () => {
             }
         };
 
-        const fetchSubcategories = async () => { // Додано функцію для завантаження підкатегорій
-            try {
-                const response = await http_common.get<ISubCategoryName[]>("/api/Dashboard/GetAllSubCategory");
-                setSubcategories(response.data);
-            } catch (error) {
-                console.error("Error fetching subcategories:", error);
-            }
-        };
 
-        const handleCategoryChange = (value: number) => {
-            const filtered = subcategories.filter(subcat => subcat.categoryId === value);
-            setFilteredSubcategories(filtered);
-        };
+
+
 
         const categoriesData = categories?.map(item => ({ label: item.name, value: item.id }));
         const brandsData = brands?.map(item => ({ label: item.name, value: item.id }));
-        const subcategoriesData = filteredSubcategories?.map(item => ({ label: item.name, value: item.id }));
+
 
         const onSubmit = async (values: IProductCreate) => {
             try {
@@ -121,8 +109,9 @@ const AddProduct = () => {
                     <div className="div-with-text">
                         <h2>Create Product</h2>
                     </div>
-                    <div className="widthdiv">
+
                     <Row gutter={16}>
+
                         <Form
                             form={form}
                             onFinish={onSubmit}
@@ -171,35 +160,13 @@ const AddProduct = () => {
                                 <Select
                                     placeholder="Select the category: "
                                     options={categoriesData}
-                                    onChange={handleCategoryChange}
+
                                 />
                             </Form.Item>
 
-                            <Form.Item
-                                label="SubCategory"
-                                name="SubCategoryId"
-                                htmlFor="SubCategoryId"
-                                rules={[
-                                    { required: false, message: 'It is a required field!' },
-                                ]}
-                            >
-                                <Select
-                                    placeholder="Select the SubCategory: "
-                                    options={subcategoriesData}
-                                />
-                            </Form.Item>
 
-                            <Form.Item
-                                label="Price"
-                                name="Price"
-                                htmlFor="Price"
-                                rules={[
-                                    { required: true, message: 'It is a required field!' },
-                                    { type: 'number' }
-                                ]}
-                            >
-                                <InputNumber min={0} autoComplete="off" />
-                            </Form.Item>
+
+
 
                             <Form.Item
                                 label="Size"
@@ -305,7 +272,18 @@ const AddProduct = () => {
                             >
                                 <InputNumber min={0} autoComplete="off" />
                             </Form.Item>
-
+                                <Form.Item
+                                    label="Price"
+                                    name="Price"
+                                    htmlFor="Price"
+                                    rules={[
+                                        { required: true, message: 'It is a required field!' },
+                                        { type: 'number' }
+                                    ]}
+                                >
+                                    <InputNumber min={0} autoComplete="off" />
+                                </Form.Item>
+                            <div className="image-upload-container">
                             <Form.Item
                                 name="ImageUrls"
                                 label="Images"
@@ -330,20 +308,24 @@ const AddProduct = () => {
                                 </Upload>
                             </Form.Item>
                             </div>
+                            </div>
+
                             <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button style={{ margin: 10 }} type="primary" htmlType="submit">
+                                <Button style={{ margin: 10 }} type="default" htmlType="submit">
                                     Add
                                 </Button>
                                 <Button style={{ margin: 10 }} htmlType="button" onClick={() => navigate('/')}>
                                     Cancel
                                 </Button>
+
                             </Row>
+
                         </Form>
+
                     </Row>
                     </div>
 
                 </div>
-            </div>
         </>
     )
         ;

@@ -170,23 +170,25 @@ const DefaultAdminSideBar = () => {
                         <p className="text-name">Returns</p>
                     </Link>
 
-                    <Link className="button-in-block" to="/admin/create">
+                    <Link className="button-in-block" to="/admin/createProduct">
                         <LuPackage size={24} />
                         <p className="text-name">Add Product</p>
                     </Link>
 
-                    <button className="button-in-block">
-                        <PiStarFour size={24} />
-                        <p className="text-name">Favourites</p>
-                    </button>
-                    <Link to="" className="button-in-block">
+                    <Link className="button-in-block" to="/admin/allproducts">
                         <FiHome size={24} />
-                        <p className="text-name">Address Information</p>
+                        <p className="text-name">All products</p>
                     </Link>
-                    <button className="button-in-block">
+
+                    <Link className="button-in-block" to="/admin/createCategory">
+                        <PiStarFour size={24} />
+                        <p className="text-name">Add Category</p>
+                    </Link>
+                    <Link className="button-in-block" to="/admin/allcategory">
                         <FiCreditCard size={24} />
-                        <p className="text-name">Payment Method</p>
-                    </button>
+                        <p className="text-name">All Category</p>
+                    </Link>
+
                     <button className="button-in-block">
                         <FiMessageCircle size={24} />
                         <p className="text-name">Mailing Preferences</p>
