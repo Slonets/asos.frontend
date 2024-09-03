@@ -175,14 +175,16 @@ const DefaultAdminSideBar = () => {
                         <p className="text-name">Add Product</p>
                     </Link>
 
+                    <Link className="button-in-block" to="/admin/allproducts">
+                        <FiHome size={24} />
+                        <p className="text-name">All products</p>
+                    </Link>
+
                     <button className="button-in-block">
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>
                     </button>
-                    <Link to="" className="button-in-block">
-                        <FiHome size={24} />
-                        <p className="text-name">Address Information</p>
-                    </Link>
+
                     <button className="button-in-block">
                         <FiCreditCard size={24} />
                         <p className="text-name">Payment Method</p>

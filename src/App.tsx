@@ -16,6 +16,7 @@ import Orders from "./components/UserProfile/userOrders/Orders.tsx";
 import ForbiddenPage from "./page/Eror-403/ForbiddenPage.tsx";
 import NotFound from "./page/NotFound.tsx";
 import Users from './components/adminPanel/block-users/Users.tsx';
+import AllProducts from "./components/adminPanel/product/AllProducts.tsx";
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
                     <Route index element={<DefaultAdminSideBar/>}/>
                     <Route path="create" element={<AddProduct/>}/>
                     <Route path="users" element={<Users/>}/>
+                    <Route path="allproducts" element={<AllProducts/>}/>
                 </Route>
 
 
