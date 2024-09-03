@@ -3,6 +3,7 @@ export interface ICategoryName {
     name: string,
 }
 export interface IProductCreate {
+    id: number,
     Name: string;
     Description: string;
     CategoryId: number;
@@ -10,6 +11,23 @@ export interface IProductCreate {
     Size:number;
     Color:string;
     BrandId:number;
+    SubCategoryId:number;
+    Gender:number;
+    AboutMe:string;
+    LookAfterMe:string;
+    SizeAndFit:string;
+    Amount:number;
+    ImageUrls: File[];
+}
+export interface IGetAllProducts{
+    id: number,
+    name: string;
+    Description: string;
+    categoryId: string;
+    price: number;
+    Size:number;
+    Color:string;
+    brandId:string;
     SubCategoryId:number;
     Gender:number;
     AboutMe:string;
