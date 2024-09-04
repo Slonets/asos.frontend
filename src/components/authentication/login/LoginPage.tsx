@@ -11,7 +11,7 @@ import axios from "axios";
 import "./style-Login.css";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
-
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 
 const LoginPage = () => {
 
@@ -26,7 +26,8 @@ const LoginPage = () => {
             credential: credentialResponse.credential || "",
         });
 
-        if (resp && "data" in resp && resp.data) {
+        if (resp && "data" in resp && resp.data)
+        {
             const token = resp.data.token as string;
 
             setAuthToken(token);
@@ -39,10 +40,20 @@ const LoginPage = () => {
 
             const {from} = location.state || {from: {pathname: "/"}};
             navigate(from);
-        } else {
-            console.log("Error login. Check login data!");
+        }
+        else
+        {
+            if (resp.error)
+            {
+                // Перевірка, чи це FetchBaseQueryError і чи є властивість data
+                if ('data' in resp.error)
+                {
+                    const errorData = (resp.error as FetchBaseQueryError).data as ILoginPageError;
+                    setBadbadRequest(errorData);
+                }
+            }
 
-            dispatch({type: AuthUserActionType.LOGOUT_USER});
+            dispatch({ type: AuthUserActionType.LOGOUT_USER });
         }
     };
     const authError = () => {
