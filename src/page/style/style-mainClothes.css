@@ -1374,7 +1374,7 @@ margin-top: 10px;
 .Frame330
 {
     width: 100%;
-   margin-top: 20px;
+    margin-top: 50px;
     height: max-content;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; /* три столбца одинаковой ширины */
@@ -1420,7 +1420,7 @@ margin-top: 10px;
     width: 36px;
     height: 36px;
     left: 30px;
-    top: 830px;
+    top: 870px;
     border-radius: 0.75px;
 
     fill: none;
@@ -1474,7 +1474,7 @@ margin-top: 10px;
     width: 36px;
     height: 36px;
     left: 550px;
-    top: 830px;
+    top: 870px;
     border-radius: 0.75px;
 
     fill: none;
@@ -1512,7 +1512,7 @@ margin-top: 10px;
     width: 36px;
     height: 36px;
     left: 1050px;
-    top: 830px;
+    top: 870px;
     border-radius: 0.75px;
 
     fill: none;
