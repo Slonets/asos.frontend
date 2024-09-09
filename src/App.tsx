@@ -19,7 +19,7 @@ import Users from './components/adminPanel/block-users/Users.tsx';
 import AllProducts from "./components/adminPanel/product/AllProducts.tsx";
 import AddCategory from "./components/adminPanel/category/AddCategory.tsx";
 import AllCategory from "./components/adminPanel/category/AllCategory.tsx";
-import Favourites from "./page/favorite/Favourites.tsx";
+import UpdateProduct from "./components/adminPanel/product/UpdateProduct.tsx";
 
 function App() {
 
@@ -32,8 +32,6 @@ function App() {
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterFirstPage/>}/>
                     <Route path="register-second-page" element={<RegisterSecondPage/>}/>
-                    <Route path="favorite" element={<Favourites/>}/>
-
                 </Route>
 
                 <Route path={"/pages"}>
@@ -43,6 +41,7 @@ function App() {
                 <Route path="/admin" element={<AdminLayout/>}>
                     <Route index element={<DefaultAdminSideBar/>}/>
                     <Route path="createProduct" element={<AddProduct/>}/>
+                    <Route path="editProduct/:id" element={<UpdateProduct/>}/>
                     <Route path="createCategory" element={<AddCategory/>}/>
                     <Route path="users" element={<Users/>}/>
                     <Route path="allproducts" element={<AllProducts/>}/>
