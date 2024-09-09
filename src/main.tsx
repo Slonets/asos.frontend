@@ -24,7 +24,7 @@ if(localStorage.cart)
 {
     const cart: { productId: number, count: number }[] = JSON.parse(localStorage.getItem('cart') || '[]');
     store.dispatch({
-        type:FavoriteActionType.ADD_BASKET,
+        type:FavoriteActionType.ADD_FAVORITE,
         payload:cart
     });
 }

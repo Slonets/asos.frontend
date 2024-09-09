@@ -54,7 +54,7 @@ const MainClothes = () => {
         // Оновлюємо Local Storage з новим значенням
         localStorage.setItem('cart', JSON.stringify(cart));
         dispatch({
-            type:FavoriteActionType.ADD_BASKET,
+            type:FavoriteActionType.ADD_FAVORITE,
             payload:cart
         });
     };

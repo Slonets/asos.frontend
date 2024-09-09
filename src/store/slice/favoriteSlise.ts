@@ -7,14 +7,14 @@ export interface ICartItem
 const initState: ICartItem[] =[];
 
 export enum FavoriteActionType {
-    ADD_BASKET = "ADD_ITEM_PRODUCT",
-    DELETE_BASKET="DEL_ITEM_PRODUCT"
+    ADD_FAVORITE = "ADD_ITEM_PRODUCT",
+    DELETE_FAVORITE="DEL_ITEM_PRODUCT"
 }
 
-export const basketSlice = (state=initState, action: any): ICartItem[] => {
+export const favoriteSlice = (state=initState, action: any): ICartItem[] => {
     switch(action.type)
     {
-        case FavoriteActionType.ADD_BASKET: {
+        case FavoriteActionType.ADD_FAVORITE: {
             console.log("Payload", action.payload);
             return [...action.payload];
         }
@@ -23,4 +23,4 @@ export const basketSlice = (state=initState, action: any): ICartItem[] => {
     return state;
 }
 
-export default basketSlice;
+export default favoriteSlice;

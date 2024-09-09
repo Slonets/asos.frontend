@@ -11,7 +11,7 @@ import {FavoriteActionType} from "../../store/slice/favoriteSlise.ts";
 const Favourites=()=>{
 
     const baseUrl = APP_ENV.BASE_URL;
-    const items = useSelector((store: any) => store.basket);
+    const items = useSelector((store: any) => store.favorite);
     const dispatch = useDispatch();
 
     const userStatus = useSelector((store: any) => store.auth.isAuth);
@@ -57,7 +57,7 @@ const Favourites=()=>{
 
         // Диспатч на видалення
         dispatch({
-            type: FavoriteActionType.ADD_BASKET,
+            type: FavoriteActionType.ADD_FAVORITE,
             payload: updatedCart,
         });
     };
