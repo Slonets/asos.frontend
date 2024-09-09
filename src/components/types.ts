@@ -9,17 +9,17 @@ export interface IProductCreate {
     Name: string;
     Description: string;
     CategoryId: number;
-    Price: number;
+    price: number;
     Size:number;
     Color:string;
     BrandId:number;
     SubCategoryId:number;
     Gender:number;
-    AboutMe:string;
-    LookAfterMe:string;
-    SizeAndFit:string;
-    Amount:number;
-    ImageUrls: File[];
+    aboutMe:string;
+    lookAfterMe:string;
+    sizeAndFit:string;
+    amount:number;
+    imageUrls: File[];
 }
 export interface ICategoryCreate{
     Name:string;
@@ -72,4 +72,21 @@ export interface ISubCategoryName {
     id: number;
     categoryId: number;
     name: string;
+}
+export interface IProduct {
+    id: number,
+    Name: string;
+    Description: string;
+    CategoryId: number;
+    Price: number;
+    Size:number;
+    Color:string;
+    BrandId:number;
+    SubCategoryId:number;
+    Gender:number;
+    AboutMe:string;
+    LookAfterMe:string;
+    SizeAndFit:string;
+    Amount:number;
+    ImageUrls: File[];
 }
