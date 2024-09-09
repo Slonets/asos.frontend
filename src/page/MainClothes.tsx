@@ -1,7 +1,63 @@
 import "./style/style-mainClothes.css";
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import http from "../http_common.ts";
+import {APP_ENV} from "../env";
+import {ViewProduct} from "../interfaces/user";
+import {useDispatch} from "react-redux";
+import {BasketActionType} from "../store/slice/basketSlise.ts";
 
 const MainClothes = () => {
+
+    const baseUrl = APP_ENV.BASE_URL;
+    const dispatch = useDispatch();
+    const [manClothing, setManClothing] = useState<ViewProduct[]>([]);
+    const [womanClothing, setWomanClothing] = useState<ViewProduct[]>([]);
+
+    useEffect(() => {
+
+        http.get("api/Dashboard/GetManClothing").then(resp => {
+            setManClothing(resp.data);
+            console.log("Прийшли товари", resp.data);
+        });
+    }, []);
+
+    useEffect(() => {
+
+        http.get("api/Dashboard/GetWomanClothing").then(resp => {
+            setWomanClothing(resp.data);
+            console.log("Прийшли товари", resp.data);
+        });
+    }, []);
+
+    const addItemToCart = (productId: number) => {
+
+        console.log("Прийшло", productId);
+
+        // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+        const cart: { productId: number, count: number }[] = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Знайти, чи вже є товар з таким productId в кошику
+        const existingItemIndex = cart.findIndex((item: { productId: number, count: number }) => item.productId === productId);
+
+        if (existingItemIndex !== -1)
+        {
+            // Якщо товар вже є в кошику, збільшуємо кількість на 1
+            cart[existingItemIndex].count += 1;
+        }
+        else
+        {
+            // Якщо товару ще немає в кошику, додаємо його з кількістю 1
+            cart.push({ productId: productId, count: 1 });
+        }
+
+        // Оновлюємо Local Storage з новим значенням
+        localStorage.setItem('cart', JSON.stringify(cart));
+        dispatch({
+            type:BasketActionType.ADD_BASKET,
+            payload:cart
+        });
+    };
 
     return (
         <>
@@ -122,13 +178,15 @@ const MainClothes = () => {
 
                         <div className="Frame317">
 
+                            {manClothing[0] && (
+
                             <div className="Frame215">
 
                                 <div className="Frame208">
 
-                                    <img src="public/Clothes/Rectangle16.png" className="Rectangle16"/>
+                                    <img src={`${baseUrl}product/${manClothing[0].imagePaths[0]}`}   className="Rectangle16"/>
 
-                                    <button className="favorite">
+                                    <button className="favorite" onClick={() => addItemToCart(manClothing[0].id)}>
                                         <svg id="star1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
@@ -146,22 +204,22 @@ const MainClothes = () => {
                                           <div className="Frame206">
 
                                               <span>
-                                                  urbncore collar shirt with black butterfly print
+                                                  {manClothing[0].name}
                                               </span>
 
                                               <span>
-                                                  colour: black
+                                                  colour: {manClothing[0].color}
                                               </span>
 
                                               <span>
-                                                  £26.99
+                                                  £{manClothing[0].price}
                                               </span>
 
                                           </div>
 
                                       </div>
 
-                                        <button className="Frame70">
+                                        <button className="Frame70" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
@@ -173,13 +231,18 @@ const MainClothes = () => {
 
                             </div>
 
+                            )}
+
+
+
+                            {manClothing[1] && (
                             <div className="Frame214">
 
                                 <div className="Frame211">
 
-                                    <img src="public/Clothes/Foto2.png" className="Rectangle16"/>
+                                    <img src={`${baseUrl}product/${manClothing[1].imagePaths[0]}`}  className="Rectangle16"/>
 
-                                    <button className="favorite2">
+                                    <button className="favorite2" onClick={() => addItemToCart(manClothing[1].id)}>
                                         <svg id="star2"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
@@ -197,22 +260,22 @@ const MainClothes = () => {
                                             <div className="Frame206">
 
                                               <span>
-                                                  urbncore  denim trucker jacket with rips
+                                                  {manClothing[1].name}
                                               </span>
 
                                                 <span>
-                                                  colour: light denim
+                                                  colour: {manClothing[1].color}
                                               </span>
 
                                                 <span>
-                                                  £40.00
+                                                  £{manClothing[1].price}
                                               </span>
 
                                             </div>
 
                                         </div>
 
-                                        <button className="Frame70-2">
+                                        <button className="Frame70-2" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
@@ -223,6 +286,8 @@ const MainClothes = () => {
                                 </div>
 
                             </div>
+
+                            )}
 
                             <div className="Frame316">
 
@@ -256,11 +321,11 @@ const MainClothes = () => {
 
                                    </div>
 
-                                    <button className="Frame70-3">
+                                    <Link className="Frame70-3" to="">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                             <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                         </svg>
-                                    </button>
+                                    </Link>
 
                                 </div>
 
@@ -313,13 +378,15 @@ const MainClothes = () => {
 
                             </div>
 
+                            {womanClothing[0] && (
+
                             <div className="Frame306">
 
                                 <div className="Frame211">
 
-                                    <img src="public/Clothes/foto4.png" className="foto4"/>
+                                    <img src={`${baseUrl}product/${womanClothing[0].imagePaths[0]}`} className="foto4"/>
 
-                                    <button className="favorite3">
+                                    <button className="favorite3" onClick={() => addItemToCart(womanClothing[0].id)}>
                                         <svg id="star3"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
@@ -332,15 +399,15 @@ const MainClothes = () => {
 
                                     <div className="Frame210-3">
 
-                                        <span>urbncore asymmetric contrast seam co-ord top</span>
+                                        <span>{womanClothing[0].name}</span>
 
-                                        <span>colour: black denim</span>
+                                        <span>colour: {womanClothing[0].color}</span>
 
-                                        <span>£21.99</span>
+                                        <span>£{womanClothing[0].price}</span>
 
                                     </div>
 
-                                    <button className="Frame70-6">
+                                    <button className="Frame70-6" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                             <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                         </svg>
@@ -349,14 +416,16 @@ const MainClothes = () => {
                                 </div>
 
                             </div>
+                            )}
 
+                            {womanClothing[1] && (
                             <div className="Frame304">
 
                                 <div className="Frame211">
 
-                                    <img src="public/Clothes/foto5.png" className="foto4"/>
+                                    <img src={`${baseUrl}product/${womanClothing[1].imagePaths[0]}`} className="foto4"/>
 
-                                    <button className="favorite3">
+                                    <button className="favorite3" onClick={() => addItemToCart(womanClothing[1].id)}>
                                         <svg id="star3"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
@@ -369,15 +438,15 @@ const MainClothes = () => {
 
                                     <div className="Frame210-3">
 
-                                        <span>urbncore kitten heel double buckle strap mules</span>
+                                        <span>{womanClothing[1].name}</span>
 
-                                        <span>colour: denim</span>
+                                        <span>colour: {womanClothing[1].color}</span>
 
-                                        <span>£27.00</span>
+                                        <span>£{womanClothing[0].price}</span>
 
                                     </div>
 
-                                    <button className="Frame70-6">
+                                    <button className="Frame70-6" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                             <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                         </svg>
@@ -386,6 +455,8 @@ const MainClothes = () => {
                                 </div>
 
                             </div>
+
+                            )}
 
                         </div>
 
@@ -429,12 +500,13 @@ const MainClothes = () => {
 
                             <div className="Frame329">
 
+                                {manClothing[2] && (
                                 <div className="Frame215-4">
 
                                     <div className="Frame208-2">
-                                        <img src="public/Clothes/Ragtangel208.png" className="Rectangle208"/>
+                                        <img src={`${baseUrl}product/${manClothing[2].imagePaths[3]}`} className="Rectangle208"/>
 
-                                        <button className="favorite7">
+                                        <button className="favorite7" onClick={() => addItemToCart(manClothing[2].id)}>
                                             <svg id="star7"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
@@ -446,15 +518,15 @@ const MainClothes = () => {
 
                                         <div className="Frame207-2">
 
-                                            <span>COLLUSION X014 mid rise straight jeans</span>
+                                            <span>{manClothing[2].name}</span>
 
-                                            <span>colour: midwash blue</span>
+                                            <span>colour: {manClothing[2].color}</span>
 
-                                            <span>£28.00</span>
+                                            <span>£{manClothing[2].price}</span>
 
                                         </div>
 
-                                        <button className="Frame70-4">
+                                        <button className="Frame70-4" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
@@ -465,12 +537,16 @@ const MainClothes = () => {
 
                                 </div>
 
+                                )}
+
+                                {manClothing[3] && (
+
                                 <div className="Frame215-5">
 
                                     <div className="Frame208-2">
-                                        <img src="public/Clothes/Ragtangel209.png" className="Rectangle208"/>
+                                        <img src={`${baseUrl}product/${manClothing[3].imagePaths[0]}`} className="Rectangle208"/>
 
-                                        <button className="favorite8">
+                                        <button className="favorite8" onClick={() => addItemToCart(manClothing[3].id)}>
                                             <svg id="star8"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
@@ -482,15 +558,15 @@ const MainClothes = () => {
 
                                         <div className="Frame207-3">
 
-                                            <span>ONLY & SONS denim jacket</span>
+                                            <span>{manClothing[3].name}</span>
 
-                                            <span>colour: midwash blue</span>
+                                            <span>colour: {manClothing[3].color}</span>
 
-                                            <span>£30.00</span>
+                                            <span>£{manClothing[3].price}</span>
 
                                         </div>
 
-                                        <button className="Frame70-5">
+                                        <button className="Frame70-5" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
@@ -501,12 +577,16 @@ const MainClothes = () => {
 
                                 </div>
 
+                                )}
+
+
+                                {manClothing[4] && (
                                 <div className="Frame215-5">
 
                                     <div className="Frame208-2">
-                                        <img src="public/Clothes/Ragtangel209.png" className="Rectangle208"/>
+                                        <img src={`${baseUrl}product/${manClothing[4].imagePaths[0]}`} className="Rectangle208"/>
 
-                                        <button className="favorite9">
+                                        <button className="favorite9" onClick={() => addItemToCart(manClothing[4].id)}>
                                             <svg id="star9"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
@@ -518,15 +598,15 @@ const MainClothes = () => {
 
                                         <div className="Frame207-3">
 
-                                            <span>ONLY & SONS denim jacket</span>
+                                            <span>{manClothing[4].name}</span>
 
-                                            <span>colour: midwash blue</span>
+                                            <span>colour: {manClothing[4].color}</span>
 
-                                            <span>£30.00</span>
+                                            <span>£{manClothing[4].price}</span>
 
                                         </div>
 
-                                        <button className="Frame70-7">
+                                        <button className="Frame70-7" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
@@ -536,17 +616,21 @@ const MainClothes = () => {
                                     </div>
 
                                 </div>
+
+                                )}
                             </div>
 
                             <div className="Frame330">
+
+                                {manClothing[5] && (
 
                                 <div className="Frame215">
 
                                     <div className="Frame208">
 
-                                        <img src="public/Clothes/Ragtangel208.png" className="Rectangle16"/>
+                                        <img src={`${baseUrl}product/${manClothing[5].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite10">
+                                        <button className="favorite10" onClick={() => addItemToCart(manClothing[5].id)}>
                                             <svg id="star10"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
@@ -564,22 +648,22 @@ const MainClothes = () => {
                                                 <div className="Frame206">
 
                                               <span>
-                                                  urbncore collar shirt with black butterfly print
+                                                  {manClothing[5].name}
                                               </span>
 
                                                     <span>
-                                                  colour: black
+                                                  colour: {manClothing[5].color}
                                               </span>
 
                                                     <span>
-                                                  £26.99
+                                                  £{manClothing[5].price}
                                               </span>
 
                                                 </div>
 
                                             </div>
 
-                                            <button className="Frame70-8">
+                                            <button className="Frame70-8" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                     <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                                 </svg>
@@ -591,13 +675,16 @@ const MainClothes = () => {
 
                                 </div>
 
+                                )}
+
+                                {manClothing[6] && (
                                 <div className="Frame214-5">
 
                                     <div className="Frame211">
 
-                                        <img src="public/Clothes/Foto2.png" className="Rectangle16"/>
+                                        <img src={`${baseUrl}product/${manClothing[6].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite12">
+                                        <button className="favorite12" onClick={() => addItemToCart(manClothing[6].id)}>
                                             <svg id="star12"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
@@ -615,22 +702,22 @@ const MainClothes = () => {
                                                 <div className="Frame206">
 
                                               <span>
-                                                  urbncore  denim trucker jacket with rips
+                                                  {manClothing[6].name}
                                               </span>
 
                                                     <span>
-                                                  colour: light denim
+                                                  colour: {manClothing[6].color}
                                               </span>
 
                                                     <span>
-                                                  £40.00
+                                                  £{manClothing[6].price}
                                               </span>
 
                                                 </div>
 
                                             </div>
 
-                                            <button className="Frame70-11">
+                                            <button className="Frame70-11" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                     <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                                 </svg>
@@ -642,13 +729,16 @@ const MainClothes = () => {
 
                                 </div>
 
+                                )}
+
+                                {manClothing[7] && (
                                 <div className="Frame215-5">
 
                                     <div className="Frame208">
 
-                                        <img src="public/Clothes/Ragtangel208.png" className="Rectangle16"/>
+                                        <img src={`${baseUrl}product/${manClothing[7].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite13">
+                                        <button className="favorite13" onClick={() => addItemToCart(manClothing[7].id)}>
                                             <svg id="star13"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
@@ -666,22 +756,22 @@ const MainClothes = () => {
                                                 <div className="Frame206">
 
                                               <span>
-                                                  urbncore collar shirt with black butterfly print
+                                                  {manClothing[7].name}
                                               </span>
 
                                                     <span>
-                                                  colour: black
+                                                  colour: {manClothing[7].color}
                                               </span>
 
                                                     <span>
-                                                  £26.99
+                                                  £{manClothing[7].price}
                                               </span>
 
                                                 </div>
 
                                             </div>
 
-                                            <button className="Frame70-13">
+                                            <button className="Frame70-13" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                     <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                                 </svg>
@@ -692,6 +782,7 @@ const MainClothes = () => {
                                     </div>
 
                                 </div>
+                                )}
                         </div>
 
                         </div>
