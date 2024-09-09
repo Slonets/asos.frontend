@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {ViewProduct, Size} from "../../interfaces/user";
 import http from "../../http_common.ts";
-import {BasketActionType} from "../../store/slice/basketSlise.ts";
+import {FavoriteActionType} from "../../store/slice/favoriteSlise.ts";
 
 
 const Favourites=()=>{
@@ -44,7 +44,7 @@ const Favourites=()=>{
         }
     }, [array]);
 
-    const deleteProductWithBasket=(productId:number)=>{
+    const deleteProductWithFavorite=(productId:number)=>{
 
         // Отримати поточний кошик з Local Storage
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -57,7 +57,7 @@ const Favourites=()=>{
 
         // Диспатч на видалення
         dispatch({
-            type: BasketActionType.ADD_BASKET,
+            type: FavoriteActionType.ADD_BASKET,
             payload: updatedCart,
         });
     };
@@ -101,7 +101,7 @@ const Favourites=()=>{
 
                                   </div>
 
-                                  <button className="Delete-Button" onClick={()=>{deleteProductWithBasket(product.id)}}>
+                                  <button className="Delete-Button" onClick={()=>{deleteProductWithFavorite(product.id)}}>
                                       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 32 32" fill="none">
                                           <path d="M24 8L8 24" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                                           <path d="M8 8L24 24" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>

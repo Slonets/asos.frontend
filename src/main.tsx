@@ -10,7 +10,7 @@ import {store} from "./store";
 import {IUser} from "./components/authentication/login/type.ts";
 import {jwtDecode} from "jwt-decode";
 import {AuthUserActionType} from "./components/authentication/type.ts";
-import {BasketActionType} from "./store/slice/basketSlise.ts";
+import {FavoriteActionType} from "./store/slice/favoriteSlise.ts";
 
 // Якщо сторінка перезавантажується на F5, то токен знову перезаписується
 if(localStorage.token)
@@ -24,7 +24,7 @@ if(localStorage.cart)
 {
     const cart: { productId: number, count: number }[] = JSON.parse(localStorage.getItem('cart') || '[]');
     store.dispatch({
-        type:BasketActionType.ADD_BASKET,
+        type:FavoriteActionType.ADD_BASKET,
         payload:cart
     });
 }

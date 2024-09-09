@@ -5,7 +5,7 @@ import http from "../http_common.ts";
 import {APP_ENV} from "../env";
 import {ViewProduct} from "../interfaces/user";
 import {useDispatch} from "react-redux";
-import {BasketActionType} from "../store/slice/basketSlise.ts";
+import {FavoriteActionType} from "../store/slice/favoriteSlise.ts";
 
 const MainClothes = () => {
 
@@ -54,7 +54,7 @@ const MainClothes = () => {
         // Оновлюємо Local Storage з новим значенням
         localStorage.setItem('cart', JSON.stringify(cart));
         dispatch({
-            type:BasketActionType.ADD_BASKET,
+            type:FavoriteActionType.ADD_BASKET,
             payload:cart
         });
     };

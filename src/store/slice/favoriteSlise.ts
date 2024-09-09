@@ -6,7 +6,7 @@ export interface ICartItem
 
 const initState: ICartItem[] =[];
 
-export enum BasketActionType {
+export enum FavoriteActionType {
     ADD_BASKET = "ADD_ITEM_PRODUCT",
     DELETE_BASKET="DEL_ITEM_PRODUCT"
 }
@@ -14,7 +14,7 @@ export enum BasketActionType {
 export const basketSlice = (state=initState, action: any): ICartItem[] => {
     switch(action.type)
     {
-        case BasketActionType.ADD_BASKET: {
+        case FavoriteActionType.ADD_BASKET: {
             console.log("Payload", action.payload);
             return [...action.payload];
         }

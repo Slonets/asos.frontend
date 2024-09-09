@@ -2,7 +2,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { userApi } from "../services/user.ts";
 import authReducer from "../store/slice/authSlice.ts";
-import basketReducer from "./slice/basketSlise.ts";
+import basketReducer from "./slice/favoriteSlise.ts";
 
 export const store = configureStore({
     reducer: {
