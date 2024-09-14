@@ -21,6 +21,7 @@ import AddCategory from "./components/adminPanel/category/AddCategory.tsx";
 import AllCategory from "./components/adminPanel/category/AllCategory.tsx";
 import UpdateProduct from "./components/adminPanel/product/UpdateProduct.tsx";
 import Favourites from "./page/favorite/Favourites.tsx";
+import FavoriteUser from "./components/UserProfile/favorite/FavoriteUser.tsx";
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
                     <Route index element={<EditDetails/>}/>
                     <Route path="address" element={<AddressPage/>}/>
                     <Route path="orders" element={<Orders/>}/>
+                    <Route path="favorite" element={<FavoriteUser/>}/>
                 </Route>
 
                 <Route path="*" element={<NotFound />} />
