@@ -75,7 +75,7 @@ const FavoriteUser=()=>{
                    <p>favourites</p>
               </div>
 
-                   {array.length>0 ?(
+                   {items.length>0 ?(
 
                    <div className="Carts-Container">
 
