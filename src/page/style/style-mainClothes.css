@@ -347,6 +347,21 @@
 
 }
 
+#star1 {
+    stroke: black;
+    cursor: pointer;
+}
+
+.filled2
+{
+   fill: none;
+}
+
+.filled {
+    fill: #FFD700;
+    stroke: #FFD700;
+}
+
 #star1:hover
 {
     fill: #FFD700; /* Золотий колір при наведенні */

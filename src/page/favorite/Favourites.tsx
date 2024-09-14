@@ -122,7 +122,7 @@ const Favourites=()=>{
 
 
               ):(
-                  <h2>Favorite is clear</h2>
+                  <h2 className="Favorite-Clear">Favorite is clear</h2>
               )}
 
               <div className="footer-2">

@@ -14,6 +14,7 @@ const MainClothes = () => {
     const [manClothing, setManClothing] = useState<ViewProduct[]>([]);
     const [womanClothing, setWomanClothing] = useState<ViewProduct[]>([]);
 
+
     useEffect(() => {
 
         http.get("api/Dashboard/GetManClothing").then(resp => {
@@ -29,6 +30,7 @@ const MainClothes = () => {
             console.log("Прийшли товари", resp.data);
         });
     }, []);
+
 
     const addItemToCart = (productId: number) => {
 
@@ -57,6 +59,17 @@ const MainClothes = () => {
             type:FavoriteActionType.ADD_FAVORITE,
             payload:cart
         });
+    };
+
+    const handleStarClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // Отримуємо саму зірочку зі SVG
+        const star = event.currentTarget.querySelector('svg');
+
+        if (star)
+        {
+            // Додаємо/видаляємо клас 'filled' для конкретної зірочки
+            star.classList.toggle('filled');
+        }
     };
 
     return (
@@ -184,9 +197,12 @@ const MainClothes = () => {
 
                                 <div className="Frame208">
 
-                                    <img src={`${baseUrl}product/${manClothing[0].imagePaths[0]}`}   className="Rectangle16"/>
+                                    <img alt={`Foto ${manClothing[0].name}`} src={`${baseUrl}product/${manClothing[0].imagePaths[0]}`}   className="Rectangle16"/>
 
-                                    <button className="favorite" onClick={() => addItemToCart(manClothing[0].id)}>
+                                    <button className="favorite" onClick={(event) => {
+                                        handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                        addItemToCart(manClothing[0].id);  // Друга функція для додавання товару в кошик
+                                    }}>
                                         <svg id="star1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
@@ -240,9 +256,12 @@ const MainClothes = () => {
 
                                 <div className="Frame211">
 
-                                    <img src={`${baseUrl}product/${manClothing[1].imagePaths[0]}`}  className="Rectangle16"/>
+                                    <img alt={`Foto ${manClothing[1].name}`} src={`${baseUrl}product/${manClothing[1].imagePaths[0]}`}  className="Rectangle16"/>
 
-                                    <button className="favorite2" onClick={() => addItemToCart(manClothing[1].id)}>
+                                    <button className="favorite2" onClick={(event) => {
+                                        handleStarClick(event);
+                                        addItemToCart(manClothing[1].id)}}>
+
                                         <svg id="star2"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
@@ -293,7 +312,7 @@ const MainClothes = () => {
 
                                 <div className="position">
 
-                                    <img src="public/Clothes/foto3.png" className="foto3"/>
+                                    <img alt="" src="public/Clothes/foto3.png" className="foto3"/>
 
                                     <div className="Men">
 
@@ -338,7 +357,7 @@ const MainClothes = () => {
                             <div className="Frame305">
 
                                 <div className="RectangleWoman">
-                                     <img src="public/Clothes/RagtangerWoman.png" className="ImageRectangleWoman"/>
+                                     <img alt="" src="public/Clothes/RagtangerWoman.png" className="ImageRectangleWoman"/>
 
                                    <div className="Women-Stroke">
 
@@ -384,10 +403,13 @@ const MainClothes = () => {
 
                                 <div className="Frame211">
 
-                                    <img src={`${baseUrl}product/${womanClothing[0].imagePaths[0]}`} className="foto4"/>
+                                    <img alt={`Foto ${womanClothing[0].name}`} src={`${baseUrl}product/${womanClothing[0].imagePaths[0]}`} className="foto4"/>
 
-                                    <button className="favorite3" onClick={() => addItemToCart(womanClothing[0].id)}>
-                                        <svg id="star3"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                    <button className="favorite3" onClick={(event) => {
+                                        handleStarClick(event);
+                                        addItemToCart(womanClothing[0].id)
+                                    }}>
+                                        <svg id="star3" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
 
@@ -423,10 +445,12 @@ const MainClothes = () => {
 
                                 <div className="Frame211">
 
-                                    <img src={`${baseUrl}product/${womanClothing[1].imagePaths[0]}`} className="foto4"/>
+                                    <img alt={`Foto ${womanClothing[1].name}`} src={`${baseUrl}product/${womanClothing[1].imagePaths[0]}`} className="foto4"/>
 
-                                    <button className="favorite3" onClick={() => addItemToCart(womanClothing[1].id)}>
-                                        <svg id="star3"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                    <button className="favorite3" onClick={(event) => {
+                                        handleStarClick(event);
+                                        addItemToCart(womanClothing[1].id)}}>
+                                        <svg id="star3" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
 
@@ -466,7 +490,7 @@ const MainClothes = () => {
 
                 <div className="Frame311">
 
-                    <img src="public/Ragtangel19.jpeg"/>
+                    <img alt="" src="public/Ragtangel19.jpeg"/>
 
                     <span>freestyle</span>
 
@@ -504,10 +528,12 @@ const MainClothes = () => {
                                 <div className="Frame215-4">
 
                                     <div className="Frame208-2">
-                                        <img src={`${baseUrl}product/${manClothing[2].imagePaths[3]}`} className="Rectangle208"/>
+                                        <img alt={`Foto ${manClothing[2].name}`} src={`${baseUrl}product/${manClothing[2].imagePaths[3]}`} className="Rectangle208"/>
 
-                                        <button className="favorite7" onClick={() => addItemToCart(manClothing[2].id)}>
-                                            <svg id="star7"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite7"  onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[2].id)}}>
+                                            <svg id="star7" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
@@ -544,10 +570,12 @@ const MainClothes = () => {
                                 <div className="Frame215-5">
 
                                     <div className="Frame208-2">
-                                        <img src={`${baseUrl}product/${manClothing[3].imagePaths[0]}`} className="Rectangle208"/>
+                                        <img alt={`Foto ${manClothing[3].name}`} src={`${baseUrl}product/${manClothing[3].imagePaths[0]}`} className="Rectangle208"/>
 
-                                        <button className="favorite8" onClick={() => addItemToCart(manClothing[3].id)}>
-                                            <svg id="star8"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite8" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[3].id)}}>
+                                            <svg id="star8" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
@@ -584,10 +612,13 @@ const MainClothes = () => {
                                 <div className="Frame215-5">
 
                                     <div className="Frame208-2">
-                                        <img src={`${baseUrl}product/${manClothing[4].imagePaths[0]}`} className="Rectangle208"/>
+                                        <img alt={`Foto ${manClothing[4].name}`} src={`${baseUrl}product/${manClothing[4].imagePaths[0]}`} className="Rectangle208"/>
 
-                                        <button className="favorite9" onClick={() => addItemToCart(manClothing[4].id)}>
-                                            <svg id="star9"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite9" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[4].id)}}>
+
+                                            <svg id="star9" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
@@ -628,10 +659,13 @@ const MainClothes = () => {
 
                                     <div className="Frame208">
 
-                                        <img src={`${baseUrl}product/${manClothing[5].imagePaths[0]}`} className="Rectangle16"/>
+                                        <img alt={`Foto ${manClothing[5].name}`} src={`${baseUrl}product/${manClothing[5].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite10" onClick={() => addItemToCart(manClothing[5].id)}>
-                                            <svg id="star10"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite10" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[5].id)}}>
+
+                                            <svg id="star10" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
@@ -682,10 +716,13 @@ const MainClothes = () => {
 
                                     <div className="Frame211">
 
-                                        <img src={`${baseUrl}product/${manClothing[6].imagePaths[0]}`} className="Rectangle16"/>
+                                        <img alt={`Foto ${manClothing[6].name}`} src={`${baseUrl}product/${manClothing[6].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite12" onClick={() => addItemToCart(manClothing[6].id)}>
-                                            <svg id="star12"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite12" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[6].id)}}>
+
+                                            <svg id="star12" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
@@ -736,10 +773,13 @@ const MainClothes = () => {
 
                                     <div className="Frame208">
 
-                                        <img src={`${baseUrl}product/${manClothing[7].imagePaths[0]}`} className="Rectangle16"/>
+                                        <img alt={`Foto ${manClothing[7].name}`} src={`${baseUrl}product/${manClothing[7].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite13" onClick={() => addItemToCart(manClothing[7].id)}>
-                                            <svg id="star13"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite13" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[7].id)}}>
+
+                                            <svg id="star13" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
