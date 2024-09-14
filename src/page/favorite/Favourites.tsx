@@ -84,7 +84,7 @@ const Favourites=()=>{
 
                                   <div className="CartUnder">
 
-                                      <img className="cartImage" src={`${baseUrl}product/${product.imagePaths[0]}`}/>
+                                      <img alt="" className="cartImage" src={`${baseUrl}product/${product.imagePaths[0]}`}/>
 
                                       <div className="FrameInformation">
 

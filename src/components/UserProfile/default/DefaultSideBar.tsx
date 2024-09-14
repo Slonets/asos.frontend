@@ -167,10 +167,10 @@ const DefaultSideBar = () => {
                         <BsArrowReturnLeft size={24} />
                         <p className="text-name">Returns</p>
                     </Link>
-                    <button className="button-in-block">
+                    <Link to="/user-info/favorite" className="button-in-block">
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>
-                    </button>
+                    </Link>
                     <Link to="/user-info/address" className="button-in-block">
                         <FiHome size={24} />
                         <p className="text-name">Address Information</p>
