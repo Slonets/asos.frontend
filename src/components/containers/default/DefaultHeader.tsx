@@ -105,7 +105,7 @@ const DefaultHeader = () => {
                             </Link>
                         )}
 
-                        <Link to="" className="regButton">
+                        <Link to="/basket" className="regButton">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                                 <g clipPath="url(#clip0_331_1382)">
                                     <path d="M12.0003 29.3333C12.7367 29.3333 13.3337 28.7364 13.3337 28C13.3337 27.2636 12.7367 26.6667 12.0003 26.6667C11.2639 26.6667 10.667 27.2636 10.667 28C10.667 28.7364 11.2639 29.3333 12.0003 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
