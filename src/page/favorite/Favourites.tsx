@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import {ViewProduct, Size} from "../../interfaces/user";
 import http from "../../http_common.ts";
 import {FavoriteActionType} from "../../store/slice/favoriteSlise.ts";
-
+import {BasketActionType} from "../../store/slice/basketSlice.tsx";
 
 const Favourites=()=>{
 
@@ -62,6 +62,44 @@ const Favourites=()=>{
         });
     };
 
+    const AddToBasket=(productId:number)=>{
+
+        if (userStatus)
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart: { productId: number}[] = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            cart.push({ productId: productId });
+
+            // Оновлюємо Local Storage з новим значенням
+            localStorage.setItem('basket', JSON.stringify(cart));
+
+            dispatch({
+                type: BasketActionType.ADD_Basket,
+                payload: cart,
+            });
+
+            http.post("api/Basket/CreateBasketId", {productId});
+        }
+        else
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart: { productId: number}[] = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            cart.push({ productId: productId });
+
+            // Оновлюємо Local Storage з новим значенням
+            localStorage.setItem('basket', JSON.stringify(cart));
+
+            dispatch({
+                type: BasketActionType.ADD_Basket,
+                payload: cart,
+            });
+        }
+
+        deleteProductWithFavorite(productId);
+    };
+
     return(
         <>
           <section className="basic-section">
@@ -108,12 +146,8 @@ const Favourites=()=>{
                                       </svg>
                                   </button>
 
-                                  {userStatus ?(
-                                      <button className="AddToBasket">add to cart</button>
-                                  ):(
-                                      <Link to="/login" className="AddToBasket2">You need login</Link>
-                                  )}
 
+                                      <button className="AddToBasket" onClick={()=>{AddToBasket(product.id)}}>add to basket</button>
                               </div>
                           ))}
 

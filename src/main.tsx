@@ -11,6 +11,8 @@ import {IUser} from "./components/authentication/login/type.ts";
 import {jwtDecode} from "jwt-decode";
 import {AuthUserActionType} from "./components/authentication/type.ts";
 import {FavoriteActionType} from "./store/slice/favoriteSlise.ts";
+import {BasketActionType} from "./store/slice/basketSlice.tsx";
+
 
 // Якщо сторінка перезавантажується на F5, то токен знову перезаписується
 if(localStorage.token)
@@ -26,6 +28,16 @@ if(localStorage.cart)
     store.dispatch({
         type:FavoriteActionType.ADD_FAVORITE,
         payload:cart
+    });
+}
+
+if(localStorage.basket)
+{
+    const products: { productId: number }[] = JSON.parse(localStorage.getItem('basket') || '[]');
+
+    store.dispatch({
+        type:BasketActionType.ADD_Basket,
+        payload:products
     });
 }
 

@@ -8,8 +8,7 @@ const DefaultHeader = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     const isAdmin  = user?.roles === "Admin";
     const favorite = useSelector((state:RootState)=>state.favorite);
-
-    console.log("Статус", favorite.length);
+    const basketCount = useSelector((state:RootState) => state.basket);
 
     return (
         <>
@@ -105,20 +104,41 @@ const DefaultHeader = () => {
                             </Link>
                         )}
 
-                        <Link to="/basket" className="regButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                <g clipPath="url(#clip0_331_1382)">
-                                    <path d="M12.0003 29.3333C12.7367 29.3333 13.3337 28.7364 13.3337 28C13.3337 27.2636 12.7367 26.6667 12.0003 26.6667C11.2639 26.6667 10.667 27.2636 10.667 28C10.667 28.7364 11.2639 29.3333 12.0003 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M26.6663 29.3333C27.4027 29.3333 27.9997 28.7364 27.9997 28C27.9997 27.2636 27.4027 26.6667 26.6663 26.6667C25.93 26.6667 25.333 27.2636 25.333 28C25.333 28.7364 25.93 29.3333 26.6663 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M1.33301 1.33334H6.66634L10.2397 19.1867C10.3616 19.8005 10.6956 20.352 11.1831 20.7444C11.6706 21.1369 12.2806 21.3453 12.9063 21.3333H25.8663C26.4921 21.3453 27.1021 21.1369 27.5896 20.7444C28.0771 20.352 28.4111 19.8005 28.533 19.1867L30.6663 8.00001H7.99967" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                        {basketCount.length>0 ? (
+
+                            <Link to="/basket" className="regButton-3">{basketCount.length>0 ? basketCount.length:''}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <g clipPath="url(#clip0_869_17670)">
+                                    <path d="M12.0013 29.3333C12.7377 29.3333 13.3346 28.7364 13.3346 28C13.3346 27.2636 12.7377 26.6667 12.0013 26.6667C11.2649 26.6667 10.668 27.2636 10.668 28C10.668 28.7364 11.2649 29.3333 12.0013 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M26.6654 29.3333C27.4017 29.3333 27.9987 28.7364 27.9987 28C27.9987 27.2636 27.4017 26.6667 26.6654 26.6667C25.929 26.6667 25.332 27.2636 25.332 28C25.332 28.7364 25.929 29.3333 26.6654 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M7.9987 8L10.2387 19.1867C10.3606 19.8005 10.6946 20.3519 11.1821 20.7444C11.6696 21.1368 12.2796 21.3453 12.9054 21.3333H25.8654C26.4911 21.3453 27.1011 21.1368 27.5886 20.7444C28.0762 20.3519 28.4101 19.8005 28.532 19.1867L30.6654 8H7.9987Z" fill="#C8F954"/>
+                                    <path d="M1.33203 1.33334H6.66536L10.2387 19.1867M10.2387 19.1867C10.3606 19.8005 10.6946 20.3519 11.1821 20.7444C11.6696 21.1368 12.2796 21.3453 12.9054 21.3333H25.8654C26.4911 21.3453 27.1011 21.1368 27.5886 20.7444C28.0762 20.3519 28.4101 19.8005 28.532 19.1867L30.6654 8H7.9987L10.2387 19.1867Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                                 </g>
                                 <defs>
-                                    <clipPath id="clip0_331_1382">
+                                    <clipPath id="clip0_869_17670">
                                         <rect width="32" height="32" fill="white"/>
                                     </clipPath>
                                 </defs>
-                            </svg>
-                        </Link>
+                                 </svg>
+                            </Link>
+
+                        ):(
+                            <Link to="/basket" className="regButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                    <g clipPath="url(#clip0_331_1382)">
+                                        <path d="M12.0003 29.3333C12.7367 29.3333 13.3337 28.7364 13.3337 28C13.3337 27.2636 12.7367 26.6667 12.0003 26.6667C11.2639 26.6667 10.667 27.2636 10.667 28C10.667 28.7364 11.2639 29.3333 12.0003 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M26.6663 29.3333C27.4027 29.3333 27.9997 28.7364 27.9997 28C27.9997 27.2636 27.4027 26.6667 26.6663 26.6667C25.93 26.6667 25.333 27.2636 25.333 28C25.333 28.7364 25.93 29.3333 26.6663 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M1.33301 1.33334H6.66634L10.2397 19.1867C10.3616 19.8005 10.6956 20.352 11.1831 20.7444C11.6706 21.1369 12.2806 21.3453 12.9063 21.3333H25.8663C26.4921 21.3453 27.1021 21.1369 27.5896 20.7444C28.0771 20.352 28.4111 19.8005 28.533 19.1867L30.6663 8.00001H7.99967" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_331_1382">
+                                            <rect width="32" height="32" fill="white"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </Link>
+                        )}
+
 
 
                         {favorite.length>0 ?(

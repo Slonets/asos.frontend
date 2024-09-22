@@ -1,17 +1,19 @@
-import {ILoginPage, ILoginPageError, IValidLogin} from "./type.ts";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {GoogleLoginRequest, ILoginPage, ILoginPageError, IValidLogin, LoginResponse} from "./type.ts";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import http from "../../../http_common.ts";
 
 import setAuthToken from "../../../helpers/setAuthToken.ts";
-import {useAppDispatch} from "../../../store";
+import {RootState, useAppDispatch} from "../../../store";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {AuthUserActionType, IUserToken} from "../type.ts";
 import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 import "./style-Login.css";
-import {useGoogleLoginMutation} from "../../../services/user.ts";
+// import {useGoogleLoginMutation} from "../../../services/user.ts";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {useSelector} from "react-redux";
+import {BasketActionType} from "../../../store/slice/basketSlice.tsx";
 
 const LoginPage = () => {
 
@@ -19,43 +21,85 @@ const LoginPage = () => {
 
     const location = useLocation();
     const dispatch = useAppDispatch();
-    const [googleLogin] = useGoogleLoginMutation();
+    // const [googleLogin] = useGoogleLoginMutation();
+
+    const basket = useSelector((state:RootState) => state.basket); // Отримуємо товари з Redux-стану
+    console.log("Що є в корзині",basket);
+
+    const [array, setArray] = useState<number[]>([]);
+
+    useEffect(() => {
+        if(basket.length > 0)
+        {
+            const productIds = basket.map((item: any) => item.productId);
+            setArray(productIds);
+        }
+    }, [basket]);
 
     const authSuccess = async (credentialResponse: CredentialResponse) => {
-        const resp = await googleLogin({
+        const loginData: GoogleLoginRequest = {
             credential: credentialResponse.credential || "",
-        });
+            baskets: array.length > 0 ? array : undefined
+        };
 
-        if (resp && "data" in resp && resp.data)
-        {
-            const token = resp.data.token as string;
+        console.log("Що є у loginData", loginData);
 
-            setAuthToken(token);
+        // const resp = await googleLogin(loginData);
 
-            const user = jwtDecode<IUserToken>(token);
+        try {
+            const resp = await http.post("api/Account/GoogleSignIn", loginData);
 
-            console.log("Вхід успішний", user);
+            // Додаємо тип для респонса
+            const data = resp.data as LoginResponse;
 
-            dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+            if (data && data.token) {
+                const token = data.token;
+                setAuthToken(token);
 
-            const {from} = location.state || {from: {pathname: "/"}};
-            navigate(from);
-        }
-        else
-        {
-            if (resp.error)
-            {
-                // Перевірка, чи це FetchBaseQueryError і чи є властивість data
-                if ('data' in resp.error)
+                const user = jwtDecode<IUserToken>(token);
+                console.log("Вхід успішний", user);
+                dispatch({ type: AuthUserActionType.LOGIN_USER, payload: user });
+
+                const baskets = data.baskets;
+
+                if (Array.isArray(baskets) && baskets.length > 0)
                 {
-                    const errorData = (resp.error as FetchBaseQueryError).data as ILoginPageError;
-                    setBadbadRequest(errorData);
-                }
-            }
 
+                    localStorage.setItem('basket', JSON.stringify(baskets));
+                    dispatch({ type: BasketActionType.ADD_Basket, payload: baskets });
+                } else
+                {
+                    console.log("Кошик порожній або не знайдено");
+                }
+
+                const { from } = location.state || { from: { pathname: "/" } };
+                navigate(from);
+
+            } else
+            {
+                console.log("Помилка при вході:", resp.data.error);
+                if (resp.data.error)
+                {
+                    if ('data' in resp.data.error)
+                    {
+                        const errorData = (resp.data.error as FetchBaseQueryError).data as ILoginPageError;
+                        setBadbadRequest(errorData);
+                    }
+                }
+                dispatch({ type: AuthUserActionType.LOGOUT_USER });
+            }
+        } catch (error)
+        {
+            console.error("Помилка при запиті:", error);
+            // Обробка помилки запиту
+            setBadbadRequest({
+                error: "Сталася помилка під час входу.",
+                isSuccess: false
+            });
             dispatch({ type: AuthUserActionType.LOGOUT_USER });
         }
     };
+
     const authError = () => {
         console.log("Error login.");
     };
@@ -65,7 +109,8 @@ const LoginPage = () => {
     //створили конкретний екземлеяр на основі нашого інтерфейсу
     const init: ILoginPage = {
         email: "",
-        password: ""
+        password: "",
+        basket:[]
     };
 
 
@@ -81,9 +126,17 @@ const LoginPage = () => {
     const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // console.log("Приходять дані", data);
+        console.log("Приходить такий масив", array);
+
+        data.basket = [...data.basket,...array];
+
+        console.log("Відправляємо дані на login", data);
+
         http.post("api/account/login", data)
             .then(resp => {
+
+                navigate("/");
+
                 const token = resp.data.token as string;
 
                 setAuthToken(token);
@@ -94,7 +147,22 @@ const LoginPage = () => {
 
                 dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
 
-                navigate("/");
+                const basket =resp.data.baskets;
+
+                if(basket.length>0)
+                {
+                    const cart: { productId: number}[] = JSON.parse(localStorage.getItem('basket') || '[]');
+
+                    cart.push({ productId: basket });
+
+                    // Оновлюємо Local Storage з новим значенням
+                    localStorage.setItem('basket', JSON.stringify(cart));
+
+                    dispatch({
+                        type: BasketActionType.ADD_Basket,
+                        payload: basket,
+                    });
+                }
 
             })
             .catch(badRequest => {

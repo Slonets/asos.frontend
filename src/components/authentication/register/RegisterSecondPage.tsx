@@ -89,10 +89,11 @@ const RegisterSecondPage = () => {
             );
             console.log("Result server good", result);
 
+
             localStorage.removeItem('firstName');
             localStorage.removeItem('lastName');
 
-            navigate("/");
+            navigate("/login");
 
         }
         catch (error)

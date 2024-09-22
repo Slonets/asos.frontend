@@ -1,7 +1,18 @@
+export interface LoginResponse {
+    token: string;
+    baskets?: number[]; // Масив ID продуктів у кошику
+}
+
+export interface GoogleLoginRequest {
+    credential: string;
+    baskets?: number[];
+}
+
 export interface ILoginPage
 {
     email:string;
     password:string;
+    basket:number[];
 }
 
 export interface ILoginPageError

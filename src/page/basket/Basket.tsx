@@ -1,6 +1,7 @@
 import "./style.css";
 import {Link} from "react-router-dom";
 import {useState} from "react";
+
 const Basket=()=>{
 
     const [quantity, setQuantity] = useState(1);
@@ -18,6 +19,10 @@ const Basket=()=>{
             setQuantity(quantity + 1);
         }
     };
+
+
+
+
 
     return(
         <>
