@@ -23,23 +23,23 @@ const LoginPage = () => {
     const dispatch = useAppDispatch();
     // const [googleLogin] = useGoogleLoginMutation();
 
-    const basket = useSelector((state:RootState) => state.basket); // Отримуємо товари з Redux-стану
-    console.log("Що є в корзині",basket);
+    const basket = useSelector((state:RootState) => state.basket);
 
     const [array, setArray] = useState<number[]>([]);
 
     useEffect(() => {
         if(basket.length > 0)
         {
-            const productIds = basket.map((item: any) => item.productId);
+            const productIds = basket.map((item: any) => item);
             setArray(productIds);
         }
     }, [basket]);
 
     const authSuccess = async (credentialResponse: CredentialResponse) => {
+
         const loginData: GoogleLoginRequest = {
             credential: credentialResponse.credential || "",
-            baskets: array.length > 0 ? array : undefined
+            baskets: array
         };
 
         console.log("Що є у loginData", loginData);
@@ -52,7 +52,8 @@ const LoginPage = () => {
             // Додаємо тип для респонса
             const data = resp.data as LoginResponse;
 
-            if (data && data.token) {
+            if (data && data.token)
+            {
                 const token = data.token;
                 setAuthToken(token);
 
@@ -60,13 +61,27 @@ const LoginPage = () => {
                 console.log("Вхід успішний", user);
                 dispatch({ type: AuthUserActionType.LOGIN_USER, payload: user });
 
-                const baskets = data.baskets;
+                const basket =resp.data.baskets;
 
-                if (Array.isArray(baskets) && baskets.length > 0)
+                if(basket.length>0)
                 {
+                    localStorage.removeItem("basket");
 
-                    localStorage.setItem('basket', JSON.stringify(baskets));
-                    dispatch({ type: BasketActionType.ADD_Basket, payload: baskets });
+                    const products = JSON.parse(localStorage.getItem('basket') || '[]');
+
+                    basket.forEach((productId: number) => {
+
+                        products.push(productId);
+                    });
+
+                    localStorage.setItem('basket', JSON.stringify(basket));
+
+                    // Оновлюємо кошик у Redux
+                    dispatch({
+                        type: BasketActionType.ADD_Basket,
+                        payload: products,  // Передаємо новий масив у Redux
+                    });
+
                 } else
                 {
                     console.log("Кошик порожній або не знайдено");
@@ -110,7 +125,7 @@ const LoginPage = () => {
     const init: ILoginPage = {
         email: "",
         password: "",
-        basket:[]
+        baskets:[]
     };
 
 
@@ -128,7 +143,7 @@ const LoginPage = () => {
 
         console.log("Приходить такий масив", array);
 
-        data.basket = [...data.basket,...array];
+        data.baskets = [...data.baskets,...array];
 
         console.log("Відправляємо дані на login", data);
 
@@ -151,16 +166,21 @@ const LoginPage = () => {
 
                 if(basket.length>0)
                 {
-                    const cart: { productId: number}[] = JSON.parse(localStorage.getItem('basket') || '[]');
+                    localStorage.removeItem("basket");
 
-                    cart.push({ productId: basket });
+                    const products = JSON.parse(localStorage.getItem('basket') || '[]');
 
-                    // Оновлюємо Local Storage з новим значенням
-                    localStorage.setItem('basket', JSON.stringify(cart));
+                    basket.forEach((productId: number) => {
 
+                        products.push(productId);
+                    });
+
+                    localStorage.setItem('basket', JSON.stringify(basket));
+
+                    // Оновлюємо кошик у Redux
                     dispatch({
                         type: BasketActionType.ADD_Basket,
-                        payload: basket,
+                        payload: products,  // Передаємо новий масив у Redux
                     });
                 }
 

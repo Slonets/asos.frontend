@@ -12,6 +12,7 @@ import {jwtDecode} from "jwt-decode";
 import {AuthUserActionType} from "./components/authentication/type.ts";
 import {FavoriteActionType} from "./store/slice/favoriteSlise.ts";
 import {BasketActionType} from "./store/slice/basketSlice.tsx";
+import {OrderActionType} from "./store/slice/orderSlice.tsx";
 
 
 // Якщо сторінка перезавантажується на F5, то токен знову перезаписується
@@ -24,7 +25,8 @@ if(localStorage.token)
 
 if(localStorage.cart)
 {
-    const cart: { productId: number, count: number }[] = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
     store.dispatch({
         type:FavoriteActionType.ADD_FAVORITE,
         payload:cart
@@ -33,11 +35,21 @@ if(localStorage.cart)
 
 if(localStorage.basket)
 {
-    const products: { productId: number }[] = JSON.parse(localStorage.getItem('basket') || '[]');
+    const products = JSON.parse(localStorage.getItem('basket') || '[]');
 
     store.dispatch({
         type:BasketActionType.ADD_Basket,
         payload:products
+    });
+}
+
+if(localStorage.order)
+{
+    const orders = JSON.parse(localStorage.getItem('order') || '[]');
+
+    store.dispatch({
+        type:OrderActionType.ADD_Order,
+        payload:orders
     });
 }
 

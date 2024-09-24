@@ -1,6 +1,6 @@
 export interface ICartItem
 {
-    productId:number
+    productId:number;
 }
 
 const initState: ICartItem[] =[];

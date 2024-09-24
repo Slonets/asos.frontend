@@ -21,7 +21,7 @@ const Favourites=()=>{
     useEffect(() => {
         if(items.length > 0)
         {
-            const productIds = items.map((item: any) => item.productId);
+            const productIds = items.map((item: any) => item);
             setArray(productIds);
         }
     }, [items]);
@@ -50,7 +50,7 @@ const Favourites=()=>{
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
         // Видалити товар з кошика
-        const updatedCart = cart.filter((item: any) => item.productId !== productId);
+        const updatedCart = cart.filter((item: any) => item !== productId);
 
         // Оновити Local Storage
         localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -67,34 +67,44 @@ const Favourites=()=>{
         if (userStatus)
         {
             // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
-            const cart: { productId: number}[] = JSON.parse(localStorage.getItem('basket') || '[]');
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
 
-            cart.push({ productId: productId });
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
 
-            // Оновлюємо Local Storage з новим значенням
-            localStorage.setItem('basket', JSON.stringify(cart));
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
 
-            dispatch({
-                type: BasketActionType.ADD_Basket,
-                payload: cart,
-            });
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
 
-            http.post("api/Basket/CreateBasketId", {productId});
+                http.post("api/Basket/CreateBasketId", { productId });
+            }
         }
         else
         {
             // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
-            const cart: { productId: number}[] = JSON.parse(localStorage.getItem('basket') || '[]');
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
 
-            cart.push({ productId: productId });
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
 
-            // Оновлюємо Local Storage з новим значенням
-            localStorage.setItem('basket', JSON.stringify(cart));
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
 
-            dispatch({
-                type: BasketActionType.ADD_Basket,
-                payload: cart,
-            });
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
+            }
         }
 
         deleteProductWithFavorite(productId);

@@ -5,14 +5,14 @@ export interface LoginResponse {
 
 export interface GoogleLoginRequest {
     credential: string;
-    baskets?: number[];
+    baskets: number[];
 }
 
 export interface ILoginPage
 {
     email:string;
     password:string;
-    basket:number[];
+    baskets:number[];
 }
 
 export interface ILoginPageError

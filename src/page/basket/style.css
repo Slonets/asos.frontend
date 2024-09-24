@@ -33,8 +33,9 @@
     border-radius: 2px;
     border: 2px solid #707070;
     background:  #F5F5F5;
-    width: 940px;
+    width: max-content;
     height: max-content;
+    margin-bottom: 100px;
 }
 
 .CartBasketItem
@@ -42,6 +43,7 @@
     display: inline-flex;
     align-items: center;
     gap: 42px;
+    margin: 40px 50px 40px 50px;
 }
 
 .Frame92
@@ -146,6 +148,7 @@
     align-items: center;
     gap: 10px;
     align-self: stretch;
+    flex-direction: column;
 }
 
 .Cart-Total
@@ -459,4 +462,27 @@ background-color: #4848b6;
 .hover-red:hover svg path
 {
     stroke: red;
+}
+
+.Order-Done
+{
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 80px;
+    background: linear-gradient(90deg, #dcd158, #224b12, #7782ff);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: colorShift 3s linear infinite;
+    text-align: center;
+    margin-top: 100px;
+}
+
+@keyframes colorShift {
+    0% {
+        background-position: 0%;
+    }
+    100% {
+        background-position: 100%;
+    }
 }

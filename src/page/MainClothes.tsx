@@ -36,15 +36,30 @@ const MainClothes = () => {
         console.log("Прийшло", productId);
 
         // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
-        const cart: { productId: number}[] = JSON.parse(localStorage.getItem('cart') || '[]');
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-        cart.push({ productId: productId });
+        // Перевіряємо, чи існує такий товар у кошику. Якщо існує, то поверне його id
+        // Якщо не існує, то поверне -1
+        const index = cart.indexOf(productId);
+
+        if (index !== -1)
+        {
+            // Якщо товар є, видаляємо його
+            cart.splice(index, 1);
+        }
+        else
+        {
+            // Якщо товару немає, додаємо його
+            cart.push(productId);
+        }
 
         // Оновлюємо Local Storage з новим значенням
         localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Оновлюємо стан з новим кошиком
         dispatch({
-            type:FavoriteActionType.ADD_FAVORITE,
-            payload:cart
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: cart
         });
     };
 
