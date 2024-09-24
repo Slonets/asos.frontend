@@ -200,6 +200,11 @@ const DefaultSideBar = () => {
                     className="sign-out-button"
                       onClick={(e) => {
                           e.preventDefault();
+
+                          // Видалення даних з localStorage
+                          localStorage.removeItem("cart");
+                          localStorage.removeItem("basket");
+
                           localStorage.removeItem("token");
                           window.location.href="/";
                       }}

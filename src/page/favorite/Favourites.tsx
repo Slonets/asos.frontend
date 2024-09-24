@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import {ViewProduct, Size} from "../../interfaces/user";
 import http from "../../http_common.ts";
 import {FavoriteActionType} from "../../store/slice/favoriteSlise.ts";
-
+import {BasketActionType} from "../../store/slice/basketSlice.tsx";
 
 const Favourites=()=>{
 
@@ -21,7 +21,7 @@ const Favourites=()=>{
     useEffect(() => {
         if(items.length > 0)
         {
-            const productIds = items.map((item: any) => item.productId);
+            const productIds = items.map((item: any) => item);
             setArray(productIds);
         }
     }, [items]);
@@ -50,7 +50,7 @@ const Favourites=()=>{
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
         // Видалити товар з кошика
-        const updatedCart = cart.filter((item: any) => item.productId !== productId);
+        const updatedCart = cart.filter((item: any) => item !== productId);
 
         // Оновити Local Storage
         localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -60,6 +60,54 @@ const Favourites=()=>{
             type: FavoriteActionType.ADD_FAVORITE,
             payload: updatedCart,
         });
+    };
+
+    const AddToBasket=(productId:number)=>{
+
+        if (userStatus)
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
+
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
+
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
+
+                http.post("api/Basket/CreateBasketId", { productId });
+            }
+        }
+        else
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
+
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
+
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
+            }
+        }
+
+        deleteProductWithFavorite(productId);
     };
 
     return(
@@ -108,12 +156,8 @@ const Favourites=()=>{
                                       </svg>
                                   </button>
 
-                                  {userStatus ?(
-                                      <button className="AddToBasket">add to cart</button>
-                                  ):(
-                                      <Link to="/login" className="AddToBasket2">You need login</Link>
-                                  )}
 
+                                      <button className="AddToBasket" onClick={()=>{AddToBasket(product.id)}}>add to basket</button>
                               </div>
                           ))}
 
