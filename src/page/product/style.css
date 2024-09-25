@@ -22,12 +22,14 @@
     justify-content: start; /* Розташовуємо елементи на всю ширину контейнера */
     align-items: flex-start; /* Вирівнюємо елементи по верхньому краю */
 }
-h1{
+.h1-text{
     font-size: 24px;
     padding: 30px;
 }
 .text-price{
     padding-left: 30px;
+    font-size: 26px;
+
 }
 .dropdown-button{
     padding-left: 30px;
@@ -37,15 +39,22 @@ h1{
 }
 .div-with-dropbutton{
     display: flex; /* Встановлюємо контейнеру Flexbox */
-    gap: 40px; /* Відстань між елементами */
+    gap: 110px; /* Відстань між елементами */
     align-items: center; /* Вирівнювання елементів по вертикалі (за бажанням) */
 }
 .box-1{
     padding-top: 48px;
 }
 .box-1-p{
-    padding-left: 30px;
+    margin-left: 30px;
     margin-bottom: 14px;
+}
+.box-2{
+    display: flex;
+    flex-direction: column; /* Встановлює вертикальне розташування елементів */
+    align-items: center; /* Вирівнює елементи по центру */
+
+
 }
 .amount-button{
     padding-left: 40px;
@@ -94,4 +103,19 @@ h1{
 }
 .div-accord-margin{
     margin-top: 30px;
+}
+.text-info-about-prod{
+    font-size: 22px;
+    margin-left: 30px;
+}
+.text-info-about-prod-2{
+    font-size: 20px;
+    margin-left: 20px;
+}
+.box-with-sizes{
+    width: 100px;
+    height: 30px;
+}
+.text-size{
+    font-size: 28px;
 }

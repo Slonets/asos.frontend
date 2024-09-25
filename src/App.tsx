@@ -38,7 +38,7 @@ function App() {
                     <Route path="register-second-page" element={<RegisterSecondPage/>}/>
                     <Route path="favorite" element={<Favourites/>}/>
                     <Route path="basket" element={<Basket/>}/>
-                    <Route path="product" element={<Product/>}/>
+                    <Route path="product/:id" element={<Product/>}/>
                 </Route>
 
                 <Route path={"/pages"}>

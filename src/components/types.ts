@@ -6,12 +6,12 @@ export interface ICategoryName {
 }
 export interface IProductCreate {
     id: number,
-    Name: string;
+    name: string;
     Description: string;
     CategoryId: number;
     price: number;
-    Size:number;
-    Color:string;
+    size:number;
+    color:string;
     BrandId:number;
     SubCategoryId:number;
     Gender:number;
