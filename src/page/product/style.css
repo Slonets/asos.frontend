@@ -1,0 +1,121 @@
+.div-with-img{
+    width: 1092px;
+    height: 1284px;
+    margin-left: 100px;
+    margin-top: 114px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Дві колонки */
+    gap: 1px; /* Відстань між фотографіями */
+    padding: 35px;
+
+}
+.div-with-info{
+    height: 642px;
+    width: 546px;
+    border: 2px solid rgb(13, 13, 13);
+    margin-left: 30px;
+    margin-top: 149px;
+
+}
+.section{
+    display: flex; /* Встановлюємо Flexbox на секцію */
+    justify-content: start; /* Розташовуємо елементи на всю ширину контейнера */
+    align-items: flex-start; /* Вирівнюємо елементи по верхньому краю */
+}
+.h1-text{
+    font-size: 24px;
+    padding: 30px;
+}
+.text-price{
+    padding-left: 30px;
+    font-size: 26px;
+
+}
+.dropdown-button{
+    padding-left: 30px;
+
+    width: 140px;
+    height: 48px;
+}
+.div-with-dropbutton{
+    display: flex; /* Встановлюємо контейнеру Flexbox */
+    gap: 110px; /* Відстань між елементами */
+    align-items: center; /* Вирівнювання елементів по вертикалі (за бажанням) */
+}
+.box-1{
+    padding-top: 48px;
+}
+.box-1-p{
+    margin-left: 30px;
+    margin-bottom: 14px;
+}
+.box-2{
+    display: flex;
+    flex-direction: column; /* Встановлює вертикальне розташування елементів */
+    align-items: center; /* Вирівнює елементи по центру */
+
+
+}
+.amount-button{
+    padding-left: 40px;
+    width: 110px;
+    height: 48px;
+    font-size:20px ;
+    margin-left: 30px;
+}
+.box-1-p-last{
+    padding-left: 30px;
+    margin-bottom: 14px;
+}
+.form-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.button-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+.text-delivery{
+    font-size: 14px;
+    color: gray;
+    margin-left: 10px;
+}
+.div-delivery{
+    display: flex;
+    justify-content: start;
+    margin-left: 30px;
+    margin-bottom: 15px;
+}
+.main-div-delivery{
+    margin-top: 50px;
+}
+.last-text-delivery{
+    display: flex;
+    justify-content: center;
+    margin-top: 90px;
+}
+.div-accord{
+    width: 546px;
+    margin-top: 15px;
+    margin-left: 30px;
+}
+.div-accord-margin{
+    margin-top: 30px;
+}
+.text-info-about-prod{
+    font-size: 22px;
+    margin-left: 30px;
+}
+.text-info-about-prod-2{
+    font-size: 20px;
+    margin-left: 20px;
+}
+.box-with-sizes{
+    width: 100px;
+    height: 30px;
+}
+.text-size{
+    font-size: 28px;
+}

@@ -1,12 +1,10 @@
-import {Button, Form, Input, InputNumber, Row, Select, Upload} from "antd";
-import { PlusOutlined} from '@ant-design/icons';
-import type {UploadChangeParam} from 'antd/es/upload';
-import {useNavigate} from "react-router-dom";
+import { Button, Form, Input, InputNumber, Row, Select, Upload } from "antd";
+import { PlusOutlined } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
-import {IBrandName, ICategoryName, IGenderName, IProductCreate, ISizeName, ISubCategoryName} from "../../types.ts";
+import { IBrandName, ICategoryName, IGenderName, IProductCreate, ISizeName, ISubCategoryName } from "../../types.ts";
 import http_common from "../../../http_common.ts";
-import {IUploadedFile} from "../../types.ts";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 const ProductCreatePage = () => {
     const [categories, setCategories] = useState<ICategoryName[]>([]);
@@ -15,6 +13,7 @@ const ProductCreatePage = () => {
     const [genders, setGenders] = useState<IGenderName[]>([]);
     const [subcategories, setSubcategories] = useState<ISubCategoryName[]>([]);
     const [filteredSubcategories, setFilteredSubcategories] = useState<ISubCategoryName[]>([]);
+    const [imageNames, setImageNames] = useState<string[]>([]);  // Зберігаємо назви файлів
 
     const navigate = useNavigate();
     const [form] = Form.useForm<IProductCreate>();
@@ -63,7 +62,7 @@ const ProductCreatePage = () => {
         }
     };
 
-    const fetchSubcategories = async () => { // Додано функцію для завантаження підкатегорій
+    const fetchSubcategories = async () => {
         try {
             const response = await http_common.get<ISubCategoryName[]>("/api/Dashboard/GetAllSubCategory");
             setSubcategories(response.data);
@@ -82,18 +81,23 @@ const ProductCreatePage = () => {
     const subcategoriesData = filteredSubcategories?.map(item => ({ label: item.name, value: item.id }));
 
     const onSubmit = async (values: IProductCreate) => {
+        const dataToSubmit = {
+            ...values,
+            ImageUrls: imageNames  // Відправляємо лише назви файлів
+        };
         try {
-            await http_common.post("/api/Dashboard/CreateProduct", values, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-
-            });
+            await http_common.post("/api/Dashboard/CreateProduct", dataToSubmit);
             navigate("/");
         } catch (ex) {
-            console.log("error>",values)
+            console.log("error>", dataToSubmit);
             console.error("Exception creating product:", ex);
         }
+    };
+
+    const handleImageUpload = (e: any) => {
+        const fileList = e.fileList;
+        const fileNames = fileList.map((file: any) => file.name);  // Беремо лише назви файлів
+        setImageNames(fileNames);  // Зберігаємо назви файлів
     };
 
     return (
@@ -186,7 +190,6 @@ const ProductCreatePage = () => {
                         ]}
                     >
                         <Select
-                            //mode="multiple"
                             placeholder="Select the size: "
                             options={sizes.map(item => ({ label: item.label, value: item.value }))}
                         />
@@ -268,34 +271,11 @@ const ProductCreatePage = () => {
                         <TextArea />
                     </Form.Item>
 
-                    <Form.Item
-                        label="Amount"
-                        name="Amount"
-                        htmlFor="Amount"
-                        rules={[
-                            { required: true, message: 'It is a required field!' },
-                            { type: 'number' }
-                        ]}
-                    >
-                        <InputNumber min={0} autoComplete="off" />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="ImageUrls"
-                        label="Images"
-                        valuePropName="ImageUrls"
-                        getValueFromEvent={(e: UploadChangeParam) => {
-                            const image = e?.fileList[0] as IUploadedFile;
-                            return image?.originFileObj;
-                        }}
-                        rules={[{ required: true, message: 'Choose image for product!' }]}
-                    >
+                    <Form.Item label="Images">
                         <Upload
-                            showUploadList={{ showPreviewIcon: false }}
-                            beforeUpload={() => false}
-                            accept="image/*"
                             listType="picture-card"
-                            maxCount={10}
+                            beforeUpload={() => false}  // Відключаємо автозавантаження
+                            onChange={handleImageUpload}
                         >
                             <div>
                                 <PlusOutlined />
@@ -304,14 +284,9 @@ const ProductCreatePage = () => {
                         </Upload>
                     </Form.Item>
 
-                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button style={{ margin: 10 }} type="primary" htmlType="submit">
-                            Add
-                        </Button>
-                        <Button style={{ margin: 10 }} htmlType="button" onClick={() => navigate('/')}>
-                            Cancel
-                        </Button>
-                    </Row>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">Create</Button>
+                    </Form.Item>
                 </Form>
             </Row>
         </>

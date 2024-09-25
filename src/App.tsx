@@ -23,6 +23,7 @@ import UpdateProduct from "./components/adminPanel/product/UpdateProduct.tsx";
 import Favourites from "./page/favorite/Favourites.tsx";
 import FavoriteUser from "./components/UserProfile/favorite/FavoriteUser.tsx";
 import Basket from "./page/basket/Basket.tsx";
+import Product from "./page/product/Product.tsx";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
                     <Route path="register-second-page" element={<RegisterSecondPage/>}/>
                     <Route path="favorite" element={<Favourites/>}/>
                     <Route path="basket" element={<Basket/>}/>
+                    <Route path="product/:id" element={<Product/>}/>
                 </Route>
 
                 <Route path={"/pages"}>
