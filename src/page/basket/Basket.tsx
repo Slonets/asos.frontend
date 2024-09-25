@@ -157,9 +157,6 @@ const Basket=()=>{
                 amount:totalPrice// ціна за одиницю
             }));
 
-            //Обмеження, щоб такий самий об'єкт не зміг прийти
-            // if (!order.includes(productId)) {}
-
             orderItems.forEach((item: any) => {
                 order.push(item);
             });
