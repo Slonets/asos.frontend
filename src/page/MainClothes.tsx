@@ -14,7 +14,6 @@ const MainClothes = () => {
     const [manClothing, setManClothing] = useState<ViewProduct[]>([]);
     const [womanClothing, setWomanClothing] = useState<ViewProduct[]>([]);
 
-
     useEffect(() => {
 
         http.get("api/Dashboard/GetManClothing").then(resp => {
@@ -37,27 +36,30 @@ const MainClothes = () => {
         console.log("Прийшло", productId);
 
         // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
-        const cart: { productId: number, count: number }[] = JSON.parse(localStorage.getItem('cart') || '[]');
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-        // Знайти, чи вже є товар з таким productId в кошику
-        const existingItemIndex = cart.findIndex((item: { productId: number, count: number }) => item.productId === productId);
+        // Перевіряємо, чи існує такий товар у кошику. Якщо існує, то поверне його id
+        // Якщо не існує, то поверне -1
+        const index = cart.indexOf(productId);
 
-        if (existingItemIndex !== -1)
+        if (index !== -1)
         {
-            // Якщо товар вже є в кошику, збільшуємо кількість на 1
-            cart[existingItemIndex].count += 1;
+            // Якщо товар є, видаляємо його
+            cart.splice(index, 1);
         }
         else
         {
-            // Якщо товару ще немає в кошику, додаємо його з кількістю 1
-            cart.push({ productId: productId, count: 1 });
+            // Якщо товару немає, додаємо його
+            cart.push(productId);
         }
 
         // Оновлюємо Local Storage з новим значенням
         localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Оновлюємо стан з новим кошиком
         dispatch({
-            type:FavoriteActionType.ADD_FAVORITE,
-            payload:cart
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: cart
         });
     };
 
