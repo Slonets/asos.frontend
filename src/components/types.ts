@@ -7,7 +7,7 @@ export interface ICategoryName {
 export interface IProductCreate {
     id: number,
     name: string;
-    Description: string;
+    description: string;
     CategoryId: number;
     price: number;
     size:number;
