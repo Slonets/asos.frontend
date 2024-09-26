@@ -18,7 +18,7 @@ const FavoriteUser=()=>{
     useEffect(() => {
         if(items.length > 0)
         {
-            const productIds = items.map((item: any) => item.productId);
+            const productIds = items.map((item: any) => item);
             setArray(productIds);
         }
     }, [items]);
@@ -47,7 +47,7 @@ const FavoriteUser=()=>{
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
         // Видалити товар з кошика
-        const updatedCart = cart.filter((item: any) => item.productId !== productId);
+        const updatedCart = cart.filter((item: any) => item !== productId);
 
         // Оновити Local Storage
         localStorage.setItem('cart', JSON.stringify(updatedCart));
