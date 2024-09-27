@@ -1,34 +1,67 @@
-.div-with-img{
+.Text-Top
+{
+    padding-top: 200px;
+}
+
+.div-with-img
+{
     width: 640px;
     height: 817px;
     margin-left: 250px;
-    margin-top: 114px;
+
     display: flex;
     justify-content: center;
-
-
 }
-.main-div-with-photo {
+
+.carousel-title
+{
+    color: grey;
+    margin-top: 114px;
+    margin-left: 290px;
+    font-size: 28px; /* Розмір шрифту */
+    font-weight: bold; /* Жирний текст */
+    margin-bottom: 20px; /* Відступ від тексту до каруселі */
+}
+
+.main-div-with-photo
+{
    width: 1092px;
     height: 1284px;
 }
-.div-with-info{
+
+.div-with-info
+{
     height: 642px;
     width: 546px;
     border: 2px solid rgb(13, 13, 13);
     margin-left: 30px;
     margin-top: 149px;
-
 }
-.section{
+
+
+.section
+{
+    margin:0 auto;
     display: flex; /* Встановлюємо Flexbox на секцію */
     justify-content: start; /* Розташовуємо елементи на всю ширину контейнера */
     align-items: flex-start; /* Вирівнюємо елементи по верхньому краю */
+    background: #F5F5F5;
 }
-.h1-text{
-    font-size: 24px;
-    padding: 30px;
+
+.h1-text
+{
+    font-size: 24px; /* Задайте розмір шрифту */
+    position: relative;
+    top: 100px; /* Опускає елемент на 100px вниз */
+    font-family: "Outfit", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    text-transform: uppercase;
+    padding-left: 20px;
+    padding-right: 20px;
 }
+
 .text-price{
     padding-left: 30px;
     font-size: 26px;
@@ -42,25 +75,63 @@
 }
 .div-with-dropbutton{
     display: flex; /* Встановлюємо контейнеру Flexbox */
-    margin: 20px;
+    margin: 100px 20px 0 20px;
    justify-content: space-between;
     align-items: center;
 }
-.box-1{
-    padding-top: 48px;
-}
-.box-1-p{
-    margin-left: 30px;
-    margin-bottom: 14px;
-}
-.box-2{
+
+.box-2
+{
     display: flex;
     flex-direction: column; /* Встановлює вертикальне розташування елементів */
-    align-items: center; /* Вирівнює елементи по центру */
-
-
 
 }
+
+.P-Color
+{
+    color:  #0D0D0D;
+    font-family: "Outfit", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.Size-option
+{
+    display: flex;
+    width: 140px;
+    height: 48px;
+
+
+    border-radius: 2px;
+    border: 2px solid #707070;
+    background: #FFF;
+}
+
+.box-1-p-last {
+    text-align: center;
+    font-size: 28px; /* Збільшено розмір тексту для параграфа */
+    font-weight: bold; /* Додатково можна зробити текст жирним */
+    margin-bottom: 14px; /* Відступ від параграфа до Select */
+}
+
+.Span-Color
+{
+    display: flex;
+    width: 140px;
+    height: 48px;
+    padding: 20px 15px;
+    justify-content: space-between;
+    align-items: center;
+
+    border-radius: 2px;
+    border: 2px solid #707070;
+    background: #FFF;
+}
+
 .amount-button{
     padding-left: 40px;
     width: 110px;
@@ -68,10 +139,7 @@
     font-size:20px ;
     margin-left: 30px;
 }
-.box-1-p-last{
-    padding-left: 30px;
-    margin-bottom: 14px;
-}
+
 .form-row {
     display: flex;
     justify-content: center;
@@ -82,9 +150,16 @@
     display: flex;
     justify-content: center;
 }
+
+.button-container>:hover
+{
+    background-color: #4848b6;
+    color: #F5F5F5;
+}
+
 .text-delivery{
     font-size: 14px;
-    color: gray;
+    color: grey;
     margin-left: 10px;
 }
 .div-delivery{
@@ -99,12 +174,20 @@
 .last-text-delivery{
     display: flex;
     justify-content: center;
-    margin-top: 90px;
+    margin-top: 30px;
 }
 .div-accord{
     width: 546px;
     margin-top: 15px;
     margin-left: 30px;
+
+    color: #0D0D0D;
+    font-family: "Outfit", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 100px; /* 500% */
+    text-transform: uppercase;
 }
 .div-accord-margin{
     margin-top: 30px;
@@ -122,3 +205,30 @@
 .text-size{
     font-size: 28px;
 }
+
+/* Зміна стилів кнопок каруселі (стрілок) */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 100px; /* Збільшення розміру кнопки */
+    height: 100px; /* Збільшення розміру кнопки */
+    background-color: #152e91; /* Зміна кольору кнопки */
+    background-size: 100%, 100%; /* Переконайтеся, що іконка займає всю кнопку */
+    border-radius: 50%; /* Можна зробити кнопку круглою */
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: red; /* Зміна кольору при наведенні */
+}
+
+.footer-3
+{
+        width: 100%;
+        height: 698px;
+        left: 0;
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+}
+
+

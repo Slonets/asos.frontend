@@ -237,11 +237,13 @@ const MainClothes = () => {
 
                                       </div>
 
-                                        <button className="Frame70" >
+                                        <Link
+                                            to={`product/${manClothing[0].id}`}
+                                            className="Frame70" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
-                                        </button>
+                                        </Link>
 
                                     </div>
 
@@ -296,11 +298,13 @@ const MainClothes = () => {
 
                                         </div>
 
-                                        <button className="Frame70-2" >
+                                        <Link
+                                            to={`product/${manClothing[1].id}`}
+                                            className="Frame70-2" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
-                                        </button>
+                                        </Link>
 
                                     </div>
 
@@ -431,11 +435,13 @@ const MainClothes = () => {
 
                                     </div>
 
-                                    <button className="Frame70-6" >
+                                    <Link
+                                        to={`product/${womanClothing[0].id}`}
+                                        className="Frame70-6" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                             <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                         </svg>
-                                    </button>
+                                    </Link>
 
                                 </div>
 
@@ -468,15 +474,17 @@ const MainClothes = () => {
 
                                         <span>colour: {womanClothing[1].color}</span>
 
-                                        <span>£{womanClothing[0].price}</span>
+                                        <span>£{womanClothing[1].price}</span>
 
                                     </div>
 
-                                    <button className="Frame70-6" >
+                                    <Link
+                                        to={`product/${womanClothing[1].id}`}
+                                        className="Frame70-6" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                             <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                         </svg>
-                                    </button>
+                                    </Link>
 
                                 </div>
 
@@ -554,11 +562,13 @@ const MainClothes = () => {
 
                                         </div>
 
-                                        <button className="Frame70-4" >
+                                        <Link
+                                            to={`product/${manClothing[2].id}`}
+                                            className="Frame70-4" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
-                                        </button>
+                                        </Link>
 
 
                                     </div>
@@ -596,11 +606,13 @@ const MainClothes = () => {
 
                                         </div>
 
-                                        <button className="Frame70-5" >
+                                        <Link
+                                            to={`product/${manClothing[3].id}`}
+                                            className="Frame70-5" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
-                                        </button>
+                                        </Link>
 
 
                                     </div>
@@ -639,11 +651,13 @@ const MainClothes = () => {
 
                                         </div>
 
-                                        <button className="Frame70-7" >
+                                        <Link
+                                            to={`product/${manClothing[4].id}`}
+                                            className="Frame70-7" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                 <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                             </svg>
-                                        </button>
+                                        </Link>
 
 
                                     </div>
@@ -699,11 +713,13 @@ const MainClothes = () => {
 
                                             </div>
 
-                                            <button className="Frame70-8" >
+                                            <Link
+                                                to={`product/${manClothing[5].id}`}
+                                                className="Frame70-8" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                     <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                                 </svg>
-                                            </button>
+                                            </Link>
 
                                         </div>
 
@@ -756,11 +772,13 @@ const MainClothes = () => {
 
                                             </div>
 
-                                            <button className="Frame70-11" >
+                                            <Link
+                                                to={`product/${manClothing[6].id}`}
+                                                className="Frame70-11" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                     <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                                 </svg>
-                                            </button>
+                                            </Link>
 
                                         </div>
 
@@ -813,11 +831,13 @@ const MainClothes = () => {
 
                                             </div>
 
-                                            <button className="Frame70-13" >
+                                            <Link
+                                                to={`product/${manClothing[7].id}`}
+                                                className="Frame70-13" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                                     <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                                 </svg>
-                                            </button>
+                                            </Link>
 
                                         </div>
 
