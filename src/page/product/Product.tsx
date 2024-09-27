@@ -1,17 +1,19 @@
 import "./style.css";
-import { Input, InputNumber, Select, Typography } from "antd";
+import { Select, Typography } from "antd";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { IoReturnDownBack } from "react-icons/io5";
 
 import { Form, Collapse } from 'antd';
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IBrandName, ICategoryName, IGenderName, IProductCreate, ISizeName } from "../../components/types.ts";
 import http_common from "../../http_common.ts";
+import Carousel from 'react-bootstrap/Carousel';
+
 
 const Product = () => {
     const { id } = useParams(); // Get the product ID from the route parameters
-    const navigate = useNavigate();
+
     const [product, setProduct] = useState<IProductCreate | null>(null);
     const [categories, setCategories] = useState<ICategoryName[]>([]);
     const [brands, setBrands] = useState<IBrandName[]>([]);
@@ -71,8 +73,7 @@ const Product = () => {
         }
     };
 
-    const categoriesOptions = categories.map(item => ({ label: item.name, value: item.id }));
-    const brandsOptions = brands.map(item => ({ label: item.name, value: item.id }));
+
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
 
     return (
@@ -82,21 +83,25 @@ const Product = () => {
                     <section className="section">
                         <Form.Item>
                             <div>
+                                <div className="main-div-with-photo">
                                 <div className="div-with-img">
-                                    {/* Відображення зображень */}
-                                    <div className="product-images">
+                                    {/* Відображення зображень у Carousel */}
+                                    <Carousel>
                                         {product.imageUrls.map((imgPath, index) => (
-                                            <img
-                                                key={index}
-                                                src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                                alt={`Product ${index}`}
-
-                                            />
+                                            <Carousel.Item key={index}>
+                                                <img
+                                                    src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
+                                                    alt={`Product ${index}`}
+                                                    style={{ width: '100%', height: 'auto' }} // Стилі для зображення
+                                                />
+                                            </Carousel.Item>
                                         ))}
-                                    </div>
+                                    </Carousel>
+                                </div>
                                 </div>
                             </div>
                         </Form.Item>
+
                         <div>
                             <div className="div-with-info">
                                 <Form.Item name="name">
@@ -110,29 +115,23 @@ const Product = () => {
                                     </Typography.Text>
                                 </Form.Item>
 
-                                <div className="div-with-dropbutton">
+                                <div className="div-with-dropbutton  ">
+                                    <div>
                                     <Form.Item name="colour">
                                         <Typography.Text className="text-info-about-prod">
                                             <div className="box-2">
-                                                <p className="text-info-about-prod-2">Color</p>
+                                                <p className="">Color</p>
                                                 {product.color}
                                             </div>
                                         </Typography.Text>
                                     </Form.Item>
-
+                                    </div>
                                     <div className="box-with-sizes">
                                         <p className="box-1-p-last">Size</p>
                                         <Form.Item name="size">
                                             <Select options={sizesOptions} />
                                         </Form.Item>
                                     </div>
-
-                                    <Form.Item>
-                                        <div className="box-1">
-                                            <p className="box-1-p-last">Amount</p>
-                                            <InputNumber className="amount-button" min={0} autoComplete="off" />
-                                        </div>
-                                    </Form.Item>
                                 </div>
                                 <div className="form-row button-container">
                                     <button type="submit" className="button save-button">Add to Cart</button>
@@ -155,29 +154,25 @@ const Product = () => {
                             <div className="div-accord-margin">
                                 <div className="div-accord">
                                     <Collapse
-                                        items={[{ key: '1', label: 'Product Description', children: <p>hello</p> }]}
+                                        items={[{ key: '1', label: 'Product Description', children: <p>{product.description}</p> }]}
                                     />
                                 </div>
                                 <div className="div-accord">
                                     <Collapse
-                                        items={[{ key: '1', label: 'About Brand', children: <p>hello</p> }]}
+                                        items={[{ key: '1', label: 'About', children: <p>{product.aboutMe}</p> }]}
                                     />
                                 </div>
                                 <div className="div-accord">
                                     <Collapse
-                                        items={[{ key: '1', label: 'Size & Fit', children: <p>hello</p> }]}
+                                        items={[{ key: '1', label: 'Size & Fit', children: <p>{product.sizeAndFit}</p> }]}
                                     />
                                 </div>
                                 <div className="div-accord">
                                     <Collapse
-                                        items={[{ key: '1', label: 'Product Care', children: <p>hello</p> }]}
+                                        items={[{ key: '1', label: 'Look after me', children: <p>{product.lookAfterMe}</p> }]}
                                     />
                                 </div>
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'Product Material', children: <p>hello</p> }]}
-                                    />
-                                </div>
+
                             </div>
                         </div>
                     </section>

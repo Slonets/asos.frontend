@@ -1,13 +1,16 @@
 .div-with-img{
-    width: 1092px;
-    height: 1284px;
-    margin-left: 100px;
+    width: 640px;
+    height: 817px;
+    margin-left: 250px;
     margin-top: 114px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Дві колонки */
-    gap: 1px; /* Відстань між фотографіями */
-    padding: 35px;
+    display: flex;
+    justify-content: center;
 
+
+}
+.main-div-with-photo {
+   width: 1092px;
+    height: 1284px;
 }
 .div-with-info{
     height: 642px;
@@ -39,8 +42,9 @@
 }
 .div-with-dropbutton{
     display: flex; /* Встановлюємо контейнеру Flexbox */
-    gap: 110px; /* Відстань між елементами */
-    align-items: center; /* Вирівнювання елементів по вертикалі (за бажанням) */
+    margin: 20px;
+   justify-content: space-between;
+    align-items: center;
 }
 .box-1{
     padding-top: 48px;
@@ -53,6 +57,7 @@
     display: flex;
     flex-direction: column; /* Встановлює вертикальне розташування елементів */
     align-items: center; /* Вирівнює елементи по центру */
+
 
 
 }
@@ -108,13 +113,11 @@
     font-size: 22px;
     margin-left: 30px;
 }
-.text-info-about-prod-2{
-    font-size: 20px;
-    margin-left: 20px;
-}
+
 .box-with-sizes{
     width: 100px;
     height: 30px;
+    margin-bottom: 30px;
 }
 .text-size{
     font-size: 28px;
