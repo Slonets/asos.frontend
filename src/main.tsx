@@ -13,7 +13,7 @@ import {AuthUserActionType} from "./components/authentication/type.ts";
 import {FavoriteActionType} from "./store/slice/favoriteSlise.ts";
 import {BasketActionType} from "./store/slice/basketSlice.tsx";
 import {OrderActionType} from "./store/slice/orderSlice.tsx";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 // Якщо сторінка перезавантажується на F5, то токен знову перезаписується
 if(localStorage.token)
