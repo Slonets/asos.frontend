@@ -14,7 +14,7 @@ export interface IProductCreate {
     color:string;
     BrandId:number;
     SubCategoryId:number;
-    Gender:number;
+    gender:number;
     aboutMe:string;
     lookAfterMe:string;
     sizeAndFit:string;

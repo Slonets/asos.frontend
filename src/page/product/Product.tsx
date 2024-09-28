@@ -38,10 +38,6 @@ const Product = () => {
         }
     };
 
-    const genderMap = {
-        1: "Male",
-        2: "Female"
-    };
 
     const fetchCategories = async () => {
         try {
@@ -100,7 +96,7 @@ const Product = () => {
                                 <div className="main-div-with-photo">
 
                                     <div className="text-above-carousel">
-                                        <h2 className="carousel-title">Clothes</h2> {/* Напис над каруселлю */}
+                                        <h2 className="carousel-title">Clothes/<span> {product.gender}</span></h2> {/* Напис над каруселлю */}
                                     </div>
 
                                 <div className="div-with-img">

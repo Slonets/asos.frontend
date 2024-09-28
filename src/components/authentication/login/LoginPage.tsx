@@ -14,6 +14,7 @@ import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {useSelector} from "react-redux";
 import {BasketActionType} from "../../../store/slice/basketSlice.tsx";
+import {IOrderProduct, OrderActionType} from "../../../store/slice/orderSlice.tsx";
 
 const LoginPage = () => {
 
@@ -24,7 +25,6 @@ const LoginPage = () => {
     // const [googleLogin] = useGoogleLoginMutation();
 
     const basket = useSelector((state:RootState) => state.basket);
-
     const [array, setArray] = useState<number[]>([]);
 
     useEffect(() => {
@@ -35,11 +35,23 @@ const LoginPage = () => {
         }
     }, [basket]);
 
+    const order = useSelector((state:RootState) => state.order);
+    const [orderGet, orderSet] = useState<IOrderProduct[]>([]);
+
+    useEffect(() => {
+
+        if(order.length > 0)
+        {
+            orderSet(order);
+        }
+    }, [order]);
+
     const authSuccess = async (credentialResponse: CredentialResponse) => {
 
         const loginData: GoogleLoginRequest = {
             credential: credentialResponse.credential || "",
-            baskets: array
+            baskets: array,
+            orders:orderGet||null
         };
 
         console.log("Що є у loginData", loginData);
@@ -60,6 +72,13 @@ const LoginPage = () => {
                 const user = jwtDecode<IUserToken>(token);
                 console.log("Вхід успішний", user);
                 dispatch({ type: AuthUserActionType.LOGIN_USER, payload: user });
+
+                localStorage.removeItem('order');
+
+                dispatch({
+                    type:OrderActionType.ADD_Order,
+                    payload:[]
+                });
 
                 const basket =resp.data.baskets;
 
@@ -125,7 +144,8 @@ const LoginPage = () => {
     const init: ILoginPage = {
         email: "",
         password: "",
-        baskets:[]
+        baskets:[],
+        orders:orderGet
     };
 
 
@@ -161,6 +181,13 @@ const LoginPage = () => {
                 console.log("Вхід успішний", user);
 
                 dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+
+                localStorage.removeItem('order');
+
+                dispatch({
+                    type:OrderActionType.ADD_Order,
+                    payload:[]
+                });
 
                 const basket =resp.data.baskets;
 
