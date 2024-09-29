@@ -145,6 +145,38 @@ const Basket=()=>{
         if(userStatus)
         {
 
+            const orderItems: IOrderProduct[] = productGet.map(product => ({
+                productId: product.id,
+                count: quantities[product.id], // кількість товару
+                price: product.price,
+                amount:totalPrice// ціна за одиницю
+            }));
+
+            try {
+
+                http.post("api/Basket/PushOrderWhenLogin", orderItems);
+
+                localStorage.removeItem('order');
+
+                dispatch({
+                    type:OrderActionType.ADD_Order,
+                    payload:[]
+                });
+
+                localStorage.removeItem("basket");
+
+                dispatch({
+                    type:BasketActionType.ADD_Basket,
+                    payload:[]
+                });
+
+                setFlag(false);
+
+            }
+            catch (error)
+            {
+                console.log("Помилка закидання у кошик", error);
+            }
         }
         else
         {
