@@ -145,7 +145,7 @@ const LoginPage = () => {
         email: "",
         password: "",
         baskets:[],
-        orders:orderGet
+        orders:[]
     };
 
 
@@ -164,6 +164,8 @@ const LoginPage = () => {
         console.log("Приходить такий масив", array);
 
         data.baskets = [...data.baskets,...array];
+
+        data.orders= orderGet;
 
         console.log("Відправляємо дані на login", data);
 
