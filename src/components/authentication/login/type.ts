@@ -23,6 +23,8 @@ export interface ILoginPageError
 {
     isSuccess:boolean;
     error:string;
+    token:string;
+    baskets:[];
 }
 
 export interface IValidLogin

@@ -754,11 +754,23 @@ p
 #errorSpan
 {
     font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     color: red;
     font-weight: bold;
     text-transform: none;
+    background-color: rgb(200, 249, 84);
 }
+
+#errorSpanOne
+{
+    font-family: "Outfit", sans-serif, "Marbley Free", sans-serif;
+    font-size: 18px;
+    color: red;
+    font-weight: bold;
+    text-transform: none;
+    background-color: rgb(200, 249, 84);
+}
+
 
 .ForgotPassword-Div
 {
