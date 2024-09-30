@@ -185,10 +185,7 @@ h2{
     display: flex;
 
 }
-.div-with-text{
-    margin-left: 100px;
-    margin-bottom: 20px;
-}
+
 .blue-text{
     color: #2E38A1;
 }
@@ -204,10 +201,7 @@ h2{
     width: 888px;
     margin-top: 150px;
 }
-.content-container {
-    flex-grow: 1;
-    padding-left: 20px;
-}
+
 .form {
     display: flex;
     flex-direction: column;
@@ -353,3 +347,4 @@ h3{
     display: flex;
     justify-content: flex-start; /* Вирівнювання зображень вліво */
 }
+
