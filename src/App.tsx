@@ -24,6 +24,7 @@ import Favourites from "./page/favorite/Favourites.tsx";
 import FavoriteUser from "./components/UserProfile/favorite/FavoriteUser.tsx";
 import Basket from "./page/basket/Basket.tsx";
 import Product from "./page/product/Product.tsx";
+import ItemOrders from "./components/UserProfile/userOrders/ItemOrders.tsx";
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
                     <Route index element={<EditDetails/>}/>
                     <Route path="address" element={<AddressPage/>}/>
                     <Route path="orders" element={<Orders/>}/>
+                    <Route path="orders/:id" element={<ItemOrders/>}/>
                     <Route path="favorite" element={<FavoriteUser/>}/>
                 </Route>
 

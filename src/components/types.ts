@@ -1,4 +1,10 @@
-
+export interface IOrderInformation{
+    id:number,
+    names:string[],
+    status:string,
+    totalPrice:number,
+    imagePaths:string[]
+}
 
 export interface ICategoryName {
     id: number,
