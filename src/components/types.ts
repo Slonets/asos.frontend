@@ -32,11 +32,11 @@ export interface IProductCreate {
     id: number,
     name: string;
     description: string;
-    CategoryId: number;
+    categoryId: number;
     price: number;
     size:number;
     color:string;
-    BrandId:number;
+    brandId:number;
     SubCategoryId:number;
     gender:number;
     aboutMe:string;
@@ -44,6 +44,7 @@ export interface IProductCreate {
     sizeAndFit:string;
     amount:number;
     imageUrls: File[];
+    imageUrlsToRemove: string[];
 }
 export interface ICategoryCreate{
     Name:string;

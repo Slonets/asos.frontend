@@ -9,8 +9,7 @@
     height: 817px;
     margin-left: 250px;
 
-    display: flex;
-    justify-content: center;
+
 }
 
 .carousel-title
@@ -230,5 +229,4 @@
         display: flex;
         flex-direction: column;
 }
-
 

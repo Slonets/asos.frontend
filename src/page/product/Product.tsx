@@ -1,5 +1,5 @@
 import "./style.css";
-import { Select, Typography } from "antd";
+import {Select, Typography, Carousel, Button} from "antd";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { IoReturnDownBack } from "react-icons/io5";
 
@@ -8,7 +8,7 @@ import {Link, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IBrandName, ICategoryName, IGenderName, IProductCreate, ISizeName } from "../../components/types.ts";
 import http_common from "../../http_common.ts";
-import Carousel from 'react-bootstrap/Carousel';
+
 
 
 const Product = () => {
@@ -84,6 +84,7 @@ const Product = () => {
 
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
 
+
     return (
         <>
             {product && (
@@ -102,7 +103,7 @@ const Product = () => {
                                 <div className="div-with-img">
                                     {/* Відображення зображень у Carousel */}
 
-                                    <Carousel>
+                                   {/* <Carousel>
                                         {product.imageUrls.map((imgPath, index) => (
                                             <Carousel.Item key={index}>
                                                 <img
@@ -111,6 +112,23 @@ const Product = () => {
                                                     style={{ width: '100%', height: 'auto' }} // Стилі для зображення
                                                 />
                                             </Carousel.Item>
+                                        ))}
+                                    </Carousel>*/}
+                                    <Carousel
+                                        autoplay={true}
+                                        dotPosition="bottom"
+                                        pauseOnHover={true}
+                                        pauseOnDotsHover={true}
+                                        draggable={true}
+                                        arrows infinite={false}
+                                       >
+
+                                        {product.imageUrls.map((imgPath, index) => (
+                                            <img
+                                                src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
+                                                alt={`Product ${index}`}
+                                                style={{width: '100%', height: 'auto'}} // Стилі для зображення
+                                            />
                                         ))}
                                     </Carousel>
                                 </div>
@@ -121,7 +139,7 @@ const Product = () => {
                         <div>
                             <div className="div-with-info">
                                 <Form.Item name="name">
-                                    <Typography.Text className="h1-text">
+                                <Typography.Text className="h1-text">
                                         {product.name}
                                     </Typography.Text>
                                 </Form.Item>

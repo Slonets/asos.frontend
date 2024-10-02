@@ -9,7 +9,7 @@ import DefaultAdminSideBar from "../default/DefaultAdminSideBar.tsx";
 import ProfileDefaultHeader from "../../UserProfile/default/ProfileDefaultHeader.tsx";
 
 const UpdateProduct = () => {
-    const { id } = useParams(); // Get the product ID from the route parameters
+    const { id } = useParams(); // Отримуємо ID продукту з параметрів маршруту
     const navigate = useNavigate();
     const [product, setProduct] = useState<IProductCreate | null>(null);
     const [categories, setCategories] = useState<ICategoryName[]>([]);
@@ -29,6 +29,7 @@ const UpdateProduct = () => {
         try {
             const response = await http_common.get<IProductCreate>(`/api/Dashboard/GetProductById/${id}`);
             setProduct(response.data);
+            console.log("Fetched product:", response.data);
         } catch (error) {
             console.error("Error fetching product:", error);
         }
@@ -71,6 +72,7 @@ const UpdateProduct = () => {
     };
 
     const onFinish = async (values: IProductCreate) => {
+        console.log("Submitting data:", values);
         try {
             await http_common.put(`/api/Dashboard/UpdateProduct/${id}`, values, {
                 headers: {
@@ -85,9 +87,55 @@ const UpdateProduct = () => {
         }
     };
 
+   /* const handleUploadChange = async (info: UploadChangeParam<UploadFile<RcFile>>) => {
+        if (info.file.status === 'done') {
+            // Коли файл успішно завантажений
+            try {
+                const imageFormData = new FormData();
+                imageFormData.append('images', info.file.originFileObj as RcFile);
+
+                await http_common.put(`/api/Dashboard/AddProductImages/${id}`, imageFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                notification.success({ message: "Image uploaded successfully!" });
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                notification.error({ message: "Failed to upload image." });
+            }
+        }
+    };*/
+
     const categoriesOptions = categories.map(item => ({ label: item.name, value: item.id }));
     const brandsOptions = brands.map(item => ({ label: item.name, value: item.id }));
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
+
+    const handleRemove = async (file: UploadFile) => {
+        // Створюємо новий масив imageUrls без видаленого зображення
+        const newImageUrls = product?.imageUrls.filter((imgPath, index) => {
+            return `${import.meta.env.VITE_API_URL}product/${imgPath}` !== file.url;
+        });
+
+        // Оновлюємо стан продукту із новим списком зображень
+        setProduct(prevProduct => ({
+            ...prevProduct,
+            imageUrls: newImageUrls,
+        }));
+
+        try {
+            // Виконуємо запит на видалення зображення на бекенді
+            const imageToRemove = product?.imageUrls.find(imgPath => `${import.meta.env.VITE_API_URL}product/${imgPath}` === file.url);
+            if (imageToRemove) {
+                await http_common.delete(`/api/Dashboard/DeleteImage`, { data: { imagePath: imageToRemove } });
+                notification.success({ message: "Image deleted successfully!" });
+            }
+        } catch (error) {
+            console.error("Error deleting image:", error);
+            notification.error({ message: "Failed to delete image." });
+        }
+    };
 
     return (
         <>
@@ -96,7 +144,6 @@ const UpdateProduct = () => {
             </div>
 
             <div className="main-container">
-
                 <DefaultAdminSideBar/>
                 <div className="content-container">
                     <div className="div-with-text">
@@ -136,7 +183,8 @@ const UpdateProduct = () => {
                                 </Form.Item>
                                 <Form.Item label="Gender" name="gender">
                                     <Select
-                                        options={genders.map(gender => ({label: gender.label, value: gender.value}))}/>
+                                        options={genders.map(gender => ({ label: gender.label, value: gender.value }))}
+                                    />
                                 </Form.Item>
                                 <Form.Item label="SizeAndFit" name="sizeAndFit">
                                     <Input.TextArea/>
@@ -153,39 +201,72 @@ const UpdateProduct = () => {
                                 <Form.Item label="Price" name="price">
                                     <InputNumber/>
                                 </Form.Item>
+
                                 <div className="image-upload-container">
                                     <Form.Item
-
                                         label="Images"
                                         name="imageUrls"
                                         valuePropName="fileList"
                                         getValueFromEvent={(e: UploadChangeParam<UploadFile<RcFile>>) => {
-                                            return e.fileList.map(file => (file.originFileObj as RcFile));
+                                            return e.fileList ? e.fileList.map(file => file.originFileObj as RcFile) : [];
                                         }}
-                                        rules={[{required: false, message: 'Choose images for the product!'}]}
+                                        rules={[{ required: true, message: 'Choose images for the product!' }]}
                                     >
-                                        <Upload
-                                            listType="picture-card"
-                                            maxCount={10}
-                                            accept="image/*"
-                                            beforeUpload={() => false}
-                                            showUploadList={{showPreviewIcon: false}}
-                                        >
-                                            <div>
-                                                <PlusOutlined/>
-                                                <div style={{marginTop: 8}}>Upload</div>
-                                            </div>
-                                        </Upload>
+                                        <div>
+
+
+                                            <Upload
+                                                listType="picture-card"
+                                                maxCount={10}
+                                                accept="image/*"
+                                                beforeUpload={async (file) => {
+                                                    const formData = new FormData();
+                                                    formData.append('images', file);
+
+                                                    try {
+                                                        await http_common.put(`/api/Dashboard/AddProductImages/${id}`, formData, {
+                                                            headers: {
+                                                                'Content-Type': 'multipart/form-data',
+                                                            },
+                                                        });
+
+
+                                                        window.location.reload();
+                                                    } catch (error) {
+                                                        console.error("Error uploading image:", error);
+                                                        notification.error({ message: "Failed to upload image." });
+                                                    }
+
+                                                    return false;
+                                                }}
+                                                showUploadList={{ showPreviewIcon: false }}
+                                                fileList={[
+                                                    ...(product && product.imageUrls ? product.imageUrls.map((imgPath, index) => ({
+                                                        uid: index.toString(),
+                                                        name: `Product ${index}`,
+                                                        status: 'done',
+                                                        url: `${import.meta.env.VITE_API_URL}product/${imgPath}`,
+                                                    })) : []),
+
+                                                ]}
+                                                onRemove={handleRemove}
+                                            >
+                                                <div>
+                                                    <PlusOutlined />
+                                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                                </div>
+                                            </Upload>
+                                        </div>
                                     </Form.Item>
                                 </div>
                             </div>
-                                <Form.Item>
-                                    <Button type="default" htmlType="submit">
-                                        Save Changes
-                                    </Button>
-                                </Form.Item>
+                            <Form.Item>
+                                <Button type="default" htmlType="submit">
+                                    Save Changes
+                                </Button>
+                            </Form.Item>
                         </Form>
-                        )}
+                    )}
                 </div>
             </div>
         </>
