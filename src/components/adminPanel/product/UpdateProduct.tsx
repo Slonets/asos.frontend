@@ -73,22 +73,42 @@ const UpdateProduct = () => {
     const onFinish = async (values: IProductCreate) => {
         console.log("Submitting data:", values);
         try {
-            const valuesToSend = {
-                ...values,
-                imageUrls: [], // Можливо, варто тут відправити нові зображення
-                imageUrlsToRemove: product.imageUrls.filter(imgPath => !values.imageUrls.includes(imgPath)),
-            };
+            // Створюємо форму для відправки даних
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('price', values.price.toString());
+            formData.append('description', values.description);
+            formData.append('categoryId', values.categoryId.toString());
 
-            await http_common.put(`/api/Dashboard/UpdateProduct/${id}`, valuesToSend, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            // Оновлюємо продукт без зображень
+            await http_common.put(`/api/Dashboard/UpdateProduct/${id}`, formData);
+
             notification.success({ message: "Product updated successfully!" });
             navigate("/admin/allproducts");
         } catch (error) {
             console.error("Error updating product:", error);
             notification.error({ message: "Failed to update product." });
+        }
+    };
+
+    const handleUploadChange = async (info: UploadChangeParam<UploadFile<RcFile>>) => {
+        if (info.file.status === 'done') {
+            // Коли файл успішно завантажений
+            try {
+                const imageFormData = new FormData();
+                imageFormData.append('images', info.file.originFileObj as RcFile);
+
+                await http_common.put(`/api/Dashboard/AddProductImages/${id}`, imageFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                notification.success({ message: "Image uploaded successfully!" });
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                notification.error({ message: "Failed to upload image." });
+            }
         }
     };
 
@@ -192,39 +212,52 @@ const UpdateProduct = () => {
                                         name="imageUrls"
                                         valuePropName="fileList"
                                         getValueFromEvent={(e: UploadChangeParam<UploadFile<RcFile>>) => {
-                                            return e.fileList.map(file => (file.originFileObj as RcFile));
+                                            return e.fileList ? e.fileList.map(file => file.originFileObj as RcFile) : [];
                                         }}
                                         rules={[{ required: true, message: 'Choose images for the product!' }]}
                                     >
                                         <div>
-                                            {product && product.imageUrls && (
-                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                                                    {product.imageUrls.map((imgPath, index) => (
-                                                        <img
-                                                            key={index}
-                                                            src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                                            alt={`Product ${index}`}
-                                                            style={{ width: '250px', height: 'auto' }}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            )}
+                                            {/* Відображення попередніх зображень */}
+
                                             <Upload
                                                 listType="picture-card"
                                                 maxCount={10}
                                                 accept="image/*"
-                                                beforeUpload={() => false}
+                                                beforeUpload={async (file) => {
+                                                    // Додаємо нове зображення
+                                                    const formData = new FormData();
+                                                    formData.append('images', file);
+
+                                                    try {
+                                                        await http_common.put(`/api/Dashboard/AddProductImages/${id}`, formData, {
+                                                            headers: {
+                                                                'Content-Type': 'multipart/form-data',
+                                                            },
+                                                        });
+
+
+                                                        window.location.reload();
+                                                    } catch (error) {
+                                                        console.error("Error uploading image:", error);
+                                                        notification.error({ message: "Failed to upload image." });
+                                                    }
+                                                    // Повертаємо false, щоб не відображати зображення у списку
+                                                    return false;
+                                                }}
                                                 showUploadList={{ showPreviewIcon: false }} // Показати кнопку видалення
-                                                fileList={product.imageUrls.map((imgPath, index) => ({
-                                                    uid: index.toString(),
-                                                    name: `Product ${index}`,
-                                                    status: 'done',
-                                                    url: `${import.meta.env.VITE_API_URL}product/${imgPath}`,
-                                                }))}
+                                                fileList={[
+                                                    ...(product && product.imageUrls ? product.imageUrls.map((imgPath, index) => ({
+                                                        uid: index.toString(),
+                                                        name: `Product ${index}`,
+                                                        status: 'done',
+                                                        url: `${import.meta.env.VITE_API_URL}product/${imgPath}`,
+                                                    })) : []),
+                                                    // Додати нові файли в список, якщо потрібно
+                                                ]}
                                                 onRemove={handleRemove} // Додаємо обробник видалення
                                             >
                                                 <div>
-                                                    <PlusOutlined/>
+                                                    <PlusOutlined />
                                                     <div style={{ marginTop: 8 }}>Upload</div>
                                                 </div>
                                             </Upload>
