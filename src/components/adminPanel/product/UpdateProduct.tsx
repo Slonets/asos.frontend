@@ -118,7 +118,7 @@ const UpdateProduct = () => {
 
     const handleRemove = async (file: UploadFile) => {
         // Створюємо новий масив imageUrls без видаленого зображення
-        const newImageUrls = product.imageUrls.filter((imgPath, index) => {
+        const newImageUrls = product?.imageUrls.filter((imgPath, index) => {
             return `${import.meta.env.VITE_API_URL}product/${imgPath}` !== file.url;
         });
 
@@ -130,7 +130,7 @@ const UpdateProduct = () => {
 
         try {
             // Виконуємо запит на видалення зображення на бекенді
-            const imageToRemove = product.imageUrls.find(imgPath => `${import.meta.env.VITE_API_URL}product/${imgPath}` === file.url);
+            const imageToRemove = product?.imageUrls.find(imgPath => `${import.meta.env.VITE_API_URL}product/${imgPath}` === file.url);
             if (imageToRemove) {
                 await http_common.delete(`/api/Dashboard/DeleteImage`, { data: { imagePath: imageToRemove } });
                 notification.success({ message: "Image deleted successfully!" });
