@@ -29,6 +29,7 @@ const UpdateProduct = () => {
         try {
             const response = await http_common.get<IProductCreate>(`/api/Dashboard/GetProductById/${id}`);
             setProduct(response.data);
+            console.log("Fetched product:", response.data);
         } catch (error) {
             console.error("Error fetching product:", error);
         }
@@ -73,16 +74,11 @@ const UpdateProduct = () => {
     const onFinish = async (values: IProductCreate) => {
         console.log("Submitting data:", values);
         try {
-            // Створюємо форму для відправки даних
-            const formData = new FormData();
-            formData.append('name', values.name);
-            formData.append('price', values.price.toString());
-            formData.append('description', values.description);
-            formData.append('categoryId', values.categoryId.toString());
-
-            // Оновлюємо продукт без зображень
-            await http_common.put(`/api/Dashboard/UpdateProduct/${id}`, formData);
-
+            await http_common.put(`/api/Dashboard/UpdateProduct/${id}`, values, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             notification.success({ message: "Product updated successfully!" });
             navigate("/admin/allproducts");
         } catch (error) {
@@ -91,7 +87,7 @@ const UpdateProduct = () => {
         }
     };
 
-    const handleUploadChange = async (info: UploadChangeParam<UploadFile<RcFile>>) => {
+   /* const handleUploadChange = async (info: UploadChangeParam<UploadFile<RcFile>>) => {
         if (info.file.status === 'done') {
             // Коли файл успішно завантажений
             try {
@@ -110,7 +106,7 @@ const UpdateProduct = () => {
                 notification.error({ message: "Failed to upload image." });
             }
         }
-    };
+    };*/
 
     const categoriesOptions = categories.map(item => ({ label: item.name, value: item.id }));
     const brandsOptions = brands.map(item => ({ label: item.name, value: item.id }));
@@ -217,14 +213,13 @@ const UpdateProduct = () => {
                                         rules={[{ required: true, message: 'Choose images for the product!' }]}
                                     >
                                         <div>
-                                            {/* Відображення попередніх зображень */}
+
 
                                             <Upload
                                                 listType="picture-card"
                                                 maxCount={10}
                                                 accept="image/*"
                                                 beforeUpload={async (file) => {
-                                                    // Додаємо нове зображення
                                                     const formData = new FormData();
                                                     formData.append('images', file);
 
@@ -241,10 +236,10 @@ const UpdateProduct = () => {
                                                         console.error("Error uploading image:", error);
                                                         notification.error({ message: "Failed to upload image." });
                                                     }
-                                                    // Повертаємо false, щоб не відображати зображення у списку
+
                                                     return false;
                                                 }}
-                                                showUploadList={{ showPreviewIcon: false }} // Показати кнопку видалення
+                                                showUploadList={{ showPreviewIcon: false }}
                                                 fileList={[
                                                     ...(product && product.imageUrls ? product.imageUrls.map((imgPath, index) => ({
                                                         uid: index.toString(),
@@ -252,9 +247,9 @@ const UpdateProduct = () => {
                                                         status: 'done',
                                                         url: `${import.meta.env.VITE_API_URL}product/${imgPath}`,
                                                     })) : []),
-                                                    // Додати нові файли в список, якщо потрібно
+
                                                 ]}
-                                                onRemove={handleRemove} // Додаємо обробник видалення
+                                                onRemove={handleRemove}
                                             >
                                                 <div>
                                                     <PlusOutlined />

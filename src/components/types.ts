@@ -8,13 +8,13 @@ export interface IProductCreate {
     id: number,
     name: string;
     description: string;
-    CategoryId: number;
+    categoryId: number;
     price: number;
     size:number;
     color:string;
-    BrandId:number;
+    brandId:number;
     SubCategoryId:number;
-    Gender:number;
+    gender:number;
     aboutMe:string;
     lookAfterMe:string;
     sizeAndFit:string;
