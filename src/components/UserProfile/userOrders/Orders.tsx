@@ -3,8 +3,6 @@ import "./style.css";
 import ProfileDefaultHeader from "../default/ProfileDefaultHeader";
 import DefaultSideBar from "../default/DefaultSideBar";
 import 'react-datepicker/dist/react-datepicker.css';
-// import { FiPackage } from "react-icons/fi";
-
 import {Link} from "react-router-dom";
 import http from "../../../http_common.ts";
 import {IOrderInformation} from "../../types.ts";

@@ -1,3 +1,21 @@
+export interface IOrderItem{
+    id: number,
+    name: string;
+    description: string;
+    price: number;
+    size:number;
+    color:string;
+    brand:string;
+    category: string;
+    gender:number;
+    lookAfterMe:string;
+    aboutMe:string;
+    sizeAndFit:string;
+    amount:number;
+    imagePaths: string[];
+}
+
+
 export interface IOrderInformation{
     id:number,
     names:string[],
