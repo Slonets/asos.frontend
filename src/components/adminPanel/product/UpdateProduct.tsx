@@ -88,7 +88,19 @@ const UpdateProduct = () => {
     const categoriesOptions = categories.map(item => ({ label: item.name, value: item.id }));
     const brandsOptions = brands.map(item => ({ label: item.name, value: item.id }));
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
+    const handleRemove = (file) => {
+        // Фільтруємо масив imageUrls, виключаючи фото, яке потрібно видалити
+        const newImageUrls = product.imageUrls.filter((imgPath, index) => {
+            // Порівнюємо шлях фото з URL зображення для видалення
+            return `${import.meta.env.VITE_API_URL}product/${imgPath}` !== file.url;
+        });
 
+        // Оновлюємо стан продукту із новим списком зображень
+        setProduct({
+            ...product,
+            imageUrls: newImageUrls,
+        });
+    };
     return (
         <>
             <div className="centered-div">
@@ -153,39 +165,68 @@ const UpdateProduct = () => {
                                 <Form.Item label="Price" name="price">
                                     <InputNumber/>
                                 </Form.Item>
+
+                                {/* {product.imageUrls.map((imgPath, index) => (
+                                    <img
+                                        src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
+                                        alt={`Product ${index}`}
+                                        style={{width: '100%', height: 'auto'}} // Стилі для зображення
+                                    />
+                                ))}*/}
+
                                 <div className="image-upload-container">
                                     <Form.Item
-
                                         label="Images"
                                         name="imageUrls"
                                         valuePropName="fileList"
                                         getValueFromEvent={(e: UploadChangeParam<UploadFile<RcFile>>) => {
                                             return e.fileList.map(file => (file.originFileObj as RcFile));
                                         }}
-                                        rules={[{required: false, message: 'Choose images for the product!'}]}
+                                        rules={[{required: true, message: 'Choose images for the product!'}]}
                                     >
-                                        <Upload
-                                            listType="picture-card"
-                                            maxCount={10}
-                                            accept="image/*"
-                                            beforeUpload={() => false}
-                                            showUploadList={{showPreviewIcon: false}}
-                                        >
-                                            <div>
-                                                <PlusOutlined/>
-                                                <div style={{marginTop: 8}}>Upload</div>
+                                        <div>
+                                            <div style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
+                                                {product.imageUrls.map((imgPath, index) => (
+                                                    <img
+                                                        key={index}
+                                                        src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
+                                                        alt={`Product ${index}`}
+                                                        style={{width: '250px', height: 'auto'}}
+                                                    />
+                                                ))}
                                             </div>
-                                        </Upload>
+                                            <Upload
+                                                listType="picture-card"
+                                                maxCount={10}
+                                                accept="image/*"
+                                                beforeUpload={() => false}
+                                                showUploadList={{showPreviewIcon: false}} // Показати кнопку видалення
+                                                fileList={product.imageUrls.map((imgPath, index) => ({
+                                                    uid: index.toString(),
+                                                    name: `Product ${index}`,
+                                                    status: 'done',
+                                                    url: `${import.meta.env.VITE_API_URL}product/${imgPath}`,
+                                                }))}
+                                                onRemove={handleRemove} // Додаємо обробник видалення
+                                            >
+                                                <div>
+                                                    <PlusOutlined/>
+                                                    <div style={{marginTop: 8}}>Upload</div>
+                                                </div>
+                                            </Upload>
+                                        </div>
                                     </Form.Item>
                                 </div>
+
+
                             </div>
-                                <Form.Item>
-                                    <Button type="default" htmlType="submit">
-                                        Save Changes
-                                    </Button>
-                                </Form.Item>
+                            <Form.Item>
+                                <Button type="default" htmlType="submit">
+                                    Save Changes
+                                </Button>
+                            </Form.Item>
                         </Form>
-                        )}
+                    )}
                 </div>
             </div>
         </>

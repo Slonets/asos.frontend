@@ -88,6 +88,7 @@ const Product = () => {
 
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
 
+
     return (
         <>
             {product && (
