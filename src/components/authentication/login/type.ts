@@ -1,3 +1,5 @@
+import {IOrderProduct} from "../../../store/slice/orderSlice.tsx";
+
 export interface LoginResponse {
     token: string;
     baskets?: number[]; // Масив ID продуктів у кошику
@@ -6,6 +8,7 @@ export interface LoginResponse {
 export interface GoogleLoginRequest {
     credential: string;
     baskets: number[];
+    orders:IOrderProduct[];
 }
 
 export interface ILoginPage
@@ -13,12 +16,15 @@ export interface ILoginPage
     email:string;
     password:string;
     baskets:number[];
+    orders:IOrderProduct[];
 }
 
 export interface ILoginPageError
 {
     isSuccess:boolean;
     error:string;
+    token:string;
+    baskets:[];
 }
 
 export interface IValidLogin

@@ -1,4 +1,4 @@
-import {GoogleLoginRequest, ILoginPage, ILoginPageError, IValidLogin, LoginResponse} from "./type.ts";
+import {GoogleLoginRequest, ILoginPage, ILoginPageError, IValidLogin} from "./type.ts";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import http from "../../../http_common.ts";
 
@@ -11,9 +11,10 @@ import axios from "axios";
 import "./style-Login.css";
 // import {useGoogleLoginMutation} from "../../../services/user.ts";
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
-import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+// import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {useSelector} from "react-redux";
 import {BasketActionType} from "../../../store/slice/basketSlice.tsx";
+import {IOrderProduct, OrderActionType} from "../../../store/slice/orderSlice.tsx";
 
 const LoginPage = () => {
 
@@ -24,7 +25,6 @@ const LoginPage = () => {
     // const [googleLogin] = useGoogleLoginMutation();
 
     const basket = useSelector((state:RootState) => state.basket);
-
     const [array, setArray] = useState<number[]>([]);
 
     useEffect(() => {
@@ -35,31 +35,55 @@ const LoginPage = () => {
         }
     }, [basket]);
 
+    const order = useSelector((state:RootState) => state.order);
+    const [orderGet, orderSet] = useState<IOrderProduct[]>([]);
+
+    useEffect(() => {
+
+        if(order.length > 0)
+        {
+            orderSet(order);
+        }
+    }, [order]);
+
+    const [badRequest, setBadRequest] = useState<ILoginPageError>({
+        error: "",
+        isSuccess: false,
+        token:"",
+        baskets:[]
+    });
+
     const authSuccess = async (credentialResponse: CredentialResponse) => {
 
         const loginData: GoogleLoginRequest = {
             credential: credentialResponse.credential || "",
-            baskets: array
+            baskets: array,
+            orders:orderGet||null
         };
 
         console.log("Що є у loginData", loginData);
 
-        // const resp = await googleLogin(loginData);
+        http.post("api/account/GoogleSignIn", loginData)
+            .then(resp => {
 
-        try {
-            const resp = await http.post("api/Account/GoogleSignIn", loginData);
+                navigate("/");
 
-            // Додаємо тип для респонса
-            const data = resp.data as LoginResponse;
+                const token = resp.data.token as string;
 
-            if (data && data.token)
-            {
-                const token = data.token;
                 setAuthToken(token);
 
                 const user = jwtDecode<IUserToken>(token);
+
                 console.log("Вхід успішний", user);
-                dispatch({ type: AuthUserActionType.LOGIN_USER, payload: user });
+
+                dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+
+                localStorage.removeItem('order');
+
+                dispatch({
+                    type:OrderActionType.ADD_Order,
+                    payload:[]
+                });
 
                 const basket =resp.data.baskets;
 
@@ -81,38 +105,27 @@ const LoginPage = () => {
                         type: BasketActionType.ADD_Basket,
                         payload: products,  // Передаємо новий масив у Redux
                     });
-
-                } else
-                {
-                    console.log("Кошик порожній або не знайдено");
                 }
 
-                const { from } = location.state || { from: { pathname: "/" } };
-                navigate(from);
+            })
+            .catch(badRequest => {
 
-            } else
-            {
-                console.log("Помилка при вході:", resp.data.error);
-                if (resp.data.error)
+                if (axios.isAxiosError(badRequest))
                 {
-                    if ('data' in resp.data.error)
+                    if (badRequest.response)
                     {
-                        const errorData = (resp.data.error as FetchBaseQueryError).data as ILoginPageError;
-                        setBadbadRequest(errorData);
+                        const errorData = badRequest.response.data;
+
+                        if (typeof errorData.error === 'string')
+                        {
+                            setBadRequest(errorData);
+                            setValid([]);
+
+                            console.log("Одна помилка", errorData);
+                        }
                     }
                 }
-                dispatch({ type: AuthUserActionType.LOGOUT_USER });
-            }
-        } catch (error)
-        {
-            console.error("Помилка при запиті:", error);
-            // Обробка помилки запиту
-            setBadbadRequest({
-                error: "Сталася помилка під час входу.",
-                isSuccess: false
             });
-            dispatch({ type: AuthUserActionType.LOGOUT_USER });
-        }
     };
 
     const authError = () => {
@@ -125,16 +138,14 @@ const LoginPage = () => {
     const init: ILoginPage = {
         email: "",
         password: "",
-        baskets:[]
+        baskets:[],
+        orders:[]
     };
 
 
     //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
     const [data, setData] = useState<ILoginPage>(init);
-    const [badRequest, setBadbadRequest] = useState<ILoginPageError>({
-        error: "",
-        isSuccess: false,
-    });
+
 
     const [valid, setValid] = useState<IValidLogin[]>([]);
 
@@ -144,6 +155,8 @@ const LoginPage = () => {
         console.log("Приходить такий масив", array);
 
         data.baskets = [...data.baskets,...array];
+
+        data.orders= orderGet;
 
         console.log("Відправляємо дані на login", data);
 
@@ -161,6 +174,13 @@ const LoginPage = () => {
                 console.log("Вхід успішний", user);
 
                 dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
+
+                localStorage.removeItem('order');
+
+                dispatch({
+                    type:OrderActionType.ADD_Order,
+                    payload:[]
+                });
 
                 const basket =resp.data.baskets;
 
@@ -192,14 +212,14 @@ const LoginPage = () => {
                         const errorData = badRequest.response.data;
 
                         if (typeof errorData.error === 'string') {
-                            setBadbadRequest(errorData);
+                            setBadRequest(errorData);
                             setValid([]); // Очистити valid при встановленні badRequest
 
                             console.log("Одна помилка", errorData);
 
                         } else if (Array.isArray(errorData)) {
                             setValid(errorData);
-                            setBadbadRequest({error: "", isSuccess: false});
+                            setBadRequest({error: "", isSuccess: false, token:"", baskets:[] });
                             console.log("Багато помилок", errorData);
 
                         }
@@ -451,7 +471,7 @@ const LoginPage = () => {
 
                                                 {badRequest.error && (
                                                     <div className="error">
-                                                        <p id="errorSpan">{badRequest.error}</p>
+                                                        <p id="errorSpanOne">{badRequest.error}</p>
                                                     </div>
                                                 )}
 
