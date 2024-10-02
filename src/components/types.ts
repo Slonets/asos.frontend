@@ -20,6 +20,7 @@ export interface IProductCreate {
     sizeAndFit:string;
     amount:number;
     imageUrls: File[];
+    imageUrlsToRemove: string[];
 }
 export interface ICategoryCreate{
     Name:string;

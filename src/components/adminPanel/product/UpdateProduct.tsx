@@ -9,7 +9,7 @@ import DefaultAdminSideBar from "../default/DefaultAdminSideBar.tsx";
 import ProfileDefaultHeader from "../../UserProfile/default/ProfileDefaultHeader.tsx";
 
 const UpdateProduct = () => {
-    const { id } = useParams(); // Get the product ID from the route parameters
+    const { id } = useParams(); // Отримуємо ID продукту з параметрів маршруту
     const navigate = useNavigate();
     const [product, setProduct] = useState<IProductCreate | null>(null);
     const [categories, setCategories] = useState<ICategoryName[]>([]);
@@ -71,8 +71,15 @@ const UpdateProduct = () => {
     };
 
     const onFinish = async (values: IProductCreate) => {
+        console.log("Submitting data:", values);
         try {
-            await http_common.put(`/api/Dashboard/UpdateProduct/${id}`, values, {
+            const valuesToSend = {
+                ...values,
+                imageUrls: [], // Можливо, варто тут відправити нові зображення
+                imageUrlsToRemove: product.imageUrls.filter(imgPath => !values.imageUrls.includes(imgPath)),
+            };
+
+            await http_common.put(`/api/Dashboard/UpdateProduct/${id}`, valuesToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -88,19 +95,32 @@ const UpdateProduct = () => {
     const categoriesOptions = categories.map(item => ({ label: item.name, value: item.id }));
     const brandsOptions = brands.map(item => ({ label: item.name, value: item.id }));
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
-    const handleRemove = (file) => {
-        // Фільтруємо масив imageUrls, виключаючи фото, яке потрібно видалити
+
+    const handleRemove = async (file: UploadFile) => {
+        // Створюємо новий масив imageUrls без видаленого зображення
         const newImageUrls = product.imageUrls.filter((imgPath, index) => {
-            // Порівнюємо шлях фото з URL зображення для видалення
             return `${import.meta.env.VITE_API_URL}product/${imgPath}` !== file.url;
         });
 
         // Оновлюємо стан продукту із новим списком зображень
-        setProduct({
-            ...product,
+        setProduct(prevProduct => ({
+            ...prevProduct,
             imageUrls: newImageUrls,
-        });
+        }));
+
+        try {
+            // Виконуємо запит на видалення зображення на бекенді
+            const imageToRemove = product.imageUrls.find(imgPath => `${import.meta.env.VITE_API_URL}product/${imgPath}` === file.url);
+            if (imageToRemove) {
+                await http_common.delete(`/api/Dashboard/DeleteImage`, { data: { imagePath: imageToRemove } });
+                notification.success({ message: "Image deleted successfully!" });
+            }
+        } catch (error) {
+            console.error("Error deleting image:", error);
+            notification.error({ message: "Failed to delete image." });
+        }
     };
+
     return (
         <>
             <div className="centered-div">
@@ -108,7 +128,6 @@ const UpdateProduct = () => {
             </div>
 
             <div className="main-container">
-
                 <DefaultAdminSideBar/>
                 <div className="content-container">
                     <div className="div-with-text">
@@ -148,7 +167,8 @@ const UpdateProduct = () => {
                                 </Form.Item>
                                 <Form.Item label="Gender" name="gender">
                                     <Select
-                                        options={genders.map(gender => ({label: gender.label, value: gender.value}))}/>
+                                        options={genders.map(gender => ({ label: gender.label, value: gender.value }))}
+                                    />
                                 </Form.Item>
                                 <Form.Item label="SizeAndFit" name="sizeAndFit">
                                     <Input.TextArea/>
@@ -166,14 +186,6 @@ const UpdateProduct = () => {
                                     <InputNumber/>
                                 </Form.Item>
 
-                                {/* {product.imageUrls.map((imgPath, index) => (
-                                    <img
-                                        src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                        alt={`Product ${index}`}
-                                        style={{width: '100%', height: 'auto'}} // Стилі для зображення
-                                    />
-                                ))}*/}
-
                                 <div className="image-upload-container">
                                     <Form.Item
                                         label="Images"
@@ -182,25 +194,27 @@ const UpdateProduct = () => {
                                         getValueFromEvent={(e: UploadChangeParam<UploadFile<RcFile>>) => {
                                             return e.fileList.map(file => (file.originFileObj as RcFile));
                                         }}
-                                        rules={[{required: true, message: 'Choose images for the product!'}]}
+                                        rules={[{ required: true, message: 'Choose images for the product!' }]}
                                     >
                                         <div>
-                                            <div style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
-                                                {product.imageUrls.map((imgPath, index) => (
-                                                    <img
-                                                        key={index}
-                                                        src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                                        alt={`Product ${index}`}
-                                                        style={{width: '250px', height: 'auto'}}
-                                                    />
-                                                ))}
-                                            </div>
+                                            {product && product.imageUrls && (
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                                                    {product.imageUrls.map((imgPath, index) => (
+                                                        <img
+                                                            key={index}
+                                                            src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
+                                                            alt={`Product ${index}`}
+                                                            style={{ width: '250px', height: 'auto' }}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            )}
                                             <Upload
                                                 listType="picture-card"
                                                 maxCount={10}
                                                 accept="image/*"
                                                 beforeUpload={() => false}
-                                                showUploadList={{showPreviewIcon: false}} // Показати кнопку видалення
+                                                showUploadList={{ showPreviewIcon: false }} // Показати кнопку видалення
                                                 fileList={product.imageUrls.map((imgPath, index) => ({
                                                     uid: index.toString(),
                                                     name: `Product ${index}`,
@@ -211,14 +225,12 @@ const UpdateProduct = () => {
                                             >
                                                 <div>
                                                     <PlusOutlined/>
-                                                    <div style={{marginTop: 8}}>Upload</div>
+                                                    <div style={{ marginTop: 8 }}>Upload</div>
                                                 </div>
                                             </Upload>
                                         </div>
                                     </Form.Item>
                                 </div>
-
-
                             </div>
                             <Form.Item>
                                 <Button type="default" htmlType="submit">
