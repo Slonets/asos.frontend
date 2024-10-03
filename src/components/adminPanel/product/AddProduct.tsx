@@ -8,7 +8,6 @@ import {
     IGenderName,
     IProductCreate,
     ISizeName,
-    IUploadedFile
 } from "../../types.ts";
 import {useNavigate} from "react-router-dom";
 import {Button, Form, Input, InputNumber, Row, Select, Upload} from "antd";
@@ -17,6 +16,7 @@ import TextArea from "antd/es/input/TextArea";
 import type {UploadChangeParam} from "antd/es/upload";
 import {PlusOutlined} from "@ant-design/icons";
 import DefaultAdminSideBar from "../default/DefaultAdminSideBar.tsx";
+import {RcFile} from "antd/es/upload/interface";
 const AddProduct = () => {
 
 
@@ -82,14 +82,40 @@ const AddProduct = () => {
 
 
         const onSubmit = async (values: IProductCreate) => {
+            console.log("data",values);
             try {
-                await http_common.post("/api/Dashboard/CreateProduct", values, {
+                const formData = new FormData();
+                values.imageUrls.forEach((file: File) => {
+                    formData.append('imageUrls', file); // Додаємо кожен файл до FormData
+                });
+
+                // Додаємо інші поля форми
+                formData.append('name', values.name);
+                formData.append('description', values.description);
+                formData.append('categoryId', values.categoryId.toString());
+                formData.append('size', values.size.toString());
+                formData.append('color', values.color);
+                formData.append('brandId', values.brandId.toString());
+                formData.append('gender', values.gender.toString());
+                formData.append('gender', values.gender.toString());
+                formData.append('sizeAndFit', values.sizeAndFit);
+                formData.append('lookAfterMe', values.lookAfterMe);
+                formData.append('aboutMe', values.aboutMe);
+                formData.append('amount', values.amount.toString());
+                formData.append('price', values.price.toString());
+
+
+
+
+
+
+                await http_common.post("/api/Dashboard/CreateProduct", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
 
                 });
-                navigate("/");
+                navigate("/admin/allproducts");
             } catch (ex) {
                 console.log("error>",values)
                 console.error("Exception creating product:", ex);
@@ -127,8 +153,8 @@ const AddProduct = () => {
                             <div className="widthdiv">
                             <Form.Item
                                 label="Name"
-                                name="Name"
-                                htmlFor="Name"
+                                name="name"
+                                htmlFor="name"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                     { min: 3, message: 'Name must have at least 3 characters!' },
@@ -151,8 +177,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="Category"
-                                name="CategoryId"
-                                htmlFor="CategoryId"
+                                name="categoryId"
+                                htmlFor="categoryId"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                 ]}
@@ -170,8 +196,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="Size"
-                                name="Size"
-                                htmlFor="Size"
+                                name="size"
+                                htmlFor="size"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                 ]}
@@ -187,8 +213,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="Color"
-                                name="Color"
-                                htmlFor="Color"
+                                name="color"
+                                htmlFor="color"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                     { min: 3, message: 'Color must have at least 3 characters!' },
@@ -199,8 +225,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="Brand"
-                                name="BrandId"
-                                htmlFor="BrandId"
+                                name="brandId"
+                                htmlFor="brandId"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                 ]}
@@ -213,8 +239,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="Gender"
-                                name="Gender"
-                                htmlFor="Gender"
+                                name="gender"
+                                htmlFor="gender"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                 ]}
@@ -227,8 +253,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="SizeAndFit"
-                                name="SizeAndFit"
-                                htmlFor="SizeAndFit"
+                                name="sizeAndFit"
+                                htmlFor="sizeAndFit"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                     { min: 10, message: 'SizeAndFit must have at least 10 characters!' },
@@ -239,8 +265,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="LookAfterMe"
-                                name="LookAfterMe"
-                                htmlFor="LookAfterMe"
+                                name="lookAfterMe"
+                                htmlFor="lookAfterMe"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                     { min: 10, message: 'LookAfterMe must have at least 10 characters!' },
@@ -251,8 +277,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="AboutMe"
-                                name="AboutMe"
-                                htmlFor="AboutMe"
+                                name="aboutMe"
+                                htmlFor="aboutMe"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                     { min: 10, message: 'AboutMe must have at least 10 characters!' },
@@ -263,8 +289,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="Amount"
-                                name="Amount"
-                                htmlFor="Amount"
+                                name="amount"
+                                htmlFor="amount"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                     { type: 'number' }
@@ -274,8 +300,8 @@ const AddProduct = () => {
                             </Form.Item>
                                 <Form.Item
                                     label="Price"
-                                    name="Price"
-                                    htmlFor="Price"
+                                    name="price"
+                                    htmlFor="price"
                                     rules={[
                                         { required: true, message: 'It is a required field!' },
                                         { type: 'number' }
@@ -285,12 +311,12 @@ const AddProduct = () => {
                                 </Form.Item>
                             <div className="image-upload-container">
                             <Form.Item
-                                name="ImageUrls"
+                                name="imageUrls"
                                 label="Images"
-                                valuePropName="ImageUrls"
+                                valuePropName="imageUrls"
                                 getValueFromEvent={(e: UploadChangeParam) => {
-                                    const image = e?.fileList[0] as IUploadedFile;
-                                    return image?.originFileObj;
+                                    const files = e?.fileList.map((file) => file.originFileObj as RcFile);
+                                    return files; // Повертаємо масив файлів типу RcFile
                                 }}
                                 rules={[{ required: true, message: 'Choose image for product!' }]}
                             >
@@ -299,7 +325,7 @@ const AddProduct = () => {
                                     beforeUpload={() => false}
                                     accept="image/*"
                                     listType="picture-card"
-                                    maxCount={10}
+                                    multiple={true}
                                 >
                                     <div>
                                         <PlusOutlined />
