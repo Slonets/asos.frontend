@@ -44,7 +44,7 @@ const ItemOrders=()=>
     return (
         <>
             <div className="centered-div">
-                <ProfileDefaultHeader />
+                <ProfileDefaultHeader backLink="/user-info/orders" />
             </div>
 
             <div className="new-container">

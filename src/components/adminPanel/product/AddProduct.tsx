@@ -82,7 +82,11 @@ const AddProduct = () => {
 
 
         const onSubmit = async (values: IProductCreate) => {
+
+            console.log("Передаємо об'єкт", values);
+
             try {
+
                 await http_common.post("/api/Dashboard/CreateProduct", values, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -100,7 +104,7 @@ const AddProduct = () => {
     return (
         <>
             <div className="centered-div">
-                <ProfileDefaultHeader/>
+                <ProfileDefaultHeader backLink="/admin"/>
             </div>
 
             <div className="main-container">

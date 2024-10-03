@@ -64,7 +64,7 @@ const AllProducts = () => {
     return (
         <>
             <div className="centered-div">
-                <ProfileDefaultHeader />
+                <ProfileDefaultHeader backLink="/admin"/>
             </div>
 
             <div className="main-container">

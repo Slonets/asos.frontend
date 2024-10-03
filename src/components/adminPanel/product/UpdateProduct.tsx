@@ -140,7 +140,7 @@ const UpdateProduct = () => {
     return (
         <>
             <div className="centered-div">
-                <ProfileDefaultHeader/>
+                <ProfileDefaultHeader backLink="/admin/allproducts"/>
             </div>
 
             <div className="main-container">

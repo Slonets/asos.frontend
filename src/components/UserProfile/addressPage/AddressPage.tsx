@@ -155,7 +155,7 @@ const AddressPage = () => {
     return (
         <>
             <div className="centered-div">
-                <ProfileDefaultHeader/>
+                <ProfileDefaultHeader backLink="/user-info"/>
             </div>
 
             <div className="main-container">
