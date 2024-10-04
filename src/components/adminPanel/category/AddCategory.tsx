@@ -35,7 +35,7 @@ const AddProduct = () => {
     return (
         <>
             <div className="centered-div">
-                <ProfileDefaultHeader/>
+                <ProfileDefaultHeader backLink="/admin/allcategory"/>
             </div>
 
             <div className="main-container">

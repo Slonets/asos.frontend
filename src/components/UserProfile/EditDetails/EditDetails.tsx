@@ -181,7 +181,7 @@ const EditDetails = () => {
     return (
         <>
             <div className="centered-div">
-                <ProfileDefaultHeader/>
+                <ProfileDefaultHeader backLink="/"/>
             </div>
 
             <div className="main-container">
