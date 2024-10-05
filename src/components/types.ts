@@ -1,3 +1,20 @@
+export interface GetProductByIdDto {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    size: string;
+    color: string;
+    brandName: string;
+    categoryName: string;
+    gender: string;
+    sizeAndFit: string;
+    lookAfterMe: string;
+    aboutMe: string;
+    amount: number;
+    imageUrls: string[];
+}
+
 export interface IOrderItem{
     id: number,
     name: string;
@@ -12,6 +29,21 @@ export interface IOrderItem{
     aboutMe:string;
     sizeAndFit:string;
     amount:number;
+    imagePaths: string[];
+}
+
+export interface PagedResult<T> {
+    items: T[];
+    totalCount: number;
+    pageSize: number;
+    currentPage: number;
+}
+
+export interface OrderInformationDto {
+    id: number;
+    names: string[];
+    status: string;
+    totalPrice: number;
     imagePaths: string[];
 }
 

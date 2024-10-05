@@ -2,93 +2,50 @@ import "./style.css";
 import {Select, Typography, Carousel} from "antd";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { IoReturnDownBack } from "react-icons/io5";
-
 import { Form, Collapse } from 'antd';
 import {Link, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IBrandName, ICategoryName, IGenderName, IProductCreate, ISizeName } from "../../components/types.ts";
-import http_common from "../../http_common.ts";
 
-
-
+import http from "../../http_common.ts";
+import {GetProductByIdDto, ISizeName} from "../../components/types.ts";
 const Product = () => {
-    const { id } = useParams(); // Get the product ID from the route parameters
 
-    const [product, setProduct] = useState<IProductCreate | null>(null);
-    const [, setCategories] = useState<ICategoryName[]>([]);
-    const [, setBrands] = useState<IBrandName[]>([]);
+    const { id } = useParams(); // Get the product ID from the route parameters
+    const [product, setProduct] = useState<GetProductByIdDto>();
     const [sizes, setSizes] = useState<ISizeName[]>([]);
-    const [, setGenders] = useState<IGenderName[]>([]);
 
     useEffect(() => {
-        fetchProduct();
-        fetchCategories();
-        fetchBrands();
-        fetchSizes();
-        fetchGenders();
+
+                http.get<GetProductByIdDto>(`/api/Dashboard/GetProductById/${id}`).then(resp=>{
+
+                    setProduct(resp.data);
+                    console.log("Що записане в обєкті", resp.data);
+                });
+
+       fetchSizes();
+
     }, [id]);
 
-    const fetchProduct = async () => {
-        try {
-            const response = await http_common.get<IProductCreate>(`/api/Dashboard/GetProductById/${id}`);
-            setProduct(response.data);
-            console.log("Що записане в обєкті", response.data);
-        } catch (error) {
-            console.error("Error fetching product:", error);
-        }
-    };
-
-
-    const fetchCategories = async () => {
-        try {
-            const response = await http_common.get<ICategoryName[]>("/api/Dashboard/GetAllCategory");
-            setCategories(response.data);
-
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-        }
-    };
-
-    const fetchBrands = async () => {
-        try {
-            const response = await http_common.get<IBrandName[]>("/api/Dashboard/GetAllBrand");
-            setBrands(response.data);
-        } catch (error) {
-            console.error("Error fetching brands:", error);
-        }
-    };
-
     const fetchSizes = async () => {
+
         try {
-            const response = await http_common.get<ISizeName[]>("/api/Dashboard/GetAllSizes");
-            setSizes(response.data);
-        } catch (error) {
+
+            await http.get<ISizeName[]>("/api/Dashboard/GetAllSizes").then(resp=>{
+                    setSizes(resp.data);
+            });
+
+        } catch (error)
+        {
             console.error("Error fetching sizes:", error);
         }
     };
 
-    const fetchGenders = async () => {
-        try
-        {
-            const response = await http_common.get<IGenderName[]>("/api/Dashboard/GetAllGenders");
-            setGenders(response.data);
-            console.log("Прийшли гендери", response.data);
-
-        }
-        catch (error)
-        {
-            console.error("Error fetching genders:", error);
-        }
-    };
-
-
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
-
 
     return (
         <>
             {product && (
-                <Form initialValues={product} layout="vertical" className="Form-Basic">
+                <Form initialValues={product} layout="vertical" className="Form-Basic" >
 
                     <section className="section">
 
@@ -102,18 +59,6 @@ const Product = () => {
 
                                 <div className="div-with-img">
                                     {/* Відображення зображень у Carousel */}
-
-                                   {/* <Carousel>
-                                        {product.imageUrls.map((imgPath, index) => (
-                                            <Carousel.Item key={index}>
-                                                <img
-                                                    src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                                    alt={`Product ${index}`}
-                                                    style={{ width: '100%', height: 'auto' }} // Стилі для зображення
-                                                />
-                                            </Carousel.Item>
-                                        ))}
-                                    </Carousel>*/}
                                     <Carousel
                                         autoplay={true}
                                         dotPosition="bottom"
@@ -125,6 +70,7 @@ const Product = () => {
 
                                         {product.imageUrls.map((imgPath, index) => (
                                             <img
+                                                key={index}
                                                 src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
                                                 alt={`Product ${index}`}
                                                 style={{width: '100%', height: 'auto'}} // Стилі для зображення
@@ -168,7 +114,7 @@ const Product = () => {
                                     <div className="box-with-sizes">
                                         <p className="box-1-p-last">Size</p>
                                         <Form.Item name="size">
-                                            <Select className="Size-option" options={sizesOptions} />
+                                            <Select className="Size-option" value={product.size} options={sizesOptions} />
                                         </Form.Item>
                                     </div>
                                 </div>
