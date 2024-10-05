@@ -1,5 +1,5 @@
 import "./style.css";
-import {Select, Typography, Carousel} from "antd";
+import {Select, Typography} from "antd";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { IoReturnDownBack } from "react-icons/io5";
 import { Form, Collapse } from 'antd';
@@ -8,23 +8,35 @@ import { useEffect, useState } from "react";
 
 import http from "../../http_common.ts";
 import {GetProductByIdDto, ISizeName} from "../../components/types.ts";
+import {APP_ENV} from "../../env";
 const Product = () => {
+
+    const baseUrl = APP_ENV.BASE_URL;
 
     const { id } = useParams(); // Get the product ID from the route parameters
     const [product, setProduct] = useState<GetProductByIdDto>();
     const [sizes, setSizes] = useState<ISizeName[]>([]);
 
+    const [selectedSize, setSelectedSize] = useState<string>();
+
+    const [productId, setProductId] = useState(id);
+
     useEffect(() => {
 
-                http.get<GetProductByIdDto>(`/api/Dashboard/GetProductById/${id}`).then(resp=>{
+        fetchProductById(productId as string);
+        fetchSizes(); // Завантаження списку розмірів
+    }, [productId]);
 
-                    setProduct(resp.data);
-                    console.log("Що записане в обєкті", resp.data);
-                });
 
-       fetchSizes();
+    //Функція для завантаження продукту
+    const fetchProductById = (productId: string) => {
 
-    }, [id]);
+        http.get<GetProductByIdDto>(`/api/Dashboard/GetProductById/${productId}`).then((resp) => {
+            setProduct(resp.data);
+            setSelectedSize(resp.data.size); // Встановлюємо початковий розмір
+            console.log("Що записане в об'єкті", resp.data);
+        });
+    };
 
     const fetchSizes = async () => {
 
@@ -42,6 +54,25 @@ const Product = () => {
 
     const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
 
+    const handleSizeChange = (value: string) => {
+
+        setSelectedSize(value);
+
+        // Відправляємо новий розмір на API
+        http.get(`/api/Dashboard/ReturnNewProductSize?nameProduct=${product?.name}&newSize=${value}` )
+            .then(resp => {
+
+                const newProductId = resp.data; // Передбачаємо, що API повертає новий productId
+                setProductId(newProductId);
+                console.log("Прийшло", resp.data);
+
+            })
+            .catch(error => {
+                console.error('Помилка при оновленні розміру:', error);
+            });
+    };
+
+
     return (
         <>
             {product && (
@@ -49,117 +80,134 @@ const Product = () => {
 
                     <section className="section">
 
-                        <Form.Item>
-                            <div>
-                                <div className="main-div-with-photo">
+                        <div className="text-above-carousel">
+                            <h2 className="carousel-title">{product.categoryName}/{product.brandName}<span> {product.gender}/{product.name}</span></h2> {/* Напис над каруселлю */}
+                        </div>
 
-                                    <div className="text-above-carousel">
-                                        <h2 className="carousel-title">Clothes/<span> {product.gender}</span></h2> {/* Напис над каруселлю */}
-                                    </div>
+                        <div className="Section-2">
+                            <Form.Item>
+                                <div>
+                                    <div className="main-div-with-photo">
 
-                                <div className="div-with-img">
-                                    {/* Відображення зображень у Carousel */}
-                                    <Carousel
-                                        autoplay={true}
-                                        dotPosition="bottom"
-                                        pauseOnHover={true}
-                                        pauseOnDotsHover={true}
-                                        draggable={true}
-                                        arrows infinite={false}
-                                       >
+                                        {product.imageUrls.slice(0, 4).map((foto, index) => (  // Виводимо лише перші 4 фото
 
-                                        {product.imageUrls.map((imgPath, index) => (
-                                            <img
-                                                key={index}
-                                                src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                                alt={`Product ${index}`}
-                                                style={{width: '100%', height: 'auto'}} // Стилі для зображення
-                                            />
+                                                <img className="zoom-image" key={index} src={`${baseUrl}product/${foto}`} alt={`Фото ${index + 1}`} />
+
                                         ))}
-                                    </Carousel>
-                                </div>
-                                </div>
-                            </div>
-                        </Form.Item>
 
-                        <div>
-                            <div className="div-with-info">
-                                <Form.Item name="name">
-                                <Typography.Text className="h1-text">
-                                        {product.name}
-                                    </Typography.Text>
-                                </Form.Item>
+                                        {/* Відображення зображень у Carousel */}
+                                        {/*<Carousel*/}
+                                        {/*    autoplay={true}*/}
+                                        {/*    dotPosition="bottom"*/}
+                                        {/*    pauseOnHover={true}*/}
+                                        {/*    pauseOnDotsHover={true}*/}
+                                        {/*    draggable={true}*/}
+                                        {/*    arrows={true} // Активуємо стандартні стрілки*/}
+                                        {/*    infinite={false}*/}
+                                        {/*>*/}
 
-                                <div className="div-with-dropbutton  ">
+                                        {/*    {product.imageUrls.map((imgPath, index) => (*/}
+                                        {/*        <img*/}
+                                        {/*            key={index}*/}
+                                        {/*            src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}*/}
+                                        {/*            alt={`Product ${index}`}*/}
+                                        {/*            style={{width: '100%', height: 'auto'}} // Стилі для зображення*/}
+                                        {/*        />*/}
+                                        {/*    ))}*/}
+                                        {/*</Carousel>*/}
 
-                                    <Form.Item name="price">
-                                        <Typography.Text className="text-price">
-                                            <div className="box-2">
-                                                <p className="P-Color">Price</p>
-                                                <span className="Span-Color">£{product.price}</span>
-                                            </div>
-                                        </Typography.Text>
-                                    </Form.Item>
 
-                                    <div>
-                                    <Form.Item name="colour">
-                                        <Typography.Text className="text-info-about-prod">
-                                            <div className="box-2">
-                                                <p className="P-Color">Color</p>
-                                                <span className="Span-Color">{product.color}</span>
-                                            </div>
-                                        </Typography.Text>
-                                    </Form.Item>
                                     </div>
-                                    <div className="box-with-sizes">
-                                        <p className="box-1-p-last">Size</p>
-                                        <Form.Item name="size">
-                                            <Select className="Size-option" value={product.size} options={sizesOptions} />
+                                </div>
+                            </Form.Item>
+
+                            <div>
+                                <div className="div-with-info">
+                                    <Form.Item name="name">
+                                        <Typography.Text className="h1-text">
+                                            {product.name}
+                                        </Typography.Text>
+                                    </Form.Item>
+
+                                    <div className="div-with-dropbutton  ">
+
+                                        <Form.Item name="price">
+                                            <Typography.Text className="text-price">
+                                                <div className="box-2">
+                                                    <p className="P-Color">Price</p>
+                                                    <span className="Span-Color">£{product.price}</span>
+                                                </div>
+                                            </Typography.Text>
                                         </Form.Item>
+
+                                        <div>
+                                            <Form.Item name="colour">
+                                                <Typography.Text className="text-info-about-prod">
+                                                    <div className="box-2">
+                                                        <p className="P-Color">Color</p>
+                                                        <span className="Span-Color">{product.color}</span>
+                                                    </div>
+                                                </Typography.Text>
+                                            </Form.Item>
+                                        </div>
+
+                                        <div className="box-with-sizes">
+                                            <p className="box-1-p-last">Size</p>
+                                            <Form.Item name="size">
+                                                <Select
+                                                    className="Size-option"
+                                                    value={selectedSize} // Використовуємо стан вибраного розміру
+                                                    options={sizesOptions}
+                                                    onChange={handleSizeChange} // Викликаємо обробник зміни розміру
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                    </div>
+                                    <div className="form-row button-container">
+                                        <button type="submit" className="button save-button">Add to basket</button>
+                                    </div>
+                                    <div className="main-div-delivery">
+                                        <div className="div-delivery">
+                                            <CiDeliveryTruck size={18} />
+                                            <p className="text-delivery">Free delivery on qualifying orders</p>
+                                        </div>
+
+                                        <div className="div-delivery">
+                                            <IoReturnDownBack size={18} />
+                                            <p className="text-delivery">Free returns</p>
+                                        </div>
+                                    </div>
+                                    <div className="last-text-delivery">
+                                        <p className="text-delivery">This product has shipping restrictions</p>
                                     </div>
                                 </div>
-                                <div className="form-row button-container">
-                                    <button type="submit" className="button save-button">Add to basket</button>
-                                </div>
-                                <div className="main-div-delivery">
-                                    <div className="div-delivery">
-                                        <CiDeliveryTruck size={18} />
-                                        <p className="text-delivery">Free delivery on qualifying orders</p>
+                                <div className="div-accord-margin">
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'Product Description', children: <p>{product.description}</p> }]}
+                                        />
+                                    </div>
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'About', children: <p>{product.aboutMe}</p> }]}
+                                        />
+                                    </div>
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'Size & Fit', children: <p>{product.sizeAndFit}</p> }]}
+                                        />
+                                    </div>
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'Look after me', children: <p>{product.lookAfterMe}</p> }]}
+                                        />
                                     </div>
 
-                                    <div className="div-delivery">
-                                        <IoReturnDownBack size={18} />
-                                        <p className="text-delivery">Free returns</p>
-                                    </div>
                                 </div>
-                                <div className="last-text-delivery">
-                                    <p className="text-delivery">This product has shipping restrictions</p>
-                                </div>
-                            </div>
-                            <div className="div-accord-margin">
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'Product Description', children: <p>{product.description}</p> }]}
-                                    />
-                                </div>
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'About', children: <p>{product.aboutMe}</p> }]}
-                                    />
-                                </div>
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'Size & Fit', children: <p>{product.sizeAndFit}</p> }]}
-                                    />
-                                </div>
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'Look after me', children: <p>{product.lookAfterMe}</p> }]}
-                                    />
-                                </div>
-
                             </div>
                         </div>
+
+
                     </section>
 
                     <div className="footer-3">
