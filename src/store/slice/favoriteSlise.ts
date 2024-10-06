@@ -1,6 +1,6 @@
 export interface ICartItem
 {
-    productId:number;
+    git:number;
 }
 
 const initState: ICartItem[] =[];

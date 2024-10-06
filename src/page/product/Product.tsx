@@ -1,219 +1,403 @@
 import "./style.css";
-import {Select, Typography, Carousel} from "antd";
+import {Select, Typography} from "antd";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { IoReturnDownBack } from "react-icons/io5";
-
 import { Form, Collapse } from 'antd';
 import {Link, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IBrandName, ICategoryName, IGenderName, IProductCreate, ISizeName } from "../../components/types.ts";
-import http_common from "../../http_common.ts";
 
-
-
+import http from "../../http_common.ts";
+import {GetProductByIdDto, ISizeName} from "../../components/types.ts";
+import {APP_ENV} from "../../env";
+import {FavoriteActionType} from "../../store/slice/favoriteSlise.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {BasketActionType} from "../../store/slice/basketSlice.tsx";
 const Product = () => {
-    const { id } = useParams(); // Get the product ID from the route parameters
 
-    const [product, setProduct] = useState<IProductCreate | null>(null);
-    const [, setCategories] = useState<ICategoryName[]>([]);
-    const [, setBrands] = useState<IBrandName[]>([]);
+    const baseUrl = APP_ENV.BASE_URL;
+
+    const { id } = useParams(); // Get the product ID from the route parameters
+    const [product, setProduct] = useState<GetProductByIdDto>();
     const [sizes, setSizes] = useState<ISizeName[]>([]);
-    const [, setGenders] = useState<IGenderName[]>([]);
+
+    const[getFlag, setFlag]=useState<boolean>(false);
+
+    const[getButton, setButton]=useState<boolean>(true);
+
+    const dispatch = useDispatch();
+
+    const [selectedSize, setSelectedSize] = useState<string>();
+
+    const [productId, setProductId] = useState(id);
+
+    const userStatus = useSelector((store: any) => store.auth.isAuth);
 
     useEffect(() => {
-        fetchProduct();
-        fetchCategories();
-        fetchBrands();
-        fetchSizes();
-        fetchGenders();
-    }, [id]);
 
-    const fetchProduct = async () => {
-        try {
-            const response = await http_common.get<IProductCreate>(`/api/Dashboard/GetProductById/${id}`);
-            setProduct(response.data);
-            console.log("Що записане в обєкті", response.data);
-        } catch (error) {
-            console.error("Error fetching product:", error);
-        }
-    };
+        fetchProductById(productId as string);
+        fetchSizes(); // Завантаження списку розмірів
+    }, [productId]);
 
 
-    const fetchCategories = async () => {
-        try {
-            const response = await http_common.get<ICategoryName[]>("/api/Dashboard/GetAllCategory");
-            setCategories(response.data);
+    //Функція для завантаження продукту
+    const fetchProductById = (productId: string) => {
 
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-        }
-    };
-
-    const fetchBrands = async () => {
-        try {
-            const response = await http_common.get<IBrandName[]>("/api/Dashboard/GetAllBrand");
-            setBrands(response.data);
-        } catch (error) {
-            console.error("Error fetching brands:", error);
-        }
+        http.get<GetProductByIdDto>(`/api/Dashboard/GetProductById/${productId}`).then((resp) => {
+            setProduct(resp.data);
+            setSelectedSize(resp.data.size); // Встановлюємо початковий розмір
+            console.log("Що записане в об'єкті", resp.data);
+        });
     };
 
     const fetchSizes = async () => {
+
         try {
-            const response = await http_common.get<ISizeName[]>("/api/Dashboard/GetAllSizes");
-            setSizes(response.data);
-        } catch (error) {
+
+            await http.get<ISizeName[]>("/api/Dashboard/GetAllSizes").then(resp=>{
+                    setSizes(resp.data);
+            });
+
+        } catch (error)
+        {
             console.error("Error fetching sizes:", error);
         }
     };
 
-    const fetchGenders = async () => {
-        try
-        {
-            const response = await http_common.get<IGenderName[]>("/api/Dashboard/GetAllGenders");
-            setGenders(response.data);
-            console.log("Прийшли гендери", response.data);
+    const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
 
-        }
-        catch (error)
+    const handleSizeChange = (value: string) => {
+
+        setSelectedSize(value);
+
+        // Відправляємо новий розмір на API
+        http.get(`/api/Dashboard/ReturnNewProductSize?nameProduct=${product?.name}&newSize=${value}` )
+            .then(resp => {
+
+                const newProductId = resp.data; // Передбачаємо, що API повертає новий productId
+                setProductId(newProductId);
+                console.log("Прийшло", resp.data);
+
+            })
+            .catch(error => {
+                console.error('Помилка при оновленні розміру:', error);
+            });
+    };
+
+    const handleStarClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // Отримуємо саму зірочку зі SVG
+        const star = event.currentTarget.querySelector('svg');
+
+        if (star)
         {
-            console.error("Error fetching genders:", error);
+            // Додаємо/видаляємо клас 'filled' для конкретної зірочки
+            star.classList.toggle('filled');
+        }
+    };
+    const addItemToCart = (productId: number) => {
+
+        console.log("Прийшло", productId);
+         setFlag(true);
+
+        // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Перевіряємо, чи існує такий товар у кошику. Якщо існує, то поверне його id
+        // Якщо не існує, то поверне -1
+        const index = cart.indexOf(productId);
+
+        if (index !== -1)
+        {
+            // Якщо товар є, видаляємо його
+            cart.splice(index, 1);
+        }
+        else
+        {
+            // Якщо товару немає, додаємо його
+            cart.push(productId);
+        }
+
+        // Оновлюємо Local Storage з новим значенням
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Оновлюємо стан з новим кошиком
+        dispatch({
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: cart
+        });
+    };
+
+    const deleteProductWithFavorite=(productId:number)=>{
+
+        // Отримати поточний кошик з Local Storage
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Видалити товар з кошика
+        const updatedCart = cart.filter((item: any) => item !== productId);
+
+        // Оновити Local Storage
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+        // Диспатч на видалення
+        dispatch({
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: updatedCart,
+        });
+    };
+
+    const handleButtonClick2 = () => {
+        // Отримуємо SVG за допомогою його унікального ID
+        const star = document.getElementById('star35');
+
+        if (star) {
+            // Додаємо або видаляємо клас 'filled' для SVG
+            star.classList.toggle('filled');
         }
     };
 
+    const AddToBasket=(productId:number)=>{
 
-    const sizesOptions = sizes.map(item => ({ label: item.label, value: item.value }));
+        setButton(false);
+
+        if (userStatus)
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
+
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
+
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
+
+                http.post("api/Basket/CreateBasketId", { productId });
+            }
+        }
+        else
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
+
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
+
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
+            }
+        }
+        deleteProductWithFavorite(productId);
+
+        if(getFlag)
+        {
+            handleButtonClick2();
+        }
+    };
 
 
     return (
         <>
             {product && (
-                <Form initialValues={product} layout="vertical" className="Form-Basic">
+                <Form initialValues={product} layout="vertical" className="Form-Basic" >
 
                     <section className="section">
 
-                        <Form.Item>
+                        <div className="text-above-carousel">
+                            <h2 className="carousel-title">{product.categoryName}/{product.brandName}<span> {product.gender}/{product.name}</span></h2> {/* Напис над каруселлю */}
+                        </div>
+
+                        <div className="Section-2">
+                            <Form.Item>
+                                <div>
+                                    <div className="main-div-with-photo">
+
+                                        {product.imageUrls.slice(0, 4).map((foto, index) => (  // Виводимо лише перші 4 фото
+
+                                                <img className="zoom-image" key={index} src={`${baseUrl}product/${foto}`} alt={`Фото ${index + 1}`} />
+
+                                        ))}
+
+                                        {/* Відображення зображень у Carousel */}
+                                        {/*<Carousel*/}
+                                        {/*    autoplay={true}*/}
+                                        {/*    dotPosition="bottom"*/}
+                                        {/*    pauseOnHover={true}*/}
+                                        {/*    pauseOnDotsHover={true}*/}
+                                        {/*    draggable={true}*/}
+                                        {/*    arrows={true} // Активуємо стандартні стрілки*/}
+                                        {/*    infinite={false}*/}
+                                        {/*>*/}
+
+                                        {/*    {product.imageUrls.map((imgPath, index) => (*/}
+                                        {/*        <img*/}
+                                        {/*            key={index}*/}
+                                        {/*            src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}*/}
+                                        {/*            alt={`Product ${index}`}*/}
+                                        {/*            style={{width: '100%', height: 'auto'}} // Стилі для зображення*/}
+                                        {/*        />*/}
+                                        {/*    ))}*/}
+                                        {/*</Carousel>*/}
+
+
+                                    </div>
+                                </div>
+                            </Form.Item>
+
                             <div>
-                                <div className="main-div-with-photo">
+                                <div className="div-with-info">
 
-                                    <div className="text-above-carousel">
-                                        <h2 className="carousel-title">Clothes/<span> {product.gender}</span></h2> {/* Напис над каруселлю */}
-                                    </div>
+                                    <div className="Header-layout">
 
-                                <div className="div-with-img">
-                                    {/* Відображення зображень у Carousel */}
-
-                                   {/* <Carousel>
-                                        {product.imageUrls.map((imgPath, index) => (
-                                            <Carousel.Item key={index}>
-                                                <img
-                                                    src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                                    alt={`Product ${index}`}
-                                                    style={{ width: '100%', height: 'auto' }} // Стилі для зображення
-                                                />
-                                            </Carousel.Item>
-                                        ))}
-                                    </Carousel>*/}
-                                    <Carousel
-                                        autoplay={true}
-                                        dotPosition="bottom"
-                                        pauseOnHover={true}
-                                        pauseOnDotsHover={true}
-                                        draggable={true}
-                                        arrows infinite={false}
-                                       >
-
-                                        {product.imageUrls.map((imgPath, index) => (
-                                            <img
-                                                src={`${import.meta.env.VITE_API_URL}product/${imgPath}`}
-                                                alt={`Product ${index}`}
-                                                style={{width: '100%', height: 'auto'}} // Стилі для зображення
-                                            />
-                                        ))}
-                                    </Carousel>
-                                </div>
-                                </div>
-                            </div>
-                        </Form.Item>
-
-                        <div>
-                            <div className="div-with-info">
-                                <Form.Item name="name">
-                                <Typography.Text className="h1-text">
-                                        {product.name}
-                                    </Typography.Text>
-                                </Form.Item>
-
-                                <div className="div-with-dropbutton  ">
-
-                                    <Form.Item name="price">
-                                        <Typography.Text className="text-price">
-                                            <div className="box-2">
-                                                <p className="P-Color">Price</p>
-                                                <span className="Span-Color">£{product.price}</span>
-                                            </div>
+                                    <Form.Item className="header-cart">
+                                        <Typography.Text className="h1-text">
+                                            {product.name}
                                         </Typography.Text>
                                     </Form.Item>
 
-                                    <div>
-                                    <Form.Item name="colour">
-                                        <Typography.Text className="text-info-about-prod">
-                                            <div className="box-2">
-                                                <p className="P-Color">Color</p>
-                                                <span className="Span-Color">{product.color}</span>
+                                            <div className="button-Cart">
+                                                <button className="favorite35" onClick={(event) => {
+                                                    handleStarClick(event);
+                                                    addItemToCart(product.id);
+                                                }}>
+
+                                                    <svg id="star35"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                                        <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
+                                                    </svg>
+
+                                                </button>
                                             </div>
-                                        </Typography.Text>
-                                    </Form.Item>
+
                                     </div>
-                                    <div className="box-with-sizes">
-                                        <p className="box-1-p-last">Size</p>
-                                        <Form.Item name="size">
-                                            <Select className="Size-option" options={sizesOptions} />
+
+                                    <div className="div-with-dropbutton  ">
+
+                                        <Form.Item name="price">
+                                            <Typography.Text className="text-price">
+                                                <div className="box-2">
+                                                    <p className="P-Color">Price</p>
+                                                    <span className="Span-Color">£{product.price}</span>
+                                                </div>
+                                            </Typography.Text>
                                         </Form.Item>
-                                    </div>
-                                </div>
-                                <div className="form-row button-container">
-                                    <button type="submit" className="button save-button">Add to basket</button>
-                                </div>
-                                <div className="main-div-delivery">
-                                    <div className="div-delivery">
-                                        <CiDeliveryTruck size={18} />
-                                        <p className="text-delivery">Free delivery on qualifying orders</p>
+
+                                        <div>
+                                            <Form.Item name="colour">
+                                                <Typography.Text className="text-info-about-prod">
+                                                    <div className="box-2">
+                                                        <p className="P-Color">Color</p>
+                                                        <span className="Span-Color">{product.color}</span>
+                                                    </div>
+                                                </Typography.Text>
+                                            </Form.Item>
+                                        </div>
+
+                                        <div className="box-with-sizes">
+                                            <p className="box-1-p-last">Size</p>
+                                            <Form.Item name="size">
+                                                <Select
+                                                    className="Size-option"
+                                                    value={selectedSize} // Використовуємо стан вибраного розміру
+                                                    options={sizesOptions}
+                                                    onChange={handleSizeChange} // Викликаємо обробник зміни розміру
+                                                />
+                                            </Form.Item>
+                                        </div>
                                     </div>
 
-                                    <div className="div-delivery">
-                                        <IoReturnDownBack size={18} />
-                                        <p className="text-delivery">Free returns</p>
+
+
+                                        {getButton?(
+
+                                                <div className="form-row button-container">
+
+                                            <button type="submit" className="button save-button"  onClick={() => {AddToBasket(product.id);}}>Add to basket</button>
+
+                                                </div>
+                                        ):(
+
+                                            <>
+
+                                            <svg className="SVG-Basket" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#2c6849"
+                                                 width="100px"
+                                                 height="100px"
+                                            >
+                                                <defs>
+                                                    <style>{`.cls-1{fill:#b2b2b2;}`}</style>
+                                                </defs>
+                                                <title>Example Icon</title>
+                                                <path className="cls-1" d="M29.78,15.37A1,1,0,0,0,29,15H3a1,1,0,0,0-1,1.21L4.68,28.63A3,3,0,0,0,7.62,31H24.38a3,3,0,0,0,2.94-2.37L30,16.21A1,1,0,0,0,29.78,15.37Z"></path>
+                                                <rect height="8" rx="1" ry="1" width="30" x="1" y="9"></rect>
+                                                <path className="cls-1" d="M8,13a1,1,0,0,1-.86-.49l-6-10a1,1,0,1,1,1.72-1l6,10a1,1,0,0,1-.35,1.37A1,1,0,0,1,8,13Z"></path>
+                                                <path d="M10,26.5a1,1,0,0,1-1-1v-5a1,1,0,0,1,2,0v5A1,1,0,0,1,10,26.5Z"></path>
+                                                <path d="M16,26.5a1,1,0,0,1-1-1v-5a1,1,0,0,1,2,0v5A1,1,0,0,1,16,26.5Z"></path>
+                                                <path d="M22,26.5a1,1,0,0,1-1-1v-5a1,1,0,0,1,2,0v5A1,1,0,0,1,22,26.5Z"></path>
+                                                <path className="cls-1" d="M24,13a1,1,0,0,1-.51-.14,1,1,0,0,1-.35-1.37l6-10a1,1,0,1,1,1.72,1l-6,10A1,1,0,0,1,24,13Z"></path>
+                                            </svg>
+
+                                                <h2 className="Text-Icon">Product in basket</h2>
+                                            </>
+                                        )}
+
+
+
+
+
+                                    <div className="main-div-delivery">
+                                        <div className="div-delivery">
+                                            <CiDeliveryTruck size={18} />
+                                            <p className="text-delivery">Free delivery on qualifying orders</p>
+                                        </div>
+
+                                        <div className="div-delivery">
+                                            <IoReturnDownBack size={18} />
+                                            <p className="text-delivery">Free returns</p>
+                                        </div>
+                                    </div>
+                                    <div className="last-text-delivery">
+                                        <p className="text-delivery">This product has shipping restrictions</p>
                                     </div>
                                 </div>
-                                <div className="last-text-delivery">
-                                    <p className="text-delivery">This product has shipping restrictions</p>
-                                </div>
-                            </div>
-                            <div className="div-accord-margin">
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'Product Description', children: <p>{product.description}</p> }]}
-                                    />
-                                </div>
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'About', children: <p>{product.aboutMe}</p> }]}
-                                    />
-                                </div>
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'Size & Fit', children: <p>{product.sizeAndFit}</p> }]}
-                                    />
-                                </div>
-                                <div className="div-accord">
-                                    <Collapse
-                                        items={[{ key: '1', label: 'Look after me', children: <p>{product.lookAfterMe}</p> }]}
-                                    />
-                                </div>
+                                <div className="div-accord-margin">
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'Product Description', children: <p>{product.description}</p> }]}
+                                        />
+                                    </div>
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'About', children: <p>{product.aboutMe}</p> }]}
+                                        />
+                                    </div>
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'Size & Fit', children: <p>{product.sizeAndFit}</p> }]}
+                                        />
+                                    </div>
+                                    <div className="div-accord">
+                                        <Collapse
+                                            items={[{ key: '1', label: 'Look after me', children: <p>{product.lookAfterMe}</p> }]}
+                                        />
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
+
+
                     </section>
 
                     <div className="footer-3">
