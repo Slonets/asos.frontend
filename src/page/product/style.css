@@ -90,6 +90,85 @@
     margin: 0 auto;
 }
 
+.Header-layout
+{
+    width: 100%;
+    height: max-content;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
+.header-cart
+{
+    width: 70%;
+    height: max-content;
+    margin-left: 40px;
+}
+
+.button-Cart
+{
+    width: 20%;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+}
+
+.favorite35
+{
+    /* favorite */
+
+
+    width: 36px;
+    height: 36px;
+    border-radius: 0.75px;
+
+    fill: none;
+    stroke: #0D0D0D;
+    stroke-width: 1.5;
+    transition: fill 0.3s, stroke 0.3s;
+
+}
+
+#star35:hover
+{
+    fill: #FFD700; /* Золотий колір при наведенні */
+    stroke: #FFD700;
+}
+
+.filled {
+    fill: #FFD700;
+    stroke: #FFD700;
+}
+
+.SVG-Basket
+{
+    margin: 0 auto;
+}
+
+.Text-Icon
+{
+    font-size: 24px;
+    font-family: "Outfit", sans-serif;
+    font-style: normal;
+    text-align: center;
+    background: linear-gradient(90deg, #dcd158, #d02c26, #379113);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: colorShift 3s linear infinite;
+    text-decoration: none;
+}
+
+@keyframes colorShift {
+    0% {
+        background-position: 0%;
+    }
+    100% {
+        background-position: 100%;
+    }
+}
+
 
 .h1-text
 {
@@ -100,8 +179,6 @@
     font-weight: bold;
     line-height: normal;
     text-transform: uppercase;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 
 .text-price{
@@ -117,7 +194,7 @@
 }
 .div-with-dropbutton{
     display: flex; /* Встановлюємо контейнеру Flexbox */
-    margin: 100px 20px 0 20px;
+    margin: 30px 20px 0 20px;
    justify-content: space-between;
     align-items: center;
 }

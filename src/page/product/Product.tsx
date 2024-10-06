@@ -9,6 +9,9 @@ import { useEffect, useState } from "react";
 import http from "../../http_common.ts";
 import {GetProductByIdDto, ISizeName} from "../../components/types.ts";
 import {APP_ENV} from "../../env";
+import {FavoriteActionType} from "../../store/slice/favoriteSlise.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {BasketActionType} from "../../store/slice/basketSlice.tsx";
 const Product = () => {
 
     const baseUrl = APP_ENV.BASE_URL;
@@ -17,9 +20,17 @@ const Product = () => {
     const [product, setProduct] = useState<GetProductByIdDto>();
     const [sizes, setSizes] = useState<ISizeName[]>([]);
 
+    const[getFlag, setFlag]=useState<boolean>(false);
+
+    const[getButton, setButton]=useState<boolean>(true);
+
+    const dispatch = useDispatch();
+
     const [selectedSize, setSelectedSize] = useState<string>();
 
     const [productId, setProductId] = useState(id);
+
+    const userStatus = useSelector((store: any) => store.auth.isAuth);
 
     useEffect(() => {
 
@@ -70,6 +81,131 @@ const Product = () => {
             .catch(error => {
                 console.error('Помилка при оновленні розміру:', error);
             });
+    };
+
+    const handleStarClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // Отримуємо саму зірочку зі SVG
+        const star = event.currentTarget.querySelector('svg');
+
+        if (star)
+        {
+            // Додаємо/видаляємо клас 'filled' для конкретної зірочки
+            star.classList.toggle('filled');
+        }
+    };
+    const addItemToCart = (productId: number) => {
+
+        console.log("Прийшло", productId);
+         setFlag(true);
+
+        // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Перевіряємо, чи існує такий товар у кошику. Якщо існує, то поверне його id
+        // Якщо не існує, то поверне -1
+        const index = cart.indexOf(productId);
+
+        if (index !== -1)
+        {
+            // Якщо товар є, видаляємо його
+            cart.splice(index, 1);
+        }
+        else
+        {
+            // Якщо товару немає, додаємо його
+            cart.push(productId);
+        }
+
+        // Оновлюємо Local Storage з новим значенням
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Оновлюємо стан з новим кошиком
+        dispatch({
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: cart
+        });
+    };
+
+    const deleteProductWithFavorite=(productId:number)=>{
+
+        // Отримати поточний кошик з Local Storage
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Видалити товар з кошика
+        const updatedCart = cart.filter((item: any) => item !== productId);
+
+        // Оновити Local Storage
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+        // Диспатч на видалення
+        dispatch({
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: updatedCart,
+        });
+    };
+
+    const handleButtonClick2 = () => {
+        // Отримуємо SVG за допомогою його унікального ID
+        const star = document.getElementById('star35');
+
+        if (star) {
+            // Додаємо або видаляємо клас 'filled' для SVG
+            star.classList.toggle('filled');
+        }
+    };
+
+    const AddToBasket=(productId:number)=>{
+
+        setButton(false);
+
+        if (userStatus)
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
+
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
+
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
+
+                http.post("api/Basket/CreateBasketId", { productId });
+            }
+        }
+        else
+        {
+            // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+            const cart = JSON.parse(localStorage.getItem('basket') || '[]');
+
+            // Перевіряємо, чи вже є такий productId у кошику
+            if (!cart.includes(productId))
+            {
+                // Якщо немає, додаємо його
+                cart.push(productId);
+
+                // Оновлюємо Local Storage з новим значенням
+                localStorage.setItem('basket', JSON.stringify(cart));
+
+                dispatch({
+                    type: BasketActionType.ADD_Basket,
+                    payload: cart,
+                });
+            }
+        }
+        deleteProductWithFavorite(productId);
+
+        if(getFlag)
+        {
+            handleButtonClick2();
+        }
     };
 
 
@@ -123,11 +259,29 @@ const Product = () => {
 
                             <div>
                                 <div className="div-with-info">
-                                    <Form.Item name="name">
+
+                                    <div className="Header-layout">
+
+                                    <Form.Item className="header-cart">
                                         <Typography.Text className="h1-text">
                                             {product.name}
                                         </Typography.Text>
                                     </Form.Item>
+
+                                            <div className="button-Cart">
+                                                <button className="favorite35" onClick={(event) => {
+                                                    handleStarClick(event);
+                                                    addItemToCart(product.id);
+                                                }}>
+
+                                                    <svg id="star35"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                                        <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
+                                                    </svg>
+
+                                                </button>
+                                            </div>
+
+                                    </div>
 
                                     <div className="div-with-dropbutton  ">
 
@@ -163,9 +317,45 @@ const Product = () => {
                                             </Form.Item>
                                         </div>
                                     </div>
-                                    <div className="form-row button-container">
-                                        <button type="submit" className="button save-button">Add to basket</button>
-                                    </div>
+
+
+
+                                        {getButton?(
+
+                                                <div className="form-row button-container">
+
+                                            <button type="submit" className="button save-button"  onClick={() => {AddToBasket(product.id);}}>Add to basket</button>
+
+                                                </div>
+                                        ):(
+
+                                            <>
+
+                                            <svg className="SVG-Basket" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#2c6849"
+                                                 width="100px"
+                                                 height="100px"
+                                            >
+                                                <defs>
+                                                    <style>{`.cls-1{fill:#b2b2b2;}`}</style>
+                                                </defs>
+                                                <title>Example Icon</title>
+                                                <path className="cls-1" d="M29.78,15.37A1,1,0,0,0,29,15H3a1,1,0,0,0-1,1.21L4.68,28.63A3,3,0,0,0,7.62,31H24.38a3,3,0,0,0,2.94-2.37L30,16.21A1,1,0,0,0,29.78,15.37Z"></path>
+                                                <rect height="8" rx="1" ry="1" width="30" x="1" y="9"></rect>
+                                                <path className="cls-1" d="M8,13a1,1,0,0,1-.86-.49l-6-10a1,1,0,1,1,1.72-1l6,10a1,1,0,0,1-.35,1.37A1,1,0,0,1,8,13Z"></path>
+                                                <path d="M10,26.5a1,1,0,0,1-1-1v-5a1,1,0,0,1,2,0v5A1,1,0,0,1,10,26.5Z"></path>
+                                                <path d="M16,26.5a1,1,0,0,1-1-1v-5a1,1,0,0,1,2,0v5A1,1,0,0,1,16,26.5Z"></path>
+                                                <path d="M22,26.5a1,1,0,0,1-1-1v-5a1,1,0,0,1,2,0v5A1,1,0,0,1,22,26.5Z"></path>
+                                                <path className="cls-1" d="M24,13a1,1,0,0,1-.51-.14,1,1,0,0,1-.35-1.37l6-10a1,1,0,1,1,1.72,1l-6,10A1,1,0,0,1,24,13Z"></path>
+                                            </svg>
+
+                                                <h2 className="Text-Icon">Product in basket</h2>
+                                            </>
+                                        )}
+
+
+
+
+
                                     <div className="main-div-delivery">
                                         <div className="div-delivery">
                                             <CiDeliveryTruck size={18} />
