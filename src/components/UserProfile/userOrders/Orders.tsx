@@ -71,7 +71,7 @@ const Orders = () => {
 
                                         {/*Сходи з фотографій*/}
 
-                                        {order.names.length >3 ? (
+                                        {order.names.length >=3 ? (
 
                                             <div className="Order-Img">
                                                 <div className="Frame108-3">
