@@ -25,6 +25,7 @@ import FavoriteUser from "./components/UserProfile/favorite/FavoriteUser.tsx";
 import Basket from "./page/basket/Basket.tsx";
 import Product from "./page/product/Product.tsx";
 import ItemOrders from "./components/UserProfile/userOrders/ItemOrders.tsx";
+import AllProductSite from "./page/product/AllProductSite.tsx";
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
                     <Route path="favorite" element={<Favourites/>}/>
                     <Route path="basket" element={<Basket/>}/>
                     <Route path="product/:id" element={<Product/>}/>
+                    <Route path="allProducts" element={<AllProductSite/>}/>
                 </Route>
 
                 <Route path={"/pages"}>

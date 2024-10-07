@@ -92,7 +92,7 @@ export interface IGetAllProducts{
     categoryId: string;
     price: number;
     Size:number;
-    Color:string;
+    color:string;
     brandId:string;
     SubCategoryId:number;
     Gender:number;
@@ -100,7 +100,7 @@ export interface IGetAllProducts{
     LookAfterMe:string;
     SizeAndFit:string;
     Amount:number;
-    ImageUrls: File[];
+    imageUrls: File[];
 }
 export interface IUploadedFile {
     lastModified: number;

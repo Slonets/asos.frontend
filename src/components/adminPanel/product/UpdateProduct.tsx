@@ -114,11 +114,14 @@ const UpdateProduct = () => {
 
     const handleRemove = async (file: UploadFile) => {
         // Створюємо новий масив imageUrls без видаленого зображення
-        const newImageUrls = product?.imageUrls.filter((imgPath, index) => {
+        const newImageUrls = product?.imageUrls.filter((imgPath) => {
             return `${import.meta.env.VITE_API_URL}product/${imgPath}` !== file.url;
         });
 
         // Оновлюємо стан продукту із новим списком зображень
+
+
+        // @ts-ignore
         setProduct(prevProduct => ({
             ...prevProduct,
             imageUrls: newImageUrls,
@@ -136,6 +139,9 @@ const UpdateProduct = () => {
             notification.error({ message: "Failed to delete image." });
         }
     };
+
+
+
 
     return (
         <>
@@ -240,6 +246,7 @@ const UpdateProduct = () => {
                                                     return false;
                                                 }}
                                                 showUploadList={{ showPreviewIcon: false }}
+                                                // @ts-ignore
                                                 fileList={[
                                                     ...(product && product.imageUrls ? product.imageUrls.map((imgPath, index) => ({
                                                         uid: index.toString(),
