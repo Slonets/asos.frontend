@@ -1,5 +1,5 @@
 import "./style.css";
-import {Select, Typography, Carousel, Button} from "antd";
+import {Select, Typography, Carousel} from "antd";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { IoReturnDownBack } from "react-icons/io5";
 
@@ -15,9 +15,12 @@ const Product = () => {
     const { id } = useParams(); // Get the product ID from the route parameters
 
     const [product, setProduct] = useState<IProductCreate | null>(null);
+
     const [categories, setCategories] = useState<ICategoryName[]>([]);
+
     const [brands, setBrands] = useState<IBrandName[]>([]);
     const [sizes, setSizes] = useState<ISizeName[]>([]);
+
     const [genders, setGenders] = useState<IGenderName[]>([]);
 
     useEffect(() => {
