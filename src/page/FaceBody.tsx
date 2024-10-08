@@ -62,7 +62,7 @@ const FaceBody=()=>{
 
                     <div className="Frame216">
 
-                        <div className="Frame215">
+                        <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
@@ -115,7 +115,7 @@ const FaceBody=()=>{
 
                         </div>
 
-                        <div className="Frame215">
+                        <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
@@ -184,7 +184,7 @@ const FaceBody=()=>{
 
                         </div>
 
-                        <div className="Frame215">
+                        <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
@@ -237,7 +237,7 @@ const FaceBody=()=>{
 
                         </div>
 
-                        <div className="Frame215">
+                        <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
