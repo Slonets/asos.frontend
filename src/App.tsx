@@ -26,6 +26,7 @@ import Basket from "./page/basket/Basket.tsx";
 import Product from "./page/product/Product.tsx";
 import ItemOrders from "./components/UserProfile/userOrders/ItemOrders.tsx";
 import AllProductSite from "./page/product/AllProductSite.tsx";
+import SearchResults from "./page/search/SearchResults.tsx";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
                     <Route path="basket" element={<Basket/>}/>
                     <Route path="product/:id" element={<Product/>}/>
                     <Route path="allProducts" element={<AllProductSite/>}/>
+                    <Route path="search-results" element={<SearchResults/>}/>
                 </Route>
 
                 <Route path={"/pages"}>
