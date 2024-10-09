@@ -27,7 +27,7 @@ const UpdateProduct = () => {
 
     const fetchProduct = async () => {
         try {
-            const response = await http_common.get<IProductCreate>(`/api/Dashboard/GetProductById/${id}`);
+            const response = await http_common.get<IProductCreate>(`/api/Dashboard/GetByIdCard/${id}`);
             setProduct(response.data);
             console.log("Fetched product:", response.data);
         } catch (error) {

@@ -24,6 +24,7 @@ const AllProductSite = () => {
             .then(resp => {
                 setProducts(resp.data.items); // Продукти для поточної сторінки
                 setTotalProducts(resp.data.totalCount); // Загальна кількість продуктів
+                console.log(resp.data.items);
             })
             .catch(error => {
                 console.error("Error fetching products", error);
