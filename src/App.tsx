@@ -29,6 +29,10 @@ import AllProductSite from "./page/product/AllProductSite.tsx";
 import SearchResults from "./page/search/SearchResults.tsx";
 import ManProductSite from "./page/product/ManProductSite.tsx";
 import WomanProductSite from "./page/product/WomenProductSite.tsx";
+import AllMakeUpProductsSite from "./page/product/AllMakeUpProductsSite.tsx";
+import AllSkineCareProductsSite from "./page/product/AllSkineCareProductsSite.tsx";
+import AllHairCareProductsSite from "./page/product/AllHairCareProductsSite.tsx";
+import AllPerfumeProductsSite from "./page/product/AllPerfumeProductsSite.tsx";
 
 function App() {
 
@@ -48,6 +52,10 @@ function App() {
                     <Route path="search-results" element={<SearchResults/>}/>
                     <Route path="manProducts" element={<ManProductSite/>}/>
                     <Route path="womanProducts" element={<WomanProductSite/>}/>
+                    <Route path="makeupProducts" element={<AllMakeUpProductsSite/>}/>
+                    <Route path="skincareProducts" element={<AllSkineCareProductsSite/>}/>
+                    <Route path="haircareProducts" element={<AllHairCareProductsSite/>}/>
+                    <Route path="perfumeProducts" element={<AllPerfumeProductsSite/>}/>
                 </Route>
 
                 <Route path={"/pages"}>
