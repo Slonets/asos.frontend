@@ -27,6 +27,8 @@ import Product from "./page/product/Product.tsx";
 import ItemOrders from "./components/UserProfile/userOrders/ItemOrders.tsx";
 import AllProductSite from "./page/product/AllProductSite.tsx";
 import SearchResults from "./page/search/SearchResults.tsx";
+import ManProductSite from "./page/product/ManProductSite.tsx";
+import WomanProductSite from "./page/product/WomenProductSite.tsx";
 
 function App() {
 
@@ -44,6 +46,8 @@ function App() {
                     <Route path="product/:id" element={<Product/>}/>
                     <Route path="allProducts" element={<AllProductSite/>}/>
                     <Route path="search-results" element={<SearchResults/>}/>
+                    <Route path="manProducts" element={<ManProductSite/>}/>
+                    <Route path="womanProducts" element={<WomanProductSite/>}/>
                 </Route>
 
                 <Route path={"/pages"}>

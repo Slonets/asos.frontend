@@ -6,7 +6,7 @@ import http from "../../http_common.ts";
 import {Link} from "react-router-dom";
 
 
-const AllProductSite = () => {
+const WomanProductSite = () => {
 
     const [products, setProducts] = useState<IGetAllProducts[]>([]);
     // @ts-ignore
@@ -21,7 +21,7 @@ const AllProductSite = () => {
     }, [currentPage]);
 
     const fetchProducts = (page: number) => {
-        http.get(`api/Dashboard/GetAllProducts?pageNumber=${page}&pageSize=${productsPerPage}`)
+        http.get(`api/Dashboard/GetAllWomanClothing?pageNumber=${page}&pageSize=${productsPerPage}`)
             .then(resp => {
                 setProducts(resp.data.items); // Продукти для поточної сторінки
                 setTotalProducts(resp.data.totalCount); // Загальна кількість продуктів
@@ -60,8 +60,9 @@ const AllProductSite = () => {
                         </div>
                     </div>
                 ))}
-
             </div>
+
+
             {/* Пагінація */}
             <div className="pag">
                 <nav aria-label="Page navigation example" className="plagins">
@@ -97,14 +98,16 @@ const AllProductSite = () => {
                     </ul>
                 </nav>
             </div>
+
+
             <div className="footer">
 
                 <div className="Frame294">
 
                     <div className="LogoFull">
 
-                        <div className="LogoDog">
 
+                        <div className="LogoDog">
                             <svg xmlns="http://www.w3.org/2000/svg" width="90" height="72" viewBox="0 0 90 72"
                                  fill="none">
                                 <path
@@ -378,4 +381,4 @@ const AllProductSite = () => {
     );
 };
 
-export default AllProductSite;
+export default WomanProductSite;
