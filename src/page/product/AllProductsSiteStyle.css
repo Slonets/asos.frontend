@@ -15,9 +15,9 @@
     margin-bottom: 30px;
 }
 .mainbox{
-    width: 1520px;
-    margin-left: 200px;
-    margin-top: 20px;
+    width: 90%;
+    margin: 100px 10% 5% 10%;
+   height: max-content;
     display: flex;
     flex-wrap: wrap; /* Дозволяє елементам переноситися на новий рядок, якщо вони не вміщуються */
     gap: 20px; /* Відстань між елементами */
@@ -40,7 +40,7 @@
 
 }
 .mainbox p{
-    color: gray;
+    color: grey;
     font-size: 14px;
 }
 .mainbox h1{

@@ -325,7 +325,7 @@ const MainClothes = () => {
 
                                 <div className="position">
 
-                                    <img alt="" src="public/Clothes/foto3.png" className="foto3"/>
+                                    <img alt="" src="../../public/first-page/foto3.png" className="foto3"/>
 
                                     <div className="Men">
 
@@ -370,7 +370,7 @@ const MainClothes = () => {
                             <div className="Frame305">
 
                                 <div className="RectangleWoman">
-                                     <img alt="" src="public/Clothes/RagtangerWoman.png" className="ImageRectangleWoman"/>
+                                     <img alt="" src="../../public/first-page/RagtangerWoman.png" className="ImageRectangleWoman"/>
 
                                    <div className="Women-Stroke">
 
@@ -550,7 +550,7 @@ const MainClothes = () => {
                     <span>spirit</span>
 
                     <Link
-                    to="/allProducts"
+                    to="/womanProducts"
                     className="Frame310"
                     >
                         Shop Now

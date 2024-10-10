@@ -16,6 +16,7 @@ const RegisterFirstPage = () => {
 
     const location = useLocation();
     const dispatch = useAppDispatch();
+    // @ts-ignore
     const [googleLogin] = useGoogleLoginMutation();
 
     const authSuccess = async (credentialResponse: CredentialResponse) => {
