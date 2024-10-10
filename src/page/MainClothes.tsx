@@ -166,7 +166,7 @@ const MainClothes = () => {
                     </div>
 
                     <Link
-                        to=""
+                        to="/allProducts"
                         className="Frame4"
                     >
                         Shop Now
@@ -550,7 +550,7 @@ const MainClothes = () => {
                     <span>spirit</span>
 
                     <Link
-                    to=""
+                    to="/allProducts"
                     className="Frame310"
                     >
                         Shop Now
@@ -950,7 +950,7 @@ const MainClothes = () => {
                     </div>
 
                     <Link
-                    to=""
+                    to="/allProducts"
                     className="Button_action">
                         show all
                     </Link>

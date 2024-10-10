@@ -23,13 +23,21 @@
     gap: 20px; /* Відстань між елементами */
 }
 .boxwithinfo{
-    height: 100px;
+    height: 100%;
     margin-top: 10px;
+
+}
+.boxwithinfo h1 {
+    white-space: nowrap; /* Забороняє перенесення тексту на новий рядок */
+    overflow: hidden; /* Обрізає текст, якщо він виходить за межі контейнера */
+    text-overflow: ellipsis; /* Додає три крапки ("...") в кінці обрізаного тексту */
+    width: 100%; /* Опціонально, щоб контролювати ширину елемента */
 }
 
 .boxwithprice{
-   display: flex;
+    display: flex;
     justify-content: end;
+
 }
 .mainbox p{
     color: gray;
@@ -42,4 +50,8 @@
 .mainbox h2{
     font-size: 26px;
     font-weight: bold;
+}
+.pag{
+    display: flex;
+    justify-content: center;
 }
