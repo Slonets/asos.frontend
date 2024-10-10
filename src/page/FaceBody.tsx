@@ -241,7 +241,7 @@ const FaceBody=()=>{
 
                             <div className="Frame208-1">
 
-                                <img src="public/Body/OIL.png" className="Foto-208"/>
+                                <img src="public/Body/OIL.png" className="Foto-208" alt=""/>
 
                                 <button className="favorite208">
                                     <svg id="star208-1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
@@ -488,63 +488,63 @@ const FaceBody=()=>{
 
                 </div>
 
-                <div className="Frame429">
+                {/*<div className="Frame429">*/}
 
-                    <div className="Frame424">
+                {/*    <div className="Frame424">*/}
 
-                        <div className="Frame243">
+                {/*        <div className="Frame243">*/}
 
-                            <div className="Frame199-2"></div>
+                {/*            <div className="Frame199-2"></div>*/}
 
-                            <div className="Frame231"></div>
+                {/*            <div className="Frame231"></div>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                        <div className="Frame234">
+                {/*        <div className="Frame234">*/}
 
-                            <div className="Frame233">
+                {/*            <div className="Frame233">*/}
 
-                                <span>your perfect match...</span>
+                {/*                <span>your perfect match...</span>*/}
 
-                                <span>NARS’ Light Reflecting Foundation is your new go-to beauty essential, delivering a flawless complexion and perfect coverage inspired by the diversity of natural skin tones.</span>
+                {/*                <span>NARS’ Light Reflecting Foundation is your new go-to beauty essential, delivering a flawless complexion and perfect coverage inspired by the diversity of natural skin tones.</span>*/}
 
-                            </div>
+                {/*            </div>*/}
 
-                            <Link
-                            to=""
-                            className="BuyFoundation">buy foundation
+                {/*            <Link*/}
+                {/*            to=""*/}
+                {/*            className="BuyFoundation">buy foundation*/}
 
-                            </Link>
+                {/*            </Link>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                    <div className="Frame426">
+                {/*    <div className="Frame426">*/}
 
-                        <div className="Frame223-2">
+                {/*        <div className="Frame223-2">*/}
 
-                            <span>and a little cover-up!</span>
+                {/*            <span>and a little cover-up!</span>*/}
 
-                            <span>NARS’ Radiant Creamy Concealer is an ultimate solution for achieving a flawless, radiant complexion. Its innovative formula is designed to cater to a wide array of skin tones. Whether you need to cover blemishes, dark circles, or redness, this concealer  has got you covered.</span>
+                {/*            <span>NARS’ Radiant Creamy Concealer is an ultimate solution for achieving a flawless, radiant complexion. Its innovative formula is designed to cater to a wide array of skin tones. Whether you need to cover blemishes, dark circles, or redness, this concealer  has got you covered.</span>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                        <div className="Frame425">
+                {/*        <div className="Frame425">*/}
 
-                            <Link
-                            to=""
-                            className="BuyConcealer">buy concealer</Link>
+                {/*            <Link*/}
+                {/*            to=""*/}
+                {/*            className="BuyConcealer">buy concealer</Link>*/}
 
-                            <div className="Frame236"></div>
+                {/*            <div className="Frame236"></div>*/}
 
-                            <div className="Frame235"></div>
+                {/*            <div className="Frame235"></div>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                </div>
+                {/*</div>*/}
 
                 <div className="footer-2">
 

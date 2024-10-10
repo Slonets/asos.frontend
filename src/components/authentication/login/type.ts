@@ -8,7 +8,7 @@ export interface LoginResponse {
 export interface GoogleLoginRequest {
     credential: string;
     baskets: number[];
-    orders:IOrderProduct[];
+    orders:IOrderProduct[]|null;
 }
 
 export interface ILoginPage

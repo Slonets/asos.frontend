@@ -25,12 +25,14 @@ const LoginPage = () => {
     // const [googleLogin] = useGoogleLoginMutation();
 
     const basket = useSelector((state:RootState) => state.basket);
+
     const [array, setArray] = useState<number[]>([]);
 
     useEffect(() => {
         if(basket.length > 0)
         {
-            const productIds = basket.map((item: any) => item);
+            const productIds = basket.map((item) => item);
+            console.log("Такі id нових товарів взялися", productIds);
             setArray(productIds);
         }
     }, [basket]);

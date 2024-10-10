@@ -58,7 +58,7 @@ const SearchResults=()=>{
                                 <th scope="col" className="px-6 py-3 text-green-600">
                                     Color
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-violet-300">
+                                <th scope="col" className="px-6 py-3 text-red-600">
                                     Size
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-yellow-300">

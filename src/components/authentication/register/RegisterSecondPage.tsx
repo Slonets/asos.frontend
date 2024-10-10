@@ -20,9 +20,13 @@ const RegisterSecondPage = () => {
 
     const location = useLocation();
     const dispatch = useAppDispatch();
+
+// @ts-ignore
     const [googleLogin] = useGoogleLoginMutation();
 
     const authSuccess = async (credentialResponse: CredentialResponse) => {
+
+
         const resp = await googleLogin({
             credential: credentialResponse.credential || "",
         });
@@ -63,16 +67,16 @@ const RegisterSecondPage = () => {
 
     const onFormikSubmit = async (values: IRegisterPage) => {
 
-        let storedFirstName: string | null = localStorage.getItem('firstName');
-        let storedLastName: string | null = localStorage.getItem('lastName');
+        const storedFirstName: string | null = localStorage.getItem('firstName');
+        const storedLastName: string | null = localStorage.getItem('lastName');
 
-        if (storedFirstName !== null)
+        if (storedFirstName != null)
         {
             // Тепер ми знаємо, що storedFirstName є string
             values.firstName=storedFirstName;
         }
 
-        if (storedLastName !== null)
+        if (storedLastName != null)
         {
             values.lastName=storedLastName;
         }
