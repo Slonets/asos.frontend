@@ -23,25 +23,25 @@ const FaceBody=()=>{
                     <div className="Frame200">
 
                         <Link
-                        to=""
+                        to="/makeupProducts"
                         className="Frame199">Make up
 
                         </Link>
 
                         <Link
-                            to=""
+                            to="/skincareProducts"
                             className="Frame198">skin care
 
                         </Link>
 
                         <Link
-                            to=""
+                            to="/haircareProducts"
                             className="Frame197">hair care
 
                         </Link>
 
                         <Link
-                            to=""
+                            to="/perfumeProducts"
                             className="Frame196">perfume
 
                         </Link>

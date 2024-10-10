@@ -21,7 +21,7 @@ const AllProducts = () => {
     }, [currentPage]);
 
     const fetchProducts = (page: number) => {
-        http.get(`api/Dashboard/GetAllProducts?pageNumber=${page}&pageSize=${productsPerPage}`)
+        http.get(`api/Dashboard/GetAllProductsForAdmin?pageNumber=${page}&pageSize=${productsPerPage}`)
             .then(resp => {
                 setProducts(resp.data.items); // Продукти для поточної сторінки
                 setTotalProducts(resp.data.totalCount); // Загальна кількість продуктів
