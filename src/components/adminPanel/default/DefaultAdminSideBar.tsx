@@ -189,10 +189,12 @@ const DefaultAdminSideBar = () => {
                         <p className="text-name">All Category</p>
                     </Link>
 
-                    <button className="button-in-block">
+                    <Link className="button-in-block"
+                    to="/admin/changeStatus"
+                    >
                         <FiMessageCircle size={24} />
-                        <p className="text-name">Mailing Preferences</p>
-                    </button>
+                        <p className="text-name">Status Product</p>
+                    </Link>
                     <button className="button-in-block">
                         <IoGiftOutline size={24} />
                         <p className="text-name">Gift Cards</p>

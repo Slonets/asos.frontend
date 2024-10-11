@@ -11,7 +11,7 @@
 {
     width: 100%;
     height: 1000px;
-    background: url("public/Ragtangel10.jpeg") lightgray 0px -507.529px / 100% 288% no-repeat;
+    background: url("../../../public/Body/Ragtangel10.jpeg") lightgray 0px -507.529px / 100% 288% no-repeat;
 }
 
 .Rectangle10>:nth-child(1)
@@ -1017,6 +1017,7 @@
 .footer-2
 {
 
+    margin-top: 100px;
     width: 100%;
     height: 698px;
     left: 0;

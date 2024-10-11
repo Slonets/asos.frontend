@@ -33,6 +33,7 @@ import AllMakeUpProductsSite from "./page/product/AllMakeUpProductsSite.tsx";
 import AllSkineCareProductsSite from "./page/product/AllSkineCareProductsSite.tsx";
 import AllHairCareProductsSite from "./page/product/AllHairCareProductsSite.tsx";
 import AllPerfumeProductsSite from "./page/product/AllPerfumeProductsSite.tsx";
+import ChangeStatus from "./components/adminPanel/change-status/ChangeStatus.tsx";
 
 function App() {
 
@@ -70,6 +71,7 @@ function App() {
                     <Route path="users" element={<Users/>}/>
                     <Route path="allproducts" element={<AllProducts/>}/>
                     <Route path="allcategory" element={<AllCategory/>}/>
+                    <Route path="changeStatus" element={<ChangeStatus/>}/>
 
                 </Route>
 
