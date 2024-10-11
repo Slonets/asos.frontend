@@ -33,6 +33,7 @@ import AllMakeUpProductsSite from "./page/product/AllMakeUpProductsSite.tsx";
 import AllSkineCareProductsSite from "./page/product/AllSkineCareProductsSite.tsx";
 import AllHairCareProductsSite from "./page/product/AllHairCareProductsSite.tsx";
 import AllPerfumeProductsSite from "./page/product/AllPerfumeProductsSite.tsx";
+import AllProductForBodySite from "./page/product/AllProductForBodySite.tsx";
 
 function App() {
 
@@ -56,6 +57,7 @@ function App() {
                     <Route path="skincareProducts" element={<AllSkineCareProductsSite/>}/>
                     <Route path="haircareProducts" element={<AllHairCareProductsSite/>}/>
                     <Route path="perfumeProducts" element={<AllPerfumeProductsSite/>}/>
+                    <Route path="allProductsForBody" element={<AllProductForBodySite/>}/>
                 </Route>
 
                 <Route path={"/pages"}>

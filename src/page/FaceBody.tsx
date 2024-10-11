@@ -14,7 +14,7 @@ const FaceBody=()=>{
                     <span>glam</span>
 
                     <Link
-                    to="">Shop Now
+                    to="/allProductsForBody">Shop Now
                     </Link>
                 </div>
 
@@ -309,7 +309,7 @@ const FaceBody=()=>{
                         </div>
 
                         <Link
-                        to=""
+                        to="/allProductsForBody"
                         className="ShopNow">Shop Now
 
                         </Link>
@@ -481,7 +481,7 @@ const FaceBody=()=>{
                     </div>
 
                     <Link
-                        to=""
+                        to="/skincareProducts"
                         className="ShopAll">show all
                     </Link>
 
