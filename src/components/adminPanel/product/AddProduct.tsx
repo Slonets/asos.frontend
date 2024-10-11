@@ -165,8 +165,8 @@ const AddProduct = () => {
 
                             <Form.Item
                                 label="Description"
-                                name="Description"
-                                htmlFor="Description"
+                                name="description"
+                                htmlFor="description"
                                 rules={[
                                     { required: true, message: 'It is a required field!' },
                                     { min: 10, message: 'Description must have at least 10 characters!' },
