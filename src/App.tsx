@@ -58,6 +58,7 @@ function App() {
                     <Route path="skincareProducts" element={<AllSkineCareProductsSite/>}/>
                     <Route path="haircareProducts" element={<AllHairCareProductsSite/>}/>
                     <Route path="perfumeProducts" element={<AllPerfumeProductsSite/>}/>
+                    <Route path="allProductsForBody" element={<AllProductForBodySite/>}/>
                 </Route>
 
                 <Route path={"/pages"}>

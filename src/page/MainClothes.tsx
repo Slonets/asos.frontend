@@ -26,7 +26,7 @@ const MainClothes = () => {
 
         http.get("api/Dashboard/GetWomanClothing").then(resp => {
             setWomanClothing(resp.data);
-            console.log("Прийшли товари", resp.data);
+            console.log("Прийшли жіночі товари", resp.data);
         });
     }, []);
 
