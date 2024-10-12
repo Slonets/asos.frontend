@@ -27,7 +27,7 @@ const ChangeStatus=()=>{
 
     }, [id]);
 
-    const [statusGet, statusSet] = useState<string>("");
+    const [statusGet, statusSet] = useState<number>();
 
     const [allStatusGet, allStatusSet] = useState<OrderStatusEntity[]>([]);
 
@@ -54,13 +54,21 @@ const ChangeStatus=()=>{
         statusSet(newStatus);
     };
 
-    const ChangeSubmit=(e: React.FormEvent)=>{
+    const ChangeSubmit = (e: React.FormEvent) => {
+        e.preventDefault(); // Важливо не перезавантажувати сторінку
+        const payload = {
+            newStatus: statusGet,
+            id: id
+        };
 
-
-        http.post(`api/Order/ChangeStatus`, statusGet, id);
-
-        navigate("/admin/status");
-
+        http.post(`api/Order/ChangeStatus`, payload)
+            .then(() => {
+                console.log("Статус змінено успішно");
+                navigate("/admin/status");
+            })
+            .catch(error => {
+                console.error("Помилка при зміні статусу", error);
+            });
     };
 
     return(
@@ -96,17 +104,18 @@ const ChangeStatus=()=>{
 
                                     value={statusGet}
 
-                                    onChange={(e) => {
-                                        console.log("Зміна статусу", e.target.value);
-                                        handleSubmit(e);
-                                    }}
+                                    onChange={(e) => handleSubmit(e)}
 
                             >
-                                {allStatusGet.map((status) => (
-                                    <option key={status.id} value={status.id} >
-                                        {status.name}
-                                    </option>
-                                ))}
+                                {allStatusGet.length > 0 ? (
+                                    allStatusGet.map((status) => (
+                                        <option key={status.id} value={status.id}>
+                                            {status.name}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option>Loading...</option>
+                                )}
                             </select>
                             </div>
                         </div>
