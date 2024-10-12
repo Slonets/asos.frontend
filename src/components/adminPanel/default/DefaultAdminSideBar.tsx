@@ -190,10 +190,10 @@ const DefaultAdminSideBar = () => {
                     </Link>
 
                     <Link className="button-in-block"
-                    to="/admin/changeStatus"
+                    to="/admin/status"
                     >
                         <FiMessageCircle size={24} />
-                        <p className="text-name">Status Product</p>
+                        <p className="text-name">Orders Status</p>
                     </Link>
                     <button className="button-in-block">
                         <IoGiftOutline size={24} />
