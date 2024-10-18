@@ -50,7 +50,7 @@ const Status=()=>{
                                         </th>
                                         <th
                                             className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Products
+                                            Products count
                                         </th>
                                         <th
                                             className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -78,7 +78,11 @@ const Status=()=>{
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 w-10 h-10">
                                                         <img className="w-full h-full rounded-full"
-                                                             src={`${baseUrl}avatars/${order.imageUser}`}
+                                                             src={
+                                                                 order.imageUser
+                                                                     ? `${baseUrl}avatars/${order.imageUser}`
+                                                                     : `${baseUrl}avatars/user404.png`
+                                                             }
                                                              alt={order.userName} />
                                                     </div>
                                                     <div className="ml-3">
@@ -89,12 +93,8 @@ const Status=()=>{
                                                 </div>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-xl w-1/2">
-                                                <p className="text-gray-900 whitespace-no-wrap">
-                                                    {order.names.map((name, index) => (
-                                                        <span key={index}>
-                                                           -{name.substring(0, 25)};<br/>
-                                                        </span>
-                                                    ))}
+                                                <p className="text-red-600 whitespace-no-wrap text-center">
+                                                    {order.names.length}
                                                 </p>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-1/2">

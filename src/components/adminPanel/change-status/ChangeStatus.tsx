@@ -4,8 +4,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import http from "../../../http_common.ts";
 import {ChangeOrderStatus, OrderStatusEntity} from "./type.ts";
+import {APP_ENV} from "../../../env";
 
 const ChangeStatus=()=>{
+
+    const baseUrl = APP_ENV.BASE_URL;
 
     const { id } = useParams(); // Отримуємо ID продукту з параметрів маршруту
     const navigate = useNavigate();
@@ -27,8 +30,7 @@ const ChangeStatus=()=>{
 
     }, [id]);
 
-    const [statusGet, statusSet] = useState<number>();
-
+    const [statusGet, statusSet] = useState<string>("");
     const [allStatusGet, allStatusSet] = useState<OrderStatusEntity[]>([]);
 
     useEffect(() => {
@@ -49,6 +51,7 @@ const ChangeStatus=()=>{
 
 
     const handleSubmit = (e: React.ChangeEvent<HTMLSelectElement>) => {
+
         const newStatus = String(e.target.value);
         console.log("Прийшло значення:", newStatus);
         statusSet(newStatus);
@@ -87,13 +90,33 @@ const ChangeStatus=()=>{
 
                             <h3>Сustomer: {order?.userName}</h3>
 
-                            <label className="blue-text label margin10">Name Product:</label>
-                            {order?.names.map((name, index) => (
-                                <h4 key={index} className="Name-Orders">
-                                    -{name};<br/>
-                                </h4>
-                            ))}
 
+
+
+                            <div className="relative overflow-x-auto">
+                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3">
+                                            Product Name
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                    {order?.names.map((name, index) => (
+                                    <tbody>
+                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                                     <th key={index} scope="row" className="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                         {index+1}. {name}
+                                     </th>
+
+                                    </tr>
+                                    </tbody>
+
+                                    ))}
+                                </table>
+                            </div>
 
                             <div className="custum-select">
 
@@ -109,7 +132,7 @@ const ChangeStatus=()=>{
                             >
                                 {allStatusGet.length > 0 ? (
                                     allStatusGet.map((status) => (
-                                        <option key={status.id} value={status.id}>
+                                        <option key={status.id} value={status.name}>
                                             {status.name}
                                         </option>
                                     ))
