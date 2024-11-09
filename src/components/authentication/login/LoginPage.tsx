@@ -31,7 +31,7 @@ const LoginPage = () => {
     useEffect(() => {
         if(basket.length > 0)
         {
-            const productIds = basket.map((item) => item);
+            const productIds = basket.map((item) => item.productId);
             console.log("Такі id нових товарів взялися", productIds);
             setArray(productIds);
         }

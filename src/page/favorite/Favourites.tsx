@@ -21,7 +21,7 @@ const Favourites=()=>{
     useEffect(() => {
         if(items.length > 0)
         {
-            const productIds = items.map((item: any) => item);
+            const productIds = items.map((item: any) => item.id);
             setArray(productIds);
         }
     }, [items]);

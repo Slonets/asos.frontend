@@ -31,7 +31,7 @@ const Basket=()=>{
 
         if(basket.length > 0)
         {
-            const productIds = basket.map((item: number) => item);
+            const productIds = basket.map((item: number) => item.productId);
             setArray(productIds);
 
             console.log("Ця функція діє?",  productIds);

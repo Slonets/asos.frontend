@@ -8,8 +8,6 @@ import {APP_ENV} from "../../../env";
 
 const ChangeStatus=()=>{
 
-    const baseUrl = APP_ENV.BASE_URL;
-
     const { id } = useParams(); // Отримуємо ID продукту з параметрів маршруту
     const navigate = useNavigate();
     const [order, setOrder] = useState<ChangeOrderStatus>();
