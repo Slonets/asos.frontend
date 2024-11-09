@@ -39,6 +39,7 @@
     display: flex;
     align-items: center;
     gap: 30px;
+    width: max-content;
 }
 
 .Link-clothes,
@@ -90,7 +91,19 @@
     transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 }
 
+.regButton-3
+{
+    display: flex;
+    padding: 5px;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    font-size: 23px;
+    color: red;
+    font-weight: bold;
+}
+
+
 .regButton:active,
+.regButton-3:active,
 .Simply-Button:active
 {
     transform: scale(1.2);

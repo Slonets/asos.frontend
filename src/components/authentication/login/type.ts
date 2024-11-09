@@ -1,13 +1,30 @@
+import {IOrderProduct} from "../../../store/slice/orderSlice.tsx";
+
+export interface LoginResponse {
+    token: string;
+    baskets?: number[]; // Масив ID продуктів у кошику
+}
+
+export interface GoogleLoginRequest {
+    credential: string;
+    baskets: number[];
+    orders:IOrderProduct[]|null;
+}
+
 export interface ILoginPage
 {
     email:string;
     password:string;
+    baskets:number[];
+    orders:IOrderProduct[];
 }
 
 export interface ILoginPageError
 {
     isSuccess:boolean;
     error:string;
+    token:string;
+    baskets:[];
 }
 
 export interface IValidLogin
@@ -25,6 +42,6 @@ export interface IUser
     phoneNumber?: string,
     image:string,
     roles:string,
-    IsLockedOut:boolean,
-    birthday:Date|null; // Додано поле birthday
+    birthday:string;
+    lockoutEnabled:boolean
 }

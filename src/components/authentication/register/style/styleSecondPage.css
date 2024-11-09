@@ -1,7 +1,7 @@
 .Log-In-eye-on
 {
     position: relative;
-    width: 1900px;
+    width: 100%;
     height: 1080px;
     background: rgb(255, 255, 255);
 }
@@ -9,17 +9,17 @@
 .bg
 {
     position: absolute;
-    width: 1900px;
+    width: 100%;
     height: 1080px;
 }
 
 .urbncore
 {
     position: absolute;
-    width: 150px;
+    width: max-content;
     height: 18px;
-    left: 1695px;
-    top: 1012px;
+    top:93%;
+    left: 85%;
 }
 
 p
@@ -45,7 +45,7 @@ p
     position: absolute;
     width: 720px;
     height: 934px;
-    left: 600px;
+    left: 35%;
     top: 49px;
 }
 
@@ -708,20 +708,20 @@ p
     left: 2px;
 }
 
-.ErorButton-Div-False:hover+ .Frame33
+.ErorButton-Div-False:hover+ .Frame33-3
 {
     display: block; /* Показати при наведенні мишки на чек кнопку */
 }
 
-.Frame33
+.Frame33-3
 {
     /* Frame 33 */
     position: absolute;
     width: 406px;
     height: 50px;
     /* Inside Auto Layout */
-    left: 512px;
-    top:450px;
+    left: 530px;
+    top:430px;
     display: none;
 }
 
@@ -853,9 +853,10 @@ p
     display: block; /* Показати при наведенні мишки на чек кнопку */
 }
 
-.Polygon3
+.Polygon3-3
 {
-    top:-10px;
+    top:8px;
+    left: -20px;
     position: absolute;
 }
 

@@ -1,24 +1,25 @@
 import "./header-style.css";
-import {Link} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
+import {FormEvent, useState} from "react";
 const DefaultHeader = () => {
 
     const userState = useSelector((state: RootState) => state.auth.isAuth);
+    const user = useSelector((state: RootState) => state.auth.user);
+    const isAdmin  = user?.roles === "Admin";
+    const favorite = useSelector((state:RootState)=>state.favorite);
+    const basketCount = useSelector((state:RootState) => state.basket);
 
-    const [login, logOut] = useState<boolean>(false);
+    const [query, setQuery] = useState('');
+    const navigate = useNavigate();
 
-    useEffect(()=>{
+    const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-        if(userState)
-        {
-            logOut(userState);
-        }
-
-        },[userState]);
-
-
+        // Переходимо на сторінку з результатами пошуку з передачею параметра в URL
+        navigate(`/search-results?query=${query}`);
+    };
 
     return (
         <>
@@ -70,22 +71,39 @@ const DefaultHeader = () => {
 
                     </div>
 
-                    <form className="Frame190">
-                            <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                    </svg>
-                                </div>
-                                <input type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items or brands" required />
-                                <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                    {/*Пошук*/}
+                    <form className="Frame190" onSubmit={handleSearch}>
+                        <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                </svg>
                             </div>
-                        </form>
+                            <input
+                                type="search"
+                                id="default-search"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" required />
+                            <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                        </div>
+                    </form>
+
 
                     <div className="Frame69">
 
-                        {login ? (
+                        {userState ? (
+
+                            isAdmin ? (
+                                <Link to="/admin" className="regButton">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <path d="M26.6663 28V25.3333C26.6663 23.9188 26.1044 22.5623 25.1042 21.5621C24.104 20.5619 22.7475 20 21.333 20H10.6663C9.25185 20 7.8953 20.5619 6.8951 21.5621C5.89491 22.5623 5.33301 23.9188 5.33301 25.3333V28" fill="#C8F954"/>
+                                        <path d="M26.6663 28V25.3333C26.6663 23.9188 26.1044 22.5623 25.1042 21.5621C24.104 20.5619 22.7475 20 21.333 20H10.6663C9.25185 20 7.8953 20.5619 6.8951 21.5621C5.89491 22.5623 5.33301 23.9188 5.33301 25.3333V28H26.6663Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M16.0003 14.6667C18.9458 14.6667 21.3337 12.2789 21.3337 9.33333C21.3337 6.38781 18.9458 4 16.0003 4C13.0548 4 10.667 6.38781 10.667 9.33333C10.667 12.2789 13.0548 14.6667 16.0003 14.6667Z" fill="#C8F954" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </Link>
+                            ) : (
                             <Link to="/user-info" className="regButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                                     <path d="M26.6663 28V25.3333C26.6663 23.9188 26.1044 22.5623 25.1042 21.5621C24.104 20.5619 22.7475 20 21.333 20H10.6663C9.25185 20 7.8953 20.5619 6.8951 21.5621C5.89491 22.5623 5.33301 23.9188 5.33301 25.3333V28" fill="#C8F954"/>
@@ -93,6 +111,8 @@ const DefaultHeader = () => {
                                     <path d="M16.0003 14.6667C18.9458 14.6667 21.3337 12.2789 21.3337 9.33333C21.3337 6.38781 18.9458 4 16.0003 4C13.0548 4 10.667 6.38781 10.667 9.33333C10.667 12.2789 13.0548 14.6667 16.0003 14.6667Z" fill="#C8F954" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             </Link>
+                            )
+
                         ) : (
                             <Link to="/login" className="regButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -102,26 +122,57 @@ const DefaultHeader = () => {
                             </Link>
                         )}
 
-                        <Link to="" className="regButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                <g clipPath="url(#clip0_331_1382)">
-                                    <path d="M12.0003 29.3333C12.7367 29.3333 13.3337 28.7364 13.3337 28C13.3337 27.2636 12.7367 26.6667 12.0003 26.6667C11.2639 26.6667 10.667 27.2636 10.667 28C10.667 28.7364 11.2639 29.3333 12.0003 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M26.6663 29.3333C27.4027 29.3333 27.9997 28.7364 27.9997 28C27.9997 27.2636 27.4027 26.6667 26.6663 26.6667C25.93 26.6667 25.333 27.2636 25.333 28C25.333 28.7364 25.93 29.3333 26.6663 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M1.33301 1.33334H6.66634L10.2397 19.1867C10.3616 19.8005 10.6956 20.352 11.1831 20.7444C11.6706 21.1369 12.2806 21.3453 12.9063 21.3333H25.8663C26.4921 21.3453 27.1021 21.1369 27.5896 20.7444C28.0771 20.352 28.4111 19.8005 28.533 19.1867L30.6663 8.00001H7.99967" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                        {basketCount.length>0 ? (
+
+                            <Link to="/basket" className="regButton-3">{basketCount.length>0 ? basketCount.length:''}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <g clipPath="url(#clip0_869_17670)">
+                                    <path d="M12.0013 29.3333C12.7377 29.3333 13.3346 28.7364 13.3346 28C13.3346 27.2636 12.7377 26.6667 12.0013 26.6667C11.2649 26.6667 10.668 27.2636 10.668 28C10.668 28.7364 11.2649 29.3333 12.0013 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M26.6654 29.3333C27.4017 29.3333 27.9987 28.7364 27.9987 28C27.9987 27.2636 27.4017 26.6667 26.6654 26.6667C25.929 26.6667 25.332 27.2636 25.332 28C25.332 28.7364 25.929 29.3333 26.6654 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M7.9987 8L10.2387 19.1867C10.3606 19.8005 10.6946 20.3519 11.1821 20.7444C11.6696 21.1368 12.2796 21.3453 12.9054 21.3333H25.8654C26.4911 21.3453 27.1011 21.1368 27.5886 20.7444C28.0762 20.3519 28.4101 19.8005 28.532 19.1867L30.6654 8H7.9987Z" fill="#C8F954"/>
+                                    <path d="M1.33203 1.33334H6.66536L10.2387 19.1867M10.2387 19.1867C10.3606 19.8005 10.6946 20.3519 11.1821 20.7444C11.6696 21.1368 12.2796 21.3453 12.9054 21.3333H25.8654C26.4911 21.3453 27.1011 21.1368 27.5886 20.7444C28.0762 20.3519 28.4101 19.8005 28.532 19.1867L30.6654 8H7.9987L10.2387 19.1867Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                                 </g>
                                 <defs>
-                                    <clipPath id="clip0_331_1382">
+                                    <clipPath id="clip0_869_17670">
                                         <rect width="32" height="32" fill="white"/>
                                     </clipPath>
                                 </defs>
-                            </svg>
-                        </Link>
+                                 </svg>
+                            </Link>
 
-                        <Link to="" className="regButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none">
-                                <path d="M15.487 3.54831C15.938 2.32944 17.662 2.32944 18.113 3.54831L21.1141 11.6587C21.2559 12.0419 21.5581 12.3441 21.9413 12.4859L30.0517 15.487C31.2706 15.938 31.2706 17.662 30.0517 18.113L21.9413 21.1141C21.5581 21.2559 21.2559 21.5581 21.1141 21.9413L18.113 30.0517C17.662 31.2706 15.938 31.2706 15.487 30.0517L12.4859 21.9413C12.3441 21.5581 12.0419 21.2559 11.6587 21.1141L3.54831 18.113C2.32944 17.662 2.32944 15.938 3.54831 15.487L11.6587 12.4859C12.0419 12.3441 12.3441 12.0419 12.4859 11.6587L15.487 3.54831Z" stroke="#C8F954" strokeWidth="3"/>
-                            </svg>
-                        </Link>
+                        ):(
+                            <Link to="/basket" className="regButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                    <g clipPath="url(#clip0_331_1382)">
+                                        <path d="M12.0003 29.3333C12.7367 29.3333 13.3337 28.7364 13.3337 28C13.3337 27.2636 12.7367 26.6667 12.0003 26.6667C11.2639 26.6667 10.667 27.2636 10.667 28C10.667 28.7364 11.2639 29.3333 12.0003 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M26.6663 29.3333C27.4027 29.3333 27.9997 28.7364 27.9997 28C27.9997 27.2636 27.4027 26.6667 26.6663 26.6667C25.93 26.6667 25.333 27.2636 25.333 28C25.333 28.7364 25.93 29.3333 26.6663 29.3333Z" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M1.33301 1.33334H6.66634L10.2397 19.1867C10.3616 19.8005 10.6956 20.352 11.1831 20.7444C11.6706 21.1369 12.2806 21.3453 12.9063 21.3333H25.8663C26.4921 21.3453 27.1021 21.1369 27.5896 20.7444C28.0771 20.352 28.4111 19.8005 28.533 19.1867L30.6663 8.00001H7.99967" stroke="#C8F954" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_331_1382">
+                                            <rect width="32" height="32" fill="white"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </Link>
+                        )}
+
+
+
+                        {favorite.length>0 ?(
+                            <Link to="/favorite" className="regButton-3">{favorite.length > 0 ? favorite.length : ''}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none">
+                                    <path d="M15.487 3.54831C15.938 2.32944 17.662 2.32944 18.113 3.54831L21.1141 11.6587C21.2559 12.0419 21.5581 12.3441 21.9413 12.4859L30.0517 15.487C31.2706 15.938 31.2706 17.662 30.0517 18.113L21.9413 21.1141C21.5581 21.2559 21.2559 21.5581 21.1141 21.9413L18.113 30.0517C17.662 31.2706 15.938 31.2706 15.487 30.0517L12.4859 21.9413C12.3441 21.5581 12.0419 21.2559 11.6587 21.1141L3.54831 18.113C2.32944 17.662 2.32944 15.938 3.54831 15.487L11.6587 12.4859C12.0419 12.3441 12.3441 12.0419 12.4859 11.6587L15.487 3.54831Z" fill="#C8F954" stroke="#C8F954" strokeWidth="3"/>
+                                </svg>
+                            </Link>
+                        ) : (
+
+                            <Link to="/favorite" className="regButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none">
+                                    <path d="M15.487 3.54831C15.938 2.32944 17.662 2.32944 18.113 3.54831L21.1141 11.6587C21.2559 12.0419 21.5581 12.3441 21.9413 12.4859L30.0517 15.487C31.2706 15.938 31.2706 17.662 30.0517 18.113L21.9413 21.1141C21.5581 21.2559 21.2559 21.5581 21.1141 21.9413L18.113 30.0517C17.662 31.2706 15.938 31.2706 15.487 30.0517L12.4859 21.9413C12.3441 21.5581 12.0419 21.2559 11.6587 21.1141L3.54831 18.113C2.32944 17.662 2.32944 15.938 3.54831 15.487L11.6587 12.4859C12.0419 12.3441 12.3441 12.0419 12.4859 11.6587L15.487 3.54831Z" stroke="#C8F954" strokeWidth="3"/>
+                                </svg>
+                            </Link>
+                        )}
 
                     </div>
 

@@ -1,25 +1,25 @@
 .Log-In-eye-on
 {
     position: relative;
-    width: 1900px;
+    width: 100%;
     height: 1080px;
     background: rgb(255, 255, 255);
 }
 
 .bg
 {
-    position: absolute;
-    width: 1900px;
+    position: relative;
+    width: 100%;
     height: 1080px;
 }
 
 .urbncore
 {
     position: absolute;
-    width: 150px;
+    width: max-content;
     height: 18px;
-    left: 1695px;
-    top: 1012px;
+    top:93%;
+    left: 85%;
 }
 
 p
@@ -42,10 +42,10 @@ p
 }
 
 .log-in-registr{
-    position: absolute;
+    position: relative;
     width: 720px;
     height: 934px;
-    left: 600px;
+    left: 35%;
     top: 49px;
 }
 
@@ -686,7 +686,7 @@ p
 
 }
 
-.ErorButton-Div-False
+.ErorButton-Div-False-1
 {
 
     width: 23px;
@@ -708,24 +708,24 @@ p
     left: 2px;
 }
 
-.ErorButton-Div-False:hover+ .Frame33
+.ErorButton-Div-False-1:hover+ .Frame33-1
 {
     display: block; /* Показати при наведенні мишки на чек кнопку */
 }
 
-.Frame33
+.Frame33-1
 {
     /* Frame 33 */
     position: absolute;
     width: 406px;
     height: 50px;
     /* Inside Auto Layout */
-    left: 512px;
-    top:450px;
+    left: 520px;
+    top:430px;
     display: none;
 }
 
-.Frame32
+.Frame32-1
 {
     /* Frame 32 */
     position: static;
@@ -741,7 +741,7 @@ p
     padding: 15px 10px 15px 10px;
 
     background: rgb(46, 56, 162);
-top:-19px;
+    top:-19px;
     gap: 10px;
 }
 
@@ -853,9 +853,10 @@ top:-19px;
     display: block; /* Показати при наведенні мишки на чек кнопку */
 }
 
-.Polygon3
+.Polygon3-1
 {
-    top:-10px;
+    top:10px;
+    left: -20px;
     position: absolute;
 }
 
@@ -890,7 +891,7 @@ top:-19px;
     padding: 15px 10px 15px 10px;
     left: 25px;
 
-    top:30px;
+    top:10px;
 
     background: rgb(46, 56, 162);
 }

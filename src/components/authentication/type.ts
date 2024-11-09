@@ -1,8 +1,21 @@
-import {IUser} from "./login/type.ts";
-
+export interface IUserToken
+{
+    id:number,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber?: string,
+    image:string,
+    roles:string,
+    birthday:string,
+    country:number,
+    town:string,
+    address:string,
+    postCode:number
+}
 export interface IAuthUser {
     isAuth: boolean
-    user?: IUser
+    user?: IUserToken
 }
 
 export enum AuthUserActionType {

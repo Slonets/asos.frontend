@@ -1,7 +1,78 @@
 import "./style/style-mainClothes.css";
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import http from "../http_common.ts";
+import {APP_ENV} from "../env";
+import {ViewProduct} from "../interfaces/user";
+import {useDispatch} from "react-redux";
+import {FavoriteActionType} from "../store/slice/favoriteSlise.ts";
 
 const MainClothes = () => {
+
+    const baseUrl = APP_ENV.BASE_URL;
+    const dispatch = useDispatch();
+    const [manClothing, setManClothing] = useState<ViewProduct[]>([]);
+    const [womanClothing, setWomanClothing] = useState<ViewProduct[]>([]);
+
+    useEffect(() => {
+
+        http.get("api/Dashboard/GetManClothing").then(resp => {
+            setManClothing(resp.data);
+            console.log("Прийшли товари", resp.data);
+        });
+    }, []);
+
+    useEffect(() => {
+
+        http.get("api/Dashboard/GetWomanClothing").then(resp => {
+            setWomanClothing(resp.data);
+            console.log("Прийшли жіночі товари", resp.data);
+        });
+    }, []);
+
+
+    const addItemToCart = (productId: number) => {
+
+        console.log("Прийшло", productId);
+
+        // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Перевіряємо, чи існує такий товар у кошику. Якщо існує, то поверне його id
+        // Якщо не існує, то поверне -1
+        const index = cart.indexOf(productId);
+
+        if (index !== -1)
+        {
+            // Якщо товар є, видаляємо його
+            cart.splice(index, 1);
+        }
+        else
+        {
+            // Якщо товару немає, додаємо його
+            cart.push(productId);
+        }
+
+        // Оновлюємо Local Storage з новим значенням
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Оновлюємо стан з новим кошиком
+        dispatch({
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: cart
+        });
+    };
+
+    const handleStarClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // Отримуємо саму зірочку зі SVG
+        const star = event.currentTarget.querySelector('svg');
+
+        if (star)
+        {
+            // Додаємо/видаляємо клас 'filled' для конкретної зірочки
+            star.classList.toggle('filled');
+        }
+    };
 
     return (
         <>
@@ -95,7 +166,7 @@ const MainClothes = () => {
                     </div>
 
                     <Link
-                        to=""
+                        to="/allProducts"
                         className="Frame4"
                     >
                         Shop Now
@@ -122,13 +193,18 @@ const MainClothes = () => {
 
                         <div className="Frame317">
 
+                            {manClothing[0] && (
+
                             <div className="Frame215">
 
                                 <div className="Frame208">
 
-                                    <img src="public/Clothes/Rectangle16.png" className="Rectangle16"/>
+                                    <img alt={`Foto ${manClothing[0].name}`} src={`${baseUrl}product/${manClothing[0].imagePaths[1]}`}   className="Rectangle16"/>
 
-                                    <button className="favorite">
+                                    <button className="favorite" onClick={(event) => {
+                                        handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                        addItemToCart(manClothing[0].id);  // Друга функція для додавання товару в кошик
+                                    }}>
                                         <svg id="star1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
@@ -146,26 +222,34 @@ const MainClothes = () => {
                                           <div className="Frame206">
 
                                               <span>
-                                                  urbncore collar shirt with black butterfly print
+                                                  {manClothing[0].name}
                                               </span>
 
                                               <span>
-                                                  colour: black
+                                                  colour: {manClothing[0].color}
                                               </span>
 
-                                              <span>
-                                                  £26.99
+                                              <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[0].price}
                                               </span>
+
+                                                  <Link
+                                                      to={`product/${manClothing[0].id}`}
+                                                      className="Frame70" >
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                          <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                      </svg>
+                                                  </Link>
+                                              </div>
+
 
                                           </div>
 
                                       </div>
 
-                                        <button className="Frame70">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                            </svg>
-                                        </button>
+
 
                                     </div>
 
@@ -173,14 +257,20 @@ const MainClothes = () => {
 
                             </div>
 
-                            <div className="Frame214">
+                            )}
 
-                                <div className="Frame211">
+                            {manClothing[1] && (
+                            <div className="Frame215">
 
-                                    <img src="public/Clothes/Foto2.png" className="Rectangle16"/>
+                                <div className="Frame208">
 
-                                    <button className="favorite2">
-                                        <svg id="star2"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                    <img alt={`Foto ${manClothing[1].name}`} src={`${baseUrl}product/${manClothing[1].imagePaths[0]}`}  className="Rectangle16"/>
+
+                                    <button className="favorite" onClick={(event) => {
+                                        handleStarClick(event);
+                                        addItemToCart(manClothing[1].id)}}>
+
+                                        <svg id="star1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
 
@@ -188,35 +278,40 @@ const MainClothes = () => {
 
                                 </div>
 
-                                <div className="Frame212">
+                                <div className="Frame213">
 
-                                    <div className="Frame210">
+                                    <div className="Frame220">
 
                                         <div className="Frame207">
 
                                             <div className="Frame206">
 
                                               <span>
-                                                  urbncore  denim trucker jacket with rips
+                                                  {manClothing[1].name}
                                               </span>
 
                                                 <span>
-                                                  colour: light denim
+                                                  colour: {manClothing[1].color}
                                               </span>
 
-                                                <span>
-                                                  £40.00
+                                                <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[1].price}
                                               </span>
+
+                                                    <Link
+                                                        to={`product/${manClothing[1].id}`}
+                                                        className="Frame70" >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                            <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                        </svg>
+                                                    </Link>
+                                                </div>
 
                                             </div>
 
                                         </div>
-
-                                        <button className="Frame70-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                            </svg>
-                                        </button>
 
                                     </div>
 
@@ -224,23 +319,25 @@ const MainClothes = () => {
 
                             </div>
 
+                            )}
+
                             <div className="Frame316">
 
                                 <div className="position">
 
-                                    <img src="public/Clothes/foto3.png" className="foto3"/>
+                                    <img alt="" src="../../public/first-page/foto3.png" className="foto3"/>
 
                                     <div className="Men">
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="170" height="174" viewBox="0 0 170 174" fill="none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="170" height="170" viewBox="0 0 170 174" fill="none">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M-0.000335693 -7.41153e-06L169.556 0L169.556 33.0437L86.0144 86.6798L169.556 140.123L169.556 173.398L-0.000343273 173.398L-0.000341285 127.916L76.1779 127.916L34.3517 101.07L34.3517 72.0937L76.3975 45.256L-0.000337672 45.256L-0.000335693 -7.41153e-06ZM93.5239 40.256L39.3517 74.834L39.3517 98.338L93.2245 132.916L4.99966 132.916L4.99966 168.398L164.556 168.398L164.556 142.86L76.7479 86.6874L164.556 30.312L164.556 5L4.99966 4.99999L4.99966 40.256L93.5239 40.256Z" fill="#C8F954"/>
                                         </svg>
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="170" height="125" viewBox="0 0 170 125" fill="none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="170" height="170" viewBox="0 0 170 125" fill="none">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M-0.000335693 -0.00196054L169.556 -0.00195312L169.556 123.45L129.046 123.45L129.046 45.4801L106.276 45.4801L106.276 116.67L66.6697 116.67L66.6697 45.4801L40.7357 45.4801L40.7357 124.58L-0.000341139 124.58L-0.000335693 -0.00196054ZM4.99966 119.58L35.7357 119.58L35.7357 40.4801L71.6697 40.4801L71.6697 111.67L101.276 111.67L101.276 40.4801L134.046 40.4801L134.046 118.45L164.556 118.45L164.556 4.99805L4.99966 4.99804L4.99966 119.58Z" fill="#C8F954"/>
                                         </svg>
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="176" height="147" viewBox="0 0 176 147" fill="none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="170" height="170" viewBox="0 0 176 147" fill="none">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M-0.001297 0.0410079L169.555 0.0410153L169.555 25.9027L175.957 27.3456L169.555 32.3412L168.999 32.9484L166.953 34.3722L82.0844 100.611L169.555 100.611L169.555 146.093L-0.00130338 146.093L-0.0013022 119.101L0.000635728 117.658L-0.00130192 112.663L-0.00130186 111.375L2.66661 110.581L86.0219 45.523L-0.00129899 45.523L-0.001297 0.0410079ZM100.555 40.523L4.99874 115.103L4.99874 141.093L164.555 141.093L164.555 105.611L67.5516 105.611L164.555 29.901L164.555 5.04102L4.99875 5.04101L4.99875 40.523L100.555 40.523Z" fill="#C8F954"/>
                                         </svg>
 
@@ -256,11 +353,11 @@ const MainClothes = () => {
 
                                    </div>
 
-                                    <button className="Frame70-3">
+                                    <Link className="Frame70-3" to="/manProducts">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                             <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                         </svg>
-                                    </button>
+                                    </Link>
 
                                 </div>
 
@@ -273,7 +370,7 @@ const MainClothes = () => {
                             <div className="Frame305">
 
                                 <div className="RectangleWoman">
-                                     <img src="public/Clothes/RagtangerWoman.png" className="ImageRectangleWoman"/>
+                                     <img alt="" src="../../public/first-page/RagtangerWoman.png" className="ImageRectangleWoman"/>
 
                                    <div className="Women-Stroke">
 
@@ -304,23 +401,28 @@ const MainClothes = () => {
                                 <div className="Frame432">
 
                                     <p>show all</p>
-
+                                    <Link className="Frame70-3" to="/womanProducts">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
                                         <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
                                     </svg>
-
+                                    </Link>
                                 </div>
 
                             </div>
 
-                            <div className="Frame306">
+                            {womanClothing[0] && (
 
-                                <div className="Frame211">
+                            <div className="Frame215">
 
-                                    <img src="public/Clothes/foto4.png" className="foto4"/>
+                                <div className="Frame208">
 
-                                    <button className="favorite3">
-                                        <svg id="star3"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                    <img alt={`Foto ${womanClothing[0].name}`} src={`${baseUrl}product/${womanClothing[0].imagePaths[3]}`} className="Rectangle16"/>
+
+                                    <button className="favorite" onClick={(event) => {
+                                        handleStarClick(event);
+                                        addItemToCart(womanClothing[0].id)
+                                    }}>
+                                        <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                             <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
 
@@ -328,64 +430,110 @@ const MainClothes = () => {
 
                                 </div>
 
-                                <div className="Frame212-2">
+                                <div className="Frame213">
 
-                                    <div className="Frame210-3">
+                                    <div className="Frame220">
 
-                                        <span>urbncore asymmetric contrast seam co-ord top</span>
+                                        <div className="Frame207">
 
-                                        <span>colour: black denim</span>
+                                            <div className="Frame206">
 
-                                        <span>£21.99</span>
+                                              <span>
+                                                  {womanClothing[0].name}
+                                              </span>
+
+                                                <span>
+                                                  colour: {womanClothing[0].color}
+                                              </span>
+
+                                                <div className="Special-Container">
+
+                                                   <span>
+                                                  £{womanClothing[0].price}
+                                              </span>
+
+                                                    <Link
+                                                        to={`product/${womanClothing[0].id}`}
+                                                        className="Frame70" >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                            <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                        </svg>
+                                                    </Link>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
 
                                     </div>
-
-                                    <button className="Frame70-6">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                            <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                        </svg>
-                                    </button>
 
                                 </div>
 
                             </div>
+                            )}
 
-                            <div className="Frame304">
+                            {womanClothing[1] && (
 
-                                <div className="Frame211">
+                                <div className="Frame215">
 
-                                    <img src="public/Clothes/foto5.png" className="foto4"/>
+                                    <div className="Frame208">
 
-                                    <button className="favorite3">
-                                        <svg id="star3"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-                                            <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
-                                        </svg>
+                                        <img alt={`Foto ${womanClothing[1].name}`} src={`${baseUrl}product/${womanClothing[1].imagePaths[1]}`} className="Rectangle16"/>
 
-                                    </button>
+                                        <button className="favorite" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(womanClothing[1].id)
+                                        }}>
+                                            <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                                <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
+                                            </svg>
 
-                                </div>
-
-                                <div className="Frame212-3">
-
-                                    <div className="Frame210-3">
-
-                                        <span>urbncore kitten heel double buckle strap mules</span>
-
-                                        <span>colour: denim</span>
-
-                                        <span>£27.00</span>
+                                        </button>
 
                                     </div>
 
-                                    <button className="Frame70-6">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                            <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                        </svg>
-                                    </button>
+                                    <div className="Frame213">
+
+                                        <div className="Frame220">
+
+                                            <div className="Frame207">
+
+                                                <div className="Frame206">
+
+                                              <span>
+                                                  {womanClothing[1].name}
+                                              </span>
+
+                                                    <span>
+                                                  colour: {womanClothing[1].color}
+                                              </span>
+
+                                                    <div className="Special-Container">
+
+                                                   <span>
+                                                  £{womanClothing[1].price}
+                                              </span>
+
+                                                        <Link
+                                                            to={`product/${womanClothing[1].id}`}
+                                                            className="Frame70" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
-                            </div>
+                            )}
 
                         </div>
 
@@ -395,14 +543,14 @@ const MainClothes = () => {
 
                 <div className="Frame311">
 
-                    <img src="public/Ragtangel19.jpeg"/>
+                    <img alt="" src="../../public/first-page/Ragtangel19.jpeg"/>
 
                     <span>freestyle</span>
 
                     <span>spirit</span>
 
                     <Link
-                    to=""
+                    to="/womanProducts"
                     className="Frame310"
                     >
                         Shop Now
@@ -425,129 +573,206 @@ const MainClothes = () => {
 
                     <div className="Frame332">
 
-                        <div className="Frame331">
+
 
                             <div className="Frame329">
 
-                                <div className="Frame215-4">
+                                {manClothing[2] && (
+                                <div className="Frame215">
 
-                                    <div className="Frame208-2">
-                                        <img src="public/Clothes/Ragtangel208.png" className="Rectangle208"/>
+                                    <div className="Frame208">
+                                        <img alt={`Foto ${manClothing[2].name}`} src={`${baseUrl}product/${manClothing[2].imagePaths[3]}`} className="Rectangle208"/>
 
-                                        <button className="favorite7">
-                                            <svg id="star7"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite"  onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[2].id)}}>
+                                            <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
                                         </button>
                                     </div>
 
-                                    <div className="Frame213-2">
+                                    <div className="Frame213">
 
-                                        <div className="Frame207-2">
+                                        <div className="Frame220">
 
-                                            <span>COLLUSION X014 mid rise straight jeans</span>
+                                            <div className="Frame207">
 
-                                            <span>colour: midwash blue</span>
+                                                <div className="Frame206">
 
-                                            <span>£28.00</span>
+                                              <span>
+                                                  {manClothing[2].name}
+                                              </span>
+
+                                                    <span>
+                                                  colour: {manClothing[2].color}
+                                              </span>
+
+                                                    <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[2].price}
+                                              </span>
+
+                                                        <Link
+                                                            to={`product/${manClothing[2].id}`}
+                                                            className="Frame70" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
 
                                         </div>
-
-                                        <button className="Frame70-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                            </svg>
-                                        </button>
-
 
                                     </div>
 
                                 </div>
 
-                                <div className="Frame215-5">
+                                )}
 
-                                    <div className="Frame208-2">
-                                        <img src="public/Clothes/Ragtangel209.png" className="Rectangle208"/>
+                                {manClothing[3] && (
 
-                                        <button className="favorite8">
-                                            <svg id="star8"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                <div className="Frame215">
+
+                                    <div className="Frame208">
+                                        <img alt={`Foto ${manClothing[3].name}`} src={`${baseUrl}product/${manClothing[3].imagePaths[0]}`} className="Rectangle208"/>
+
+                                        <button className="favorite" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[3].id)}}>
+                                            <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
                                         </button>
                                     </div>
 
-                                    <div className="Frame213-2">
+                                    <div className="Frame213">
 
-                                        <div className="Frame207-3">
+                                        <div className="Frame220">
 
-                                            <span>ONLY & SONS denim jacket</span>
+                                            <div className="Frame207">
 
-                                            <span>colour: midwash blue</span>
+                                                <div className="Frame206">
 
-                                            <span>£30.00</span>
+                                              <span>
+                                                  {manClothing[3].name}
+                                              </span>
+
+                                                    <span>
+                                                  colour: {manClothing[3].color}
+                                              </span>
+
+                                                    <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[3].price}
+                                              </span>
+
+                                                        <Link
+                                                            to={`product/${manClothing[3].id}`}
+                                                            className="Frame70" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
 
                                         </div>
-
-                                        <button className="Frame70-5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                            </svg>
-                                        </button>
-
 
                                     </div>
 
                                 </div>
 
-                                <div className="Frame215-5">
+                                )}
 
-                                    <div className="Frame208-2">
-                                        <img src="public/Clothes/Ragtangel209.png" className="Rectangle208"/>
 
-                                        <button className="favorite9">
-                                            <svg id="star9"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                {manClothing[4] && (
+                                <div className="Frame215">
+
+                                    <div className="Frame208">
+                                        <img alt={`Foto ${manClothing[4].name}`} src={`${baseUrl}product/${manClothing[4].imagePaths[0]}`} className="Rectangle208"/>
+
+                                        <button className="favorite" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[4].id)}}>
+
+                                            <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
                                         </button>
                                     </div>
 
-                                    <div className="Frame213-2">
+                                    <div className="Frame213">
 
-                                        <div className="Frame207-3">
+                                        <div className="Frame220">
 
-                                            <span>ONLY & SONS denim jacket</span>
+                                            <div className="Frame207">
 
-                                            <span>colour: midwash blue</span>
+                                                <div className="Frame206">
 
-                                            <span>£30.00</span>
+                                              <span>
+                                                  {manClothing[4].name}
+                                              </span>
+
+                                                    <span>
+                                                  colour: {manClothing[4].color}
+                                              </span>
+
+                                                    <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[4].price}
+                                              </span>
+
+                                                        <Link
+                                                            to={`product/${manClothing[4].id}`}
+                                                            className="Frame70" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
 
                                         </div>
-
-                                        <button className="Frame70-7">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                            </svg>
-                                        </button>
-
 
                                     </div>
 
                                 </div>
+
+                                )}
                             </div>
 
                             <div className="Frame330">
+
+                                {manClothing[5] && (
 
                                 <div className="Frame215">
 
                                     <div className="Frame208">
 
-                                        <img src="public/Clothes/Ragtangel208.png" className="Rectangle16"/>
+                                        <img alt={`Foto ${manClothing[5].name}`} src={`${baseUrl}product/${manClothing[5].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite10">
-                                            <svg id="star10"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[5].id)}}>
+
+                                            <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
@@ -564,26 +789,31 @@ const MainClothes = () => {
                                                 <div className="Frame206">
 
                                               <span>
-                                                  urbncore collar shirt with black butterfly print
+                                                  {manClothing[5].name}
                                               </span>
 
                                                     <span>
-                                                  colour: black
+                                                  colour: {manClothing[5].color}
                                               </span>
 
-                                                    <span>
-                                                  £26.99
+                                                    <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[5].price}
                                               </span>
+
+                                                        <Link
+                                                            to={`product/${manClothing[5].id}`}
+                                                            className="Frame70" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </div>
 
                                                 </div>
 
                                             </div>
-
-                                            <button className="Frame70-8">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                    <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                                </svg>
-                                            </button>
 
                                         </div>
 
@@ -591,65 +821,20 @@ const MainClothes = () => {
 
                                 </div>
 
-                                <div className="Frame214-5">
+                                )}
 
-                                    <div className="Frame211">
-
-                                        <img src="public/Clothes/Foto2.png" className="Rectangle16"/>
-
-                                        <button className="favorite12">
-                                            <svg id="star12"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-                                                <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
-                                            </svg>
-
-                                        </button>
-
-                                    </div>
-
-                                    <div className="Frame212">
-
-                                        <div className="Frame210">
-
-                                            <div className="Frame207">
-
-                                                <div className="Frame206">
-
-                                              <span>
-                                                  urbncore  denim trucker jacket with rips
-                                              </span>
-
-                                                    <span>
-                                                  colour: light denim
-                                              </span>
-
-                                                    <span>
-                                                  £40.00
-                                              </span>
-
-                                                </div>
-
-                                            </div>
-
-                                            <button className="Frame70-11">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                    <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                                </svg>
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className="Frame215-5">
+                                {manClothing[6] && (
+                                <div className="Frame215">
 
                                     <div className="Frame208">
 
-                                        <img src="public/Clothes/Ragtangel208.png" className="Rectangle16"/>
+                                        <img alt={`Foto ${manClothing[6].name}`} src={`${baseUrl}product/${manClothing[6].imagePaths[0]}`} className="Rectangle16"/>
 
-                                        <button className="favorite13">
-                                            <svg id="star13"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                        <button className="favorite" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[6].id)}}>
+
+                                            <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                                 <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                             </svg>
 
@@ -666,39 +851,106 @@ const MainClothes = () => {
                                                 <div className="Frame206">
 
                                               <span>
-                                                  urbncore collar shirt with black butterfly print
+                                                  {manClothing[6].name}
                                               </span>
 
                                                     <span>
-                                                  colour: black
+                                                  colour: {manClothing[6].color}
                                               </span>
 
-                                                    <span>
-                                                  £26.99
+                                                    <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[6].price}
                                               </span>
+
+                                                        <Link
+                                                            to={`product/${manClothing[6].id}`}
+                                                            className="Frame70" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </div>
 
                                                 </div>
 
                                             </div>
-
-                                            <button className="Frame70-13">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                                    <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                                </svg>
-                                            </button>
 
                                         </div>
 
                                     </div>
 
                                 </div>
+
+                                )}
+
+                                {manClothing[7] && (
+                                <div className="Frame215">
+
+                                    <div className="Frame208">
+
+                                        <img alt={`Foto ${manClothing[7].name}`} src={`${baseUrl}product/${manClothing[7].imagePaths[0]}`} className="Rectangle16"/>
+
+                                        <button className="favorite" onClick={(event) => {
+                                            handleStarClick(event);
+                                            addItemToCart(manClothing[7].id)}}>
+
+                                            <svg id="star1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                                <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
+                                            </svg>
+
+                                        </button>
+
+                                    </div>
+
+                                    <div className="Frame213">
+
+                                        <div className="Frame220">
+
+                                            <div className="Frame207">
+
+                                                <div className="Frame206">
+
+                                              <span>
+                                                  {manClothing[7].name}
+                                              </span>
+
+                                                    <span>
+                                                  colour: {manClothing[7].color}
+                                              </span>
+
+                                                    <div className="Special-Container">
+
+                                                   <span>
+                                                  £{manClothing[7].price}
+                                              </span>
+
+                                                        <Link
+                                                            to={`product/${manClothing[7].id}`}
+                                                            className="Frame70" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                )}
                         </div>
 
-                        </div>
                     </div>
 
                     <Link
-                    to=""
+                    to="/allProducts"
                     className="Button_action">
                         show all
                     </Link>

@@ -11,7 +11,7 @@
 {
     width: 100%;
     height: 1000px;
-    background: url("public/Ragtangel10.jpeg") lightgray 0px -507.529px / 100% 288% no-repeat;
+    background: url("../../../public/Body/Ragtangel10.jpeg") lightgray 0px -507.529px / 100% 288% no-repeat;
 }
 
 .Rectangle10>:nth-child(1)
@@ -24,7 +24,7 @@
     top: 40px;
 
     font-family: "Outfit",sans-serif;
-    font-size: 300px;
+    font-size: 200px;
     font-weight: 700;
     line-height: 378px;
     text-align: left;
@@ -39,13 +39,13 @@
 {
     /* glam */
     position: absolute;
-    width: 872px;
+    width: max-content;
     height: 203px;
-    left: 900px;
+    left: 800px;
     top: 360px;
 
     font-family: "Outfit",sans-serif;
-    font-size: 300px;
+    font-size: 200px;
     font-weight: 700;
     line-height: 378px;
     text-align: left;
@@ -93,7 +93,7 @@
 {
     margin: 80px auto 0 auto;
     display: flex;
-    width: 80%;
+    width: 90%;
     height: max-content;
     flex-direction: column;
     justify-content: center;
@@ -282,16 +282,17 @@
 .Frame216
 {
    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* nhb столбца одинаковой ширины */
-    grid-template-rows: auto; /* высота строк будет автоматически подстраиваться */
-    gap: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
 }
 
-.Frame215
+.Frame215-new
 {
     display: flex;
-    width: 448px;
+    width: 32%;
+    height: max-content;
     flex-direction: column;
     align-items: flex-start;
 
@@ -339,6 +340,7 @@
 
 .Frame213-3
 {
+    margin-top: 40px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -429,11 +431,9 @@
 
 .Wild
 {
-    position: static;
-    flex-shrink: 0;
-    flex: none;
+    position: relative;
 
-    width: 448px;
+    width: 30%;
     height: 509px;
 
     /*border-radius: 4px;*/
@@ -446,10 +446,8 @@
 
 .Free
 {
-    flex-shrink: 0;
-    flex: none;
 
-    width: 448px;
+    width: 30%;
     height: 509px;
 
     border-radius: 4px;
@@ -466,8 +464,8 @@
     position: static;
     display: flex;
 
-    margin-top: 30px;
-    margin-right: 250px;
+    margin-top: 40px;
+    margin-right: 200px;
 
 
     transform: rotate(90deg);
@@ -486,17 +484,11 @@
 .Frame219
 {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
+   display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     gap: 30px;
-
     position: static;
-
-    flex: none;
-    order: 1;
-    align-self: stretch;
-
 }
 
 .Free>:nth-child(1)
@@ -606,10 +598,9 @@
 
 .Frame430
 {
-    margin: 130px auto 0 auto;
-    width: 80%;
+    margin: 130px auto;
+    width: 90%;
     height: 894px;
-    flex-shrink: 0;
 }
 
 .Frame250
@@ -672,8 +663,6 @@
 {
     display: flex;
 
-    z-index: 0;
-
 
     height: 509px;
     flex-direction: column;
@@ -681,8 +670,7 @@
     align-items: center;
     align-self: stretch;
 
-    width: 448px;
-    flex-shrink: 0;
+    width: 100%;
 
     border-radius: 4px;
     border: 2px solid  #707070;
@@ -707,7 +695,7 @@
     z-index: 1;
     width: 36px;
     height: 36px;
-    left: 380px; /* центрируем по горизонтали */
+    left: 90%; /* центрируем по горизонтали */
     top: 40px; /* центрируем по вертикали */
     transform: translate(-50%, -50%); /* коррекция для точного центрирования */
     border-radius: 0.75px;
@@ -1028,7 +1016,7 @@
 
 .footer-2
 {
-    /* Frame 295 */
+
     margin-top: 100px;
     width: 100%;
     height: 698px;

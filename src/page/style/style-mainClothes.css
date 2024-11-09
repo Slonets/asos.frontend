@@ -8,14 +8,15 @@
 
 .Div-Img
 {
-    position: static;
+    position: relative;
     display: flex;
-    width:  100%;
-    height: 1000px;
+    width: 100%;
+    height: 800px; /* Можете налаштувати на 'auto', якщо бажаєте адаптивної висоти */
     flex-direction: column;
 
-    background: url("public/MainClothesImage.png");
-    background-size: cover;
+    background: url("../../../public/first-page/MainClothesImage.png") no-repeat;
+    background-size: cover; /* Покриває весь контейнер */
+    background-position: center;
 
 }
 
@@ -25,14 +26,12 @@
     position: relative;
     width: max-content;
     height: 96px;
-    margin: 120px auto 0 auto;
+    margin: 7% auto 0 auto;
     /* Auto layout */
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-
-    gap: 61px;
 }
 
 .get-in
@@ -42,8 +41,8 @@
 
     color: #C8F954;
 
-    font-family: "Outfit", sans-serif;
-    font-size: 96px;
+    font-family: Outfit, sans-serif;
+    font-size: 76px;
     font-style: normal;
     font-weight: 800;
     line-height: 100px; /* 104.167% */
@@ -63,8 +62,8 @@
 
     color: #C8F954;
 
-    font-family: "Outfit", sans-serif;
-    font-size: 96px;
+    font-family: Outfit, sans-serif;
+    font-size: 76px;
     font-style: normal;
     font-weight: 800;
     line-height: 100px; /* 104.167% */
@@ -74,10 +73,10 @@
 .geous
 {
 
-    width: 365px;
+    width: max-content;
     height: 100%;
     /* Auto layout */
-    margin-left: 550px;
+    margin-left: 350px;
 
     /* Inside Auto Layout */
     flex: none;
@@ -86,8 +85,8 @@
 
     color:  #C8F954;
 
-    font-family: "Outfit", sans-serif;
-    font-size: 96px;
+    font-family: Outfit, sans-serif;
+    font-size: 76px;
     font-style: normal;
     font-weight: 800;
     line-height: 100px; /* 104.167% */
@@ -100,7 +99,7 @@
     position: relative;
     width: max-content;
     height: max-content;
-    margin: 60px auto 0 500px;
+    margin: 3% auto 0 20%;
 
     /* Auto layout */
     display: flex;
@@ -112,12 +111,13 @@
 .Frame293>:nth-child(1)
 {
     color: #C8F954;
-    font-family: "Outfit", sans-serif;
-    font-size: 96px;
+    font-family: Outfit, sans-serif;
+    font-size: 76px;
     font-style: normal;
     font-weight: 800;
     line-height: 100px; /* 104.167% */
     text-transform: uppercase;
+    margin-left: 100px;
 }
 
 .Frame293>:nth-child(2)
@@ -125,7 +125,7 @@
     color: #C8F954;
 
     font-family: "Outfit", sans-serif;
-    font-size: 96px;
+    font-size: 76px;
     font-style: normal;
     font-weight: 800;
     line-height: 100px; /* 104.167% */
@@ -137,9 +137,9 @@
 {
     /* shopping! (Stroke) */
     position: static;
-    width: 1372.23px;
-    height: 204.5px;
-    margin: 130px auto 100px auto;
+    width: 1000px;
+    height: 205px;
+    margin: 70px auto 50px auto;
 
     display: flex;
 }
@@ -177,13 +177,11 @@
 
 .Frame434
 {
-    /* Frame 319 */
-    position: absolute;
-    width: 1520px;
-    height: 1477px;
-    left: 200px;
-    top: 1100px;
-    /* Auto layout */
+
+    position: relative;
+    margin: 100px auto 0 auto;
+    width: 90%;
+    height: max-content;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -192,9 +190,8 @@
 
 .Frame302
 {
-    /* Frame 302 */
-    position: static;
-    width: 1520px;
+    position: relative;
+    width: 100%;
     height: 32px;
     /* Auto layout */
     display: flex;
@@ -208,7 +205,7 @@
 .NewCollection
 {
     /* new collection: */
-    position: static;
+    position: relative;
     width: max-content;
     height: 100%;
     /* Auto layout */
@@ -228,7 +225,7 @@
 .AfterMidnight
 {
     /* after midnight */
-    position: static;
+    position: relative;
     width: max-content;
     height: 55px;
     /* Inside Auto Layout */
@@ -251,10 +248,10 @@
 
 .Frame318
 {
-    /* Frame 318 */
+    margin-top: 50px;
     position: static;
-    width: 1520px;
-    height: 1405px;
+    width: 100%;
+    height: 90%;
     /* Auto layout */
     display: flex;
     flex-direction: column;
@@ -265,33 +262,27 @@
     flex: none;
     order: 1;
     align-self: stretch;
-    gap: 100px;
+    gap: 50px;
 }
 
 .Frame317
 {
-    /* Frame 317 */
-    position: static;
-    width: 1520px;
-    /*height: 633px;*/
-    /* Auto layout */
+    position: relative;
+    width: 100%;
+    height: 50%;
+
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: flex-start;
-
-    /* Inside Auto Layout */
-    flex: none;
-    align-self: stretch;
-    gap: 88px;
 }
 
 .Frame215
 {
     /* Frame 215 */
-    position: static;
-    width: 448px;
-    height: 700px;
+    position: relative;
+    width: 30%;
+    height: 740px;
     /* Auto layout */
     display: flex;
     flex-direction: column;
@@ -300,51 +291,59 @@
 
     /* Inside Auto Layout */
     flex: none;
-    gap: 30px;
+    gap: 20px;
 }
 
-.Frame208
-{
+.Frame208 {
     /* Frame 208 */
-    position: static;
-    width: 448px;
-    height: 509px;
-    /* Inside Auto Layout */
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
+    position: relative; /* Щоб кнопка могла розташовуватися відносно контейнера */
+    width: 100%;
+    height: 70%;
+    display: block; /* Можна залишити display: block для збереження контейнера */
 }
 
 .Rectangle16 {
     /* Rectangle 16 */
-    position: static;
+    position: relative; /* Залишаємо в нормальному потоці */
     width: 100%;
     height: 100%;
-
-    object-fit:cover;
+    object-fit: cover; /* Покриває весь контейнер без викривлення */
     border-radius: 4px;
-
     border: 2px solid rgb(112, 112, 112);
     box-shadow: 4px 8px 0px 0px rgb(200, 249, 84);
-
+    z-index: 0; /* Позаду кнопки */
 }
 
-.favorite
-{
+.favorite {
     /* favorite */
-    position: absolute;
+    position: absolute; /* Абсолютне позиціонування кнопки */
+    top: 12px; /* Відступ зверху */
+    left: 15px; /* Відступ справа */
     width: 36px;
     height: 36px;
-    left: 30px;
-    top: 50px;
-    border-radius: 0.75px;
+    z-index: 1; /* Вище за зображення */
 
+    border-radius: 0.75px;
     fill: none;
     stroke: #0D0D0D;
     stroke-width: 1.5;
     transition: fill 0.3s, stroke 0.3s;
+}
 
+
+#star1 {
+    stroke: black;
+    cursor: pointer;
+}
+
+.filled2
+{
+   fill: none;
+}
+
+.filled {
+    fill: #FFD700;
+    stroke: #FFD700;
 }
 
 #star1:hover
@@ -356,37 +355,25 @@
 .Frame213
 {
     /* Frame 213 */
-    position: static;
-    width: 448px;
-    height: max-content;
-    /* Inside Auto Layout */
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
+    position: relative;
+    width: 100%;
+    height: 30%;
 }
 
 .Frame220
 {
-    /* Frame 220 */
-    position: static;
-    width: 457px;
-    height: max-content;
-
-    gap: 38px;
-
+    position: relative;
+    width: 100%;
+    height: 100%;
     display: flex;
-
 }
 
 .Frame207
 {
-    /* Frame 207 */
-    position: static;
-    width: 85%;
-    height: max-content;
+    position: relative;
+    width: 100%;
+    height: 100%;
 
-    /* Auto layout */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -401,11 +388,9 @@
     gap: 15px;
     align-self: stretch;
 
-    /* Frame 206 */
     position: static;
     width: 100%;
     height: 72px;
-    /* Auto layout */
 
     justify-content: flex-start;
 }
@@ -435,7 +420,16 @@
     text-transform: uppercase;
 }
 
-.Frame206>:nth-child(3)
+.Special-Container
+{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Special-Container span
 {
     color: #0D0D0D;
     font-family: "Outfit",sans-serif;
@@ -448,11 +442,9 @@
 
 .Frame70
 {
-    position: absolute;
+    position: relative;
     width: 84px;
     height: 84px;
-    left: 350px;
-    top: 650px;
 }
 
 .Frame70:hover path
@@ -557,16 +549,15 @@
 .Frame316
 {
     /* Frame 316 */
-    position: absolute;
-    width: 448px;
-    height: 700px;
-    left: 1072px;
+    position: relative;
+    width: 30%;
+    height: 740px;
 }
 
 .position
 {
     width: 100%;
-    height: 73%;
+    height: 70%;
 }
 
 .foto3
@@ -578,19 +569,13 @@
 
 .Men
 {
-    /* men (Stroke) */
     position: absolute;
     width: 175.96px;
-    height: 479.09px;
+    height: 250px;
     left: 20px;
     right: 252.04px;
     top: 15px;
     bottom: 14.91px;
-}
-
-.Men>:nth-child(1)
-{
-    margin-top: 10px;
 }
 
 .Frame431
@@ -601,14 +586,18 @@
     flex-direction: row;
     justify-content: space-between;
     align-content: center;
-    /*align-items: center;*/
     margin-top: 20px;
+}
+
+.ShowAll
+{
+    margin-top: 15px;
 }
 
 .ShowAll>:nth-child(1)
 {
     color: rgb(13, 13, 13);
-    font-family: "Outfit",sans-serif;
+    font-family: Outfit,sans-serif;
     font-size: 24px;
     font-weight: 600;
     line-height: 30px;
@@ -618,11 +607,10 @@
 
 .Frame70-3
 {
-    position: absolute;
+    position: relative;
     width: 84px;
     height: 84px;
-    left: 360px;
-    top: 510px;
+    margin-top: -10px;
 }
 
 .Frame70-3:hover path
@@ -633,44 +621,42 @@
 
 .Frame433
 {
-    /* Frame 433 */
-    position: absolute;
-    width: 1520px;
-    height: 672px;
-    left: 0;
-    top: 805px;
+    position: relative;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .Frame305
 {
-    width: 448px;
-    height: 700px;
-    flex-shrink: 0;
+    position: relative;
+    width: 30%;
+    height: 740px;
 }
 
 .RectangleWoman
 {
     width: 100%;
-    height: 509px;
+    height: 70%;
 }
 
 .ImageRectangleWoman
 {
     width: 100%;
-    height: 509px;
-    object-fit:cover;
+    height: 100%;
+    object-fit: cover;
 }
 
 .Women-Stroke
 {
-    /* women (Stroke) */
     position: absolute;
-    width: 97.6px;
-    height: 480.81px;
-    left: 336.84px;
-    right: 13.56px;
-    top: 19.01px;
-    bottom: 9.18px;
+    width: 97px;
+    height: 480px;
+    left: 75%;
+    top: 3%;
 }
 
 .Frame432
@@ -794,8 +780,78 @@
     text-transform: uppercase;
 }
 
+.Frame311
+{
+     /* Frame 311 */
+     position: relative;
+     width: 100%;
+     height: 785px;
+     display: flex; /* Використовуємо flex для допомоги в адаптації */
+     justify-content: center;
+     align-items: center;
+     overflow: hidden; /* Щоб елементи не виходили за межі */
+ }
 
+.Frame311>:nth-child(1) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Забезпечує повне покриття зображенням */
+}
 
+.Frame311>:nth-child(2) {
+    position: absolute;
+    width: max-content;
+    height: max-content;
+    left: 0; /* Використовуємо відсотки */
+    top: 43%; /* Відсотки для адаптивності */
+    transform: rotate(-55.85deg);
+
+    color: #C8F954;
+    font-family: Outfit,sans-serif;
+    font-size: 6vw; /* Зробимо шрифт масштабованим */
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.Frame311>:nth-child(3) {
+    position: absolute;
+    width: max-content;
+    height: max-content;
+    left: 60%; /* Використовуємо відсотки */
+    top: 35%; /* Відсотки для адаптивності */
+    transform: rotate(23.76deg);
+
+    color: rgb(200, 249, 84);
+    font-family: Outfit,sans-serif;
+    font-size: 6vw; /* Масштабований шрифт */
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.Frame310 {
+    position: absolute;
+    width: 25%; /* Відсоткове значення для ширини */
+    height: auto;
+    left: 50%; /* Центруємо по горизонталі */
+    top: 75%; /* Позиція по вертикалі */
+    transform: translateX(-50%); /* Центруємо кнопки */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    border: 5px solid rgb(13, 13, 13);
+    background: rgb(245, 245, 245);
+    color: rgb(13, 13, 13);
+    font-family: "Outfit",sans-serif;
+    font-size: 2vw; /* Масштабований шрифт */
+    font-weight: 400;
+    text-align: left;
+    text-transform: capitalize;
+}
 
 .Frame210-3>:nth-child(2)
 {
@@ -867,83 +923,25 @@
     align-items: flex-start;
 }
 
-.Frame311
-{
-    /* Frame 311 */
-    position: absolute;
-    width:  100%;
-    height: 785px;
-    left: 0;
-    top: 2727px;
-}
-
-.Frame311>:nth-child(1)
-{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.Frame311>:nth-child(2)
-{
-    color: #C8F954;
-    font-family: "Outfit",sans-serif;
-    font-size: 110px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    text-transform: uppercase;
-
-    /* freestyle */
-    position: absolute;
-    width: 587px;
-    height: 74px;
-    top: 340px;
-    transform: rotate(-55.85deg);
-}
-
-.Frame311>:nth-child(3)
-{
-    /* spirit */
-    position: absolute;
-    width: 330px;
-    height: 74px;
-    left: 1223.81px;
-    top: 280px;
-    transform: rotate(23.76deg);
-
-    color: rgb(200, 249, 84);
-    font-family: "Outfit",sans-serif;
-    font-size: 110px;
-    font-weight: 600;
-    line-height: 139px;
-    text-align: left;
-    text-transform: uppercase;
-}
-
 .Frame310
 {
-    /* Frame 310 (Frame 4) */
     position: absolute;
-    width: 409.5px;
-    height: 85px;
-    left: 755px;
-    top: 610px;
-    /* Auto layout */
+    width: 25%; /* Відсоткове значення для ширини */
+    height: auto;
+    left: 50%; /* Центруємо по горизонталі */
+    top: 75%; /* Позиція по вертикалі */
+    transform: translateX(-50%); /* Центруємо кнопки */
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 19.5px 13px 19.5px 13px;
+    padding: 20px;
 
-    border: 5.2px solid rgb(13, 13, 13);
+    border: 5px solid rgb(13, 13, 13);
     background: rgb(245, 245, 245);
-
     color: rgb(13, 13, 13);
     font-family: "Outfit",sans-serif;
-    font-size: 36.4px;
+    font-size: 2vw; /* Масштабований шрифт */
     font-weight: 400;
-    line-height: 46px;
     text-align: left;
     text-transform: capitalize;
 }
@@ -957,13 +955,10 @@
 
 .Frame334
 {
-    /* Frame 334 */
-    position: absolute;
-    width: 1520px;
+    position: relative;
+    margin: 50px auto 0 auto;
+    width: 90%;
     height: max-content;
-    left: 200px;
-    top: 3600px;
-    /* Auto layout */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -972,25 +967,24 @@
 
 .Frame333
 {
-    position: static;
-    width: 1520px;
-    height: max-content;
-    /* Auto layout */
+    position: relative;
+    width: 100%;
+    height: 5%;
     display: flex;
     flex-direction: row;
-    align-content: space-between;
+    justify-content: space-between;
 }
 
 .SpecialConteiner1
 {
-    position: static;
+    position: relative;
     width: max-content;
     height: 100%;
 }
 
 .SellingFast
 {
-    font-family: "Outfit",sans-serif;
+    font-family: Outfit,sans-serif;
     font-size: 32px;
     font-style: normal;
     font-weight: 600;
@@ -1000,16 +994,15 @@
 
 .SpecialConteiner
 {
-    position: static;
+    position: relative;
     width: max-content;
     height: 100%;
-    margin-left: 1020px;
 }
 
 .Women
 {
     color:black;
-    font-family: "Outfit",sans-serif;
+    font-family: Outfit,sans-serif;
     font-size: 32px;
     font-style: normal;
     font-weight: 400;
@@ -1021,7 +1014,7 @@
 .Man
 {
     color: #707070;
-    font-family: "Outfit",sans-serif;
+    font-family: Outfit,sans-serif;
     font-size: 32px;
     font-style: normal;
     font-weight: 400;
@@ -1031,21 +1024,15 @@
 
 .Frame332
 {
-    /* Frame 332 */
-    position: static;
-    width: 1520px;
-    height: 1456px;
-    /* Auto layout */
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    height: max-content;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 
-    /* Inside Auto Layout */
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
 }
 
 .Frame331
@@ -1069,49 +1056,16 @@
 
 .Frame329
 {
-    /* Frame 329 */
-    position: static;
-    width: 1520px;
-    height: max-content;
-    /* Auto layout */
-
-
-    justify-content: flex-start;
-
-
-    /* Inside Auto Layout */
-    flex: none;
-    align-self: stretch;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* три столбца одинаковой ширины */
-    grid-template-rows: auto; /* высота строк будет автоматически подстраиваться */
-    gap: 10px; /* отступы между элементами сетки */
-}
-
-.Frame215
-{
-    position: static;
-    width: 448px;
-    height: 700px;
+    position: relative;
+    width: 100%;
+    height: 50%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: flex-start;
-    gap: 30px;
 }
 
-.Frame215-4
-{
-    position: static;
-    width: 448px;
-    height: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 30px;
-}
+
 
 .Frame208-2
 {
@@ -1277,17 +1231,7 @@ margin-top: 10px;
     stroke: #FFD700;
 }
 
-.Frame215-5
-{
-    position: static;
-    width: 448px;
-    height: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 30px;
-}
+
 
 .Frame207-3 {
     /* Frame 207 */
@@ -1373,13 +1317,14 @@ margin-top: 10px;
 
 .Frame330
 {
+    margin-top: 50px;
+    position: relative;
     width: 100%;
-   margin-top: 20px;
-    height: max-content;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* три столбца одинаковой ширины */
-    grid-template-rows: auto; /* высота строк будет автоматически подстраиваться */
-    gap: 30px; /* отступы между элементами сетки */
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .Frame70-8
@@ -1420,7 +1365,7 @@ margin-top: 10px;
     width: 36px;
     height: 36px;
     left: 30px;
-    top: 830px;
+    top: 870px;
     border-radius: 0.75px;
 
     fill: none;
@@ -1436,21 +1381,7 @@ margin-top: 10px;
     stroke: #FFD700;
 }
 
-.Frame215-5 {
-    /* Frame 215 */
-    position: static; /* Изменено с static на absolute */
-    width: 448px;
-    height: 700px;
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
 
-    /* Inside Auto Layout */
-    flex: none;
-    gap: 30px;
-}
 
 .Frame214-5
 {
@@ -1474,7 +1405,7 @@ margin-top: 10px;
     width: 36px;
     height: 36px;
     left: 550px;
-    top: 830px;
+    top: 870px;
     border-radius: 0.75px;
 
     fill: none;
@@ -1512,7 +1443,7 @@ margin-top: 10px;
     width: 36px;
     height: 36px;
     left: 1050px;
-    top: 830px;
+    top: 870px;
     border-radius: 0.75px;
 
     fill: none;
@@ -1555,19 +1486,13 @@ margin-top: 10px;
     justify-content: center;
     align-items: center;
 
-    /* Inside Auto Layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
     border: 2px solid rgb(13, 13, 13);
     border-radius: 50px;
 
     box-shadow: 4px 8px 0px 0px rgb(0, 0, 0);
     background: rgb(200, 249, 84);
 
-    margin: 0 auto;
-
+    margin: 100px auto;
 
     color: rgb(13, 13, 13);
     font-family: "Outfit",sans-serif;
@@ -1586,13 +1511,10 @@ margin-top: 10px;
 
 .footer
 {
-    /* Frame 295 */
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 698px;
-    left: 0;
     background-color: black;
-    top:5300px;
     display: flex;
     flex-direction: column;
 }

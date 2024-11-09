@@ -2,8 +2,7 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import http from "../../../http_common";
-import { AuthUserActionType } from "../../authentication/type";
-import { IUser } from "../../authentication/login/type";
+import {AuthUserActionType, IUserToken} from "../../authentication/type";
 import "../Style-UserProfile.scss";
 import { MdOutlinePhotoCamera } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
@@ -21,26 +20,25 @@ import { API_URL } from "../../../utils/getEnvData.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
 import {Link} from "react-router-dom";
+import {IEditUser} from "../types.ts";
 
 const DefaultSideBar = () => {
+
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.auth.user);
 
     const baseUrl = API_URL;
 
-    const init: IUser = {
+    const init: IEditUser = {
         id: 0,
         firstName: "",
         lastName: "",
         email: "",
-        phoneNumber: "",
         image: "",
-        roles: "",
-        IsLockedOut: false,
-        birthday:null
+        birthday:""
     };
 
-    const [user, setUser] = useState<IUser>(init);
+    const [user, setUser] = useState<IEditUser>(init);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     useEffect(() => {
@@ -103,7 +101,7 @@ const DefaultSideBar = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Фото оновилося", user);
 
@@ -152,26 +150,28 @@ const DefaultSideBar = () => {
                             <p className="text-hi">Hi there,</p>
                             <p className="text-name">{`${user.firstName} ${user.lastName}`}</p>
                         </div>
-                        <button className="edit-button">
+
+                        <Link className="edit-button" to="/user-info">
                             <FaEdit size={24} />
-                        </button>
+                        </Link>
+
                     </div>
                 </div>
 
                 <div className="second-block">
-                    <button className="button-in-block">
+                    <Link to="/user-info/orders" className="button-in-block" >
                         <LuPackage size={24} />
                         <p className="text-name">My Orders</p>
-                    </button>
-                    <button className="button-in-block">
+                    </Link>
+                    <Link to="/user-info" className="button-in-block">
                         <BsArrowReturnLeft size={24} />
                         <p className="text-name">Returns</p>
-                    </button>
-                    <button className="button-in-block">
+                    </Link>
+                    <Link to="/user-info/favorite" className="button-in-block">
                         <PiStarFour size={24} />
                         <p className="text-name">Favourites</p>
-                    </button>
-                    <Link to="address" className="button-in-block">
+                    </Link>
+                    <Link to="/user-info/address" className="button-in-block">
                         <FiHome size={24} />
                         <p className="text-name">Address Information</p>
                     </Link>
@@ -196,10 +196,23 @@ const DefaultSideBar = () => {
                         <p className="text-name">Help Centre</p>
                     </button>
                 </div>
-                <button className="sign-out-button">
+                <Link to="/logout"
+                    className="sign-out-button"
+                      onClick={(e) => {
+                          e.preventDefault();
+
+                          // Видалення даних з localStorage
+                          localStorage.removeItem("cart");
+                          localStorage.removeItem("basket");
+
+                          localStorage.removeItem("token");
+                          window.location.href="/";
+                      }}
+
+                >
                     <PiSignOutFill size={24} />
                     <p className="text-name">Sign Out</p>
-                </button>
+                </Link>
             </div>
         </div>
     );

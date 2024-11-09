@@ -7,8 +7,7 @@ import {useAppDispatch} from "../../../store";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {IUser} from "../login/type.ts";
-import {AuthUserActionType} from "../type.ts";
+import {AuthUserActionType, IUserToken} from "../type.ts";
 import "./style/styleRegiserFirstPage.css"
 
 const RegisterFirstPage = () => {
@@ -17,6 +16,7 @@ const RegisterFirstPage = () => {
 
     const location = useLocation();
     const dispatch = useAppDispatch();
+    // @ts-ignore
     const [googleLogin] = useGoogleLoginMutation();
 
     const authSuccess = async (credentialResponse: CredentialResponse) => {
@@ -29,7 +29,7 @@ const RegisterFirstPage = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Вхід успішний", user);
 
@@ -289,7 +289,7 @@ const RegisterFirstPage = () => {
 
                                                             {errors.firstName && touched.firstName ? (
                                                                 <>
-                                                                    <div className="ErorButton-Div-False">
+                                                                    <div className="ErorButton-Div-False-1">
                                                                         <button>
                                                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                                                  width="24" height="25"
@@ -311,8 +311,8 @@ const RegisterFirstPage = () => {
                                                                         </button>
                                                                     </div>
 
-                                                                    <div className="Frame33">
-                                                                        <div className="Polygon3">
+                                                                    <div className="Frame33-1">
+                                                                        <div className="Polygon3-1">
                                                                             <svg id="open"
                                                                                  xmlns="http://www.w3.org/2000/svg"
                                                                                  width="26" height="30"
@@ -322,7 +322,7 @@ const RegisterFirstPage = () => {
                                                                                     fill="#2E38A2"/>
                                                                             </svg>
                                                                         </div>
-                                                                        <div className="Frame32">
+                                                                        <div className="Frame32-1">
                                                                             <span
                                                                                 className="Text-Error">{errors.firstName}</span>
                                                                         </div>

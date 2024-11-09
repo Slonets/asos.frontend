@@ -4,8 +4,8 @@ import {useAppDispatch} from "../../../store";
 import {useGoogleLoginMutation} from "../../../services/user.ts";
 import setAuthToken from "../../../helpers/setAuthToken.ts";
 import {jwtDecode} from "jwt-decode";
-import {IUser, IValidLogin} from "../login/type.ts";
-import {AuthUserActionType} from "../type.ts";
+import {IValidLogin} from "../login/type.ts";
+import {AuthUserActionType, IUserToken} from "../type.ts";
 import "./style/styleSecondPage.css";
 import {IRegisterPage} from "./type.ts";
 import * as yup from "yup";
@@ -20,9 +20,13 @@ const RegisterSecondPage = () => {
 
     const location = useLocation();
     const dispatch = useAppDispatch();
+
+// @ts-ignore
     const [googleLogin] = useGoogleLoginMutation();
 
     const authSuccess = async (credentialResponse: CredentialResponse) => {
+
+
         const resp = await googleLogin({
             credential: credentialResponse.credential || "",
         });
@@ -32,7 +36,7 @@ const RegisterSecondPage = () => {
 
             setAuthToken(token);
 
-            const user = jwtDecode<IUser>(token);
+            const user = jwtDecode<IUserToken>(token);
 
             console.log("Вхід успішний", user);
 
@@ -63,16 +67,16 @@ const RegisterSecondPage = () => {
 
     const onFormikSubmit = async (values: IRegisterPage) => {
 
-        let storedFirstName: string | null = localStorage.getItem('firstName');
-        let storedLastName: string | null = localStorage.getItem('lastName');
+        const storedFirstName: string | null = localStorage.getItem('firstName');
+        const storedLastName: string | null = localStorage.getItem('lastName');
 
-        if (storedFirstName !== null)
+        if (storedFirstName != null)
         {
             // Тепер ми знаємо, що storedFirstName є string
             values.firstName=storedFirstName;
         }
 
-        if (storedLastName !== null)
+        if (storedLastName != null)
         {
             values.lastName=storedLastName;
         }
@@ -89,10 +93,11 @@ const RegisterSecondPage = () => {
             );
             console.log("Result server good", result);
 
+
             localStorage.removeItem('firstName');
             localStorage.removeItem('lastName');
 
-            navigate("/");
+            navigate("/login");
 
         }
         catch (error)
@@ -282,8 +287,8 @@ const RegisterSecondPage = () => {
                                                                         </button>
                                                                     </div>
 
-                                                                    <div className="Frame33">
-                                                                        <div className="Polygon3">
+                                                                    <div className="Frame33-3">
+                                                                        <div className="Polygon3-3">
                                                                             <svg id="open"
                                                                                  xmlns="http://www.w3.org/2000/svg"
                                                                                  width="26" height="30"

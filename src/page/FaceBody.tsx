@@ -1,7 +1,88 @@
 import "./style/faceBody.css";
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import http from "../http_common.ts";
+import {GetProductByIdDto} from "../components/types.ts";
+import {FavoriteActionType} from "../store/slice/favoriteSlise.ts";
+import {APP_ENV} from "../env";
+import {useDispatch} from "react-redux";
 
 const FaceBody=()=>{
+
+    const baseUrl = APP_ENV.BASE_URL;
+    const dispatch = useDispatch();
+    const [parfumeGet, parfumeSet] = useState<GetProductByIdDto[]>([]);
+    const [makeUpGet, makeUpSet] = useState<GetProductByIdDto[]>([]);
+    const [SkinCareGet, SkinCareSet] = useState<GetProductByIdDto[]>([]);
+
+    useEffect(() => {
+
+        http.get("api/Dashboard/GetAllPerfumeWithoutPagination").then(resp => {
+            parfumeSet(resp.data);
+            console.log("Прийшли парфуми", resp.data);
+        });
+    }, []);
+
+    useEffect(() => {
+
+        http.get("api/Dashboard/GetAllMakeUpWithoutPagination").then(resp => {
+            makeUpSet(resp.data);
+            console.log("Прийшов MakeUp", resp.data);
+        });
+    }, []);
+
+    useEffect(() => {
+
+        http.get("api/Dashboard/GetAllSkinCareWithoutPagination").then(resp => {
+            SkinCareSet(resp.data);
+            console.log("Прийшли креми", resp.data);
+        });
+    }, []);
+
+    const addItemToCart = (productId: number) => {
+
+        console.log("Прийшло", productId);
+
+        // Отримуємо поточний кошик з Local Storage або створюємо порожній масив
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Перевіряємо, чи існує такий товар у кошику. Якщо існує, то поверне його id
+        // Якщо не існує, то поверне -1
+        const index = cart.indexOf(productId);
+
+        if (index !== -1)
+        {
+            // Якщо товар є, видаляємо його
+            cart.splice(index, 1);
+        }
+        else
+        {
+            // Якщо товару немає, додаємо його
+            cart.push(productId);
+        }
+
+        // Оновлюємо Local Storage з новим значенням
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Оновлюємо стан з новим кошиком
+        dispatch({
+            type: FavoriteActionType.ADD_FAVORITE,
+            payload: cart
+        });
+    };
+
+    const handleStarClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // Отримуємо саму зірочку зі SVG
+        const star = event.currentTarget.querySelector('svg');
+
+        if (star)
+        {
+            // Додаємо/видаляємо клас 'filled' для конкретної зірочки
+            star.classList.toggle('filled');
+        }
+    };
+
+
 
     return (
         <>
@@ -14,7 +95,7 @@ const FaceBody=()=>{
                     <span>glam</span>
 
                     <Link
-                    to="">Shop Now
+                    to="/allProductsForBody">Shop Now
                     </Link>
                 </div>
 
@@ -23,25 +104,25 @@ const FaceBody=()=>{
                     <div className="Frame200">
 
                         <Link
-                        to=""
+                        to="/makeupProducts"
                         className="Frame199">Make up
 
                         </Link>
 
                         <Link
-                            to=""
+                            to="/skincareProducts"
                             className="Frame198">skin care
 
                         </Link>
 
                         <Link
-                            to=""
+                            to="/haircareProducts"
                             className="Frame197">hair care
 
                         </Link>
 
                         <Link
-                            to=""
+                            to="/perfumeProducts"
                             className="Frame196">perfume
 
                         </Link>
@@ -62,13 +143,22 @@ const FaceBody=()=>{
 
                     <div className="Frame216">
 
-                        <div className="Frame215">
+                        {parfumeGet[0] && (
+
+
+                        <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
-                                <img src="public/Body/Frame208.png" className="Foto-208"/>
+                                <img alt={`Foto ${parfumeGet[0].name}`} src={`${baseUrl}product/${parfumeGet[0].imageUrls[0]}`} className="Foto-208"/>
 
-                                <button className="favorite208">
+                                <button className="favorite208"
+
+                                        onClick={(event) => {
+                                            handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                            addItemToCart(parfumeGet[0].id);  // Друга функція для додавання товару в кошик
+                                        }}>
+
                                     <svg id="star208-1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                         <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                     </svg>
@@ -85,17 +175,18 @@ const FaceBody=()=>{
 
                                         <div className="Frame206-2">
 
-                                            <span>Eilish No. 2 by Billie Eilish</span>
+                                            <span>{parfumeGet[0].name}</span>
 
-                                            <span>100 ml / eau de parfum</span>
+                                            <span>{parfumeGet[0].sizeAndFit}</span>
 
                                         </div>
 
                                         <div className="Example">
 
-                                            <span className="FramePrice">£55.00</span>
+                                            <span className="FramePrice">£{parfumeGet[0].price}</span>
 
-                                            <Link to=""
+                                            <Link
+                                                to={`/product/${parfumeGet[0].id}`}
                                                   className="Arrow1"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
@@ -115,13 +206,22 @@ const FaceBody=()=>{
 
                         </div>
 
-                        <div className="Frame215">
+                        )}
+
+                        {parfumeGet[1] && (
+                        <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
-                                <img src="public/Body/Ragtangel16-2.png" className="Foto-208"/>
+                                <img alt={`Foto ${parfumeGet[1].name}`} src={`${baseUrl}product/${parfumeGet[1].imageUrls[0]}`} className="Foto-208"/>
 
-                                <button className="favorite208">
+                                <button className="favorite208"
+
+                                        onClick={(event) => {
+                                            handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                            addItemToCart(parfumeGet[1].id);  // Друга функція для додавання товару в кошик
+                                        }}
+                                >
                                     <svg id="star208-1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                         <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                     </svg>
@@ -138,17 +238,19 @@ const FaceBody=()=>{
 
                                         <div className="Frame206-2">
 
-                                            <span>Marc Jacobs Daisy</span>
+                                            <span>{parfumeGet[1].name}</span>
 
-                                            <span>100 ml / Eau de Toilette</span>
+                                            <span>{parfumeGet[1].sizeAndFit}</span>
 
                                         </div>
 
                                         <div className="Example">
 
-                                            <span className="FramePrice">£104.00</span>
+                                            <span className="FramePrice">£{parfumeGet[1].price}</span>
 
-                                            <Link to=""
+                                            <Link
+
+                                                to={`/product/${parfumeGet[1].id}`}
                                                   className="Arrow1"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
@@ -167,6 +269,8 @@ const FaceBody=()=>{
                             </div>
 
                         </div>
+
+                        )}
 
                         <div className="Wild">
 
@@ -184,13 +288,22 @@ const FaceBody=()=>{
 
                         </div>
 
-                        <div className="Frame215">
+                        {makeUpGet[0] && (
+
+                        <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
-                                <img src="public/Body/HUDA.png" className="Foto-208"/>
+                                <img alt={`Foto ${makeUpGet[0].name}`} src={`${baseUrl}product/${makeUpGet[0].imageUrls[0]}`} className="Foto-208"/>
 
-                                <button className="favorite208">
+                                <button className="favorite208"
+
+                                        onClick={(event) => {
+                                            handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                            addItemToCart(makeUpGet[0].id);  // Друга функція для додавання товару в кошик
+                                        }}
+                                >
+
                                     <svg id="star208-1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                         <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                     </svg>
@@ -207,17 +320,19 @@ const FaceBody=()=>{
 
                                         <div className="Frame206-2">
 
-                                            <span>Huda Beauty Faux Mink Lash</span>
+                                            <span>{makeUpGet[0].name}</span>
 
-                                            <span> Jade #13</span>
+                                            <span>{makeUpGet[0].sizeAndFit}</span>
 
                                         </div>
 
                                         <div className="Example">
 
-                                            <span className="FramePrice">£21.00</span>
+                                            <span className="FramePrice">£{makeUpGet[0].price}</span>
 
-                                            <Link to=""
+                                            <Link
+                                                to={`/product/${makeUpGet[0].id}`}
+
                                                   className="Arrow1"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
@@ -237,13 +352,23 @@ const FaceBody=()=>{
 
                         </div>
 
-                        <div className="Frame215">
+                        )}
+
+                        {makeUpGet[1] && (
+                            <div className="Frame215-new">
 
                             <div className="Frame208-1">
 
-                                <img src="public/Body/OIL.png" className="Foto-208"/>
+                                <img alt={`Foto ${makeUpGet[1].name}`} src={`${baseUrl}product/${makeUpGet[1].imageUrls[0]}`} className="Foto-208" />
 
-                                <button className="favorite208">
+                                <button className="favorite208"
+
+                                        onClick={(event) => {
+                                            handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                            addItemToCart(makeUpGet[1].id);  // Друга функція для додавання товару в кошик
+                                        }}
+
+                                >
                                     <svg id="star208-1"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
                                         <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                     </svg>
@@ -260,17 +385,19 @@ const FaceBody=()=>{
 
                                         <div className="Frame206-2">
 
-                                            <span>Olaplex No.7 Bonding Oil</span>
+                                            <span>{makeUpGet[1].name}</span>
 
-                                            <span>1 oz / 30 ml</span>
+                                            <span>{makeUpGet[1].sizeAndFit}</span>
 
                                         </div>
 
                                         <div className="Example">
 
-                                            <span className="FramePrice">£29.40</span>
+                                            <span className="FramePrice">£{makeUpGet[1].price}</span>
 
-                                            <Link to=""
+                                            <Link
+
+                                                to={`/product/${makeUpGet[1].id}`}
                                                   className="Arrow1"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
@@ -289,6 +416,7 @@ const FaceBody=()=>{
                             </div>
 
                         </div>
+                        )}
 
                     </div>
 
@@ -309,7 +437,7 @@ const FaceBody=()=>{
                         </div>
 
                         <Link
-                        to=""
+                        to="/allProductsForBody"
                         className="ShopNow">Shop Now
 
                         </Link>
@@ -323,228 +451,266 @@ const FaceBody=()=>{
 
                     <div className="Frame250">
 
-                     <div className="Frame249-1">
+                        {SkinCareGet[0] && (
 
-                         <div className="Component1">
+                            <div className="Frame249-1">
 
-                             <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144" fill="none">
-                                 <path d="M51.4595 2.6937C51.2172 0.425172 54.3522 -0.414835 55.2767 1.67092L70.2749 35.5105C70.9779 37.0967 73.2288 37.0967 73.9318 35.5105L88.93 1.6709C89.8544 -0.414853 92.9894 0.425183 92.7471 2.69371L88.8161 39.4988C88.6319 41.2239 90.5812 42.3494 91.9831 41.3272L121.892 19.5204C123.735 18.1763 126.03 20.4712 124.686 22.3147L102.879 52.2233C101.857 53.6252 102.982 55.5746 104.708 55.3903L141.513 51.4593C143.781 51.217 144.621 54.352 142.536 55.2765L108.696 70.2746C107.11 70.9776 107.11 73.2286 108.696 73.9316L142.535 88.9297C144.621 89.8542 143.781 92.9892 141.513 92.7469L104.708 88.8159C102.983 88.6316 101.857 90.581 102.879 91.9829L124.686 121.891C126.03 123.735 123.735 126.03 121.892 124.686L91.9831 102.879C90.5812 101.857 88.6319 102.982 88.8161 104.707L92.7471 141.513C92.9894 143.781 89.8544 144.621 88.93 142.535L73.9318 108.696C73.2288 107.11 70.9779 107.11 70.2749 108.696L55.2767 142.535C54.3522 144.621 51.2172 143.781 51.4595 141.512L55.3905 104.707C55.5748 102.982 53.6254 101.857 52.2235 102.879L22.3149 124.686C20.4714 126.03 18.1765 123.735 19.5206 121.891L41.3275 91.9829C42.3496 90.581 41.2241 88.6316 39.499 88.8159L2.69392 92.7469C0.425386 92.9892 -0.414621 89.8542 1.67113 88.9297L35.5108 73.9316C37.0969 73.2286 37.0969 70.9776 35.5107 70.2746L1.67111 55.2764C-0.414638 54.352 0.425398 51.217 2.69393 51.4593L39.499 55.3903C41.2241 55.5746 42.3496 53.6252 41.3274 52.2233L19.5206 22.3147C18.1765 20.4712 20.4715 18.1763 22.3149 19.5204L52.2235 41.3272C53.6254 42.3494 55.5748 41.2239 55.3905 39.4988L51.4595 2.6937Z" fill="#C8F954"/>
-                             </svg>
+                                <div className="Component1">
 
-                             <span className="Top-1">top</span>
-
-                         </div>
-
-                         <div className="Frame228">
-
-                             <img src="public/Body/crema.png"/>
-
-                             <button className="favorite209">
-                                 <svg id="star209"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-                                     <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
-                                 </svg>
-
-                             </button>
-                         </div>
-
-                         <div className="Frame207-4">
-
-                             <div className="Frame206-2">
-
-                                 <span>COSRX Advanced Snail 92 All In One Cream</span>
-
-                                 <span>100 g / 3.53 oz</span>
-
-                             </div>
-
-                             <div className="Example">
-
-                                 <span className="FramePrice">£26.00</span>
-
-                                 <Link to=""
-                                       className="Arrow1"
-                                 >
-                                     <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                         <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
-                                     </svg>
-                                 </Link>
-
-                             </div>
-
-                         </div>
-
-                     </div>
-
-                        <div className="Frame249-1">
-
-                            <div className="Component1">
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144" fill="none">
-                                    <path d="M51.4595 2.6937C51.2172 0.425172 54.3522 -0.414835 55.2767 1.67092L70.2749 35.5105C70.9779 37.0967 73.2288 37.0967 73.9318 35.5105L88.93 1.6709C89.8544 -0.414853 92.9894 0.425183 92.7471 2.69371L88.8161 39.4988C88.6319 41.2239 90.5812 42.3494 91.9831 41.3272L121.892 19.5204C123.735 18.1763 126.03 20.4712 124.686 22.3147L102.879 52.2233C101.857 53.6252 102.982 55.5746 104.708 55.3903L141.513 51.4593C143.781 51.217 144.621 54.352 142.536 55.2765L108.696 70.2746C107.11 70.9776 107.11 73.2286 108.696 73.9316L142.535 88.9297C144.621 89.8542 143.781 92.9892 141.513 92.7469L104.708 88.8159C102.983 88.6316 101.857 90.581 102.879 91.9829L124.686 121.891C126.03 123.735 123.735 126.03 121.892 124.686L91.9831 102.879C90.5812 101.857 88.6319 102.982 88.8161 104.707L92.7471 141.513C92.9894 143.781 89.8544 144.621 88.93 142.535L73.9318 108.696C73.2288 107.11 70.9779 107.11 70.2749 108.696L55.2767 142.535C54.3522 144.621 51.2172 143.781 51.4595 141.512L55.3905 104.707C55.5748 102.982 53.6254 101.857 52.2235 102.879L22.3149 124.686C20.4714 126.03 18.1765 123.735 19.5206 121.891L41.3275 91.9829C42.3496 90.581 41.2241 88.6316 39.499 88.8159L2.69392 92.7469C0.425386 92.9892 -0.414621 89.8542 1.67113 88.9297L35.5108 73.9316C37.0969 73.2286 37.0969 70.9776 35.5107 70.2746L1.67111 55.2764C-0.414638 54.352 0.425398 51.217 2.69393 51.4593L39.499 55.3903C41.2241 55.5746 42.3496 53.6252 41.3274 52.2233L19.5206 22.3147C18.1765 20.4712 20.4715 18.1763 22.3149 19.5204L52.2235 41.3272C53.6254 42.3494 55.5748 41.2239 55.3905 39.4988L51.4595 2.6937Z" fill="#C8F954"/>
-                                </svg>
-
-                                <span className="Top-1">top</span>
-
-                            </div>
-
-                            <div className="Frame228">
-
-                                <img src="public/Body/crema.png"/>
-
-                                <button className="favorite209">
-                                    <svg id="star209"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-                                        <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144" fill="none">
+                                        <path d="M51.4595 2.6937C51.2172 0.425172 54.3522 -0.414835 55.2767 1.67092L70.2749 35.5105C70.9779 37.0967 73.2288 37.0967 73.9318 35.5105L88.93 1.6709C89.8544 -0.414853 92.9894 0.425183 92.7471 2.69371L88.8161 39.4988C88.6319 41.2239 90.5812 42.3494 91.9831 41.3272L121.892 19.5204C123.735 18.1763 126.03 20.4712 124.686 22.3147L102.879 52.2233C101.857 53.6252 102.982 55.5746 104.708 55.3903L141.513 51.4593C143.781 51.217 144.621 54.352 142.536 55.2765L108.696 70.2746C107.11 70.9776 107.11 73.2286 108.696 73.9316L142.535 88.9297C144.621 89.8542 143.781 92.9892 141.513 92.7469L104.708 88.8159C102.983 88.6316 101.857 90.581 102.879 91.9829L124.686 121.891C126.03 123.735 123.735 126.03 121.892 124.686L91.9831 102.879C90.5812 101.857 88.6319 102.982 88.8161 104.707L92.7471 141.513C92.9894 143.781 89.8544 144.621 88.93 142.535L73.9318 108.696C73.2288 107.11 70.9779 107.11 70.2749 108.696L55.2767 142.535C54.3522 144.621 51.2172 143.781 51.4595 141.512L55.3905 104.707C55.5748 102.982 53.6254 101.857 52.2235 102.879L22.3149 124.686C20.4714 126.03 18.1765 123.735 19.5206 121.891L41.3275 91.9829C42.3496 90.581 41.2241 88.6316 39.499 88.8159L2.69392 92.7469C0.425386 92.9892 -0.414621 89.8542 1.67113 88.9297L35.5108 73.9316C37.0969 73.2286 37.0969 70.9776 35.5107 70.2746L1.67111 55.2764C-0.414638 54.352 0.425398 51.217 2.69393 51.4593L39.499 55.3903C41.2241 55.5746 42.3496 53.6252 41.3274 52.2233L19.5206 22.3147C18.1765 20.4712 20.4715 18.1763 22.3149 19.5204L52.2235 41.3272C53.6254 42.3494 55.5748 41.2239 55.3905 39.4988L51.4595 2.6937Z" fill="#C8F954"/>
                                     </svg>
 
-                                </button>
-                            </div>
-
-                            <div className="Frame207-4">
-
-                                <div className="Frame206-2">
-
-                                    <span>COSRX Advanced Snail 92 All In One Cream</span>
-
-                                    <span>100 g / 3.53 oz</span>
+                                    <span className="Top-1">top</span>
 
                                 </div>
 
-                                <div className="Example">
+                                <div className="Frame228">
 
-                                    <span className="FramePrice">£26.00</span>
+                                    <img alt={`Foto ${SkinCareGet[0].name}`} src={`${baseUrl}product/${SkinCareGet[0].imageUrls[0]}`}/>
 
-                                    <Link to=""
-                                          className="Arrow1"
+                                    <button className="favorite209"
+
+                                            onClick={(event) => {
+                                                handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                                addItemToCart(SkinCareGet[0].id);  // Друга функція для додавання товару в кошик
+                                            }}
+
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                            <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                        <svg id="star209"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                            <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
-                                    </Link>
+
+                                    </button>
+                                </div>
+
+                                <div className="Frame207-4">
+
+                                    <div className="Frame206-2">
+
+                                        <span>{SkinCareGet[0].name}</span>
+
+                                        <span>{SkinCareGet[0].sizeAndFit}</span>
+
+                                    </div>
+
+                                    <div className="Example">
+
+                                        <span className="FramePrice">£{SkinCareGet[0].price}</span>
+
+                                        <Link
+
+                                            to={`/product/${SkinCareGet[0].id}`}
+                                            className="Arrow1"
+
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                            </svg>
+                                        </Link>
+
+                                    </div>
 
                                 </div>
 
                             </div>
+                        )}
 
-                        </div>
+                        {SkinCareGet[1] && (
 
-                        <div className="Frame249-1">
+                            <div className="Frame249-1">
 
-                            <div className="Component1">
+                                <div className="Component1">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144" fill="none">
-                                    <path d="M51.4595 2.6937C51.2172 0.425172 54.3522 -0.414835 55.2767 1.67092L70.2749 35.5105C70.9779 37.0967 73.2288 37.0967 73.9318 35.5105L88.93 1.6709C89.8544 -0.414853 92.9894 0.425183 92.7471 2.69371L88.8161 39.4988C88.6319 41.2239 90.5812 42.3494 91.9831 41.3272L121.892 19.5204C123.735 18.1763 126.03 20.4712 124.686 22.3147L102.879 52.2233C101.857 53.6252 102.982 55.5746 104.708 55.3903L141.513 51.4593C143.781 51.217 144.621 54.352 142.536 55.2765L108.696 70.2746C107.11 70.9776 107.11 73.2286 108.696 73.9316L142.535 88.9297C144.621 89.8542 143.781 92.9892 141.513 92.7469L104.708 88.8159C102.983 88.6316 101.857 90.581 102.879 91.9829L124.686 121.891C126.03 123.735 123.735 126.03 121.892 124.686L91.9831 102.879C90.5812 101.857 88.6319 102.982 88.8161 104.707L92.7471 141.513C92.9894 143.781 89.8544 144.621 88.93 142.535L73.9318 108.696C73.2288 107.11 70.9779 107.11 70.2749 108.696L55.2767 142.535C54.3522 144.621 51.2172 143.781 51.4595 141.512L55.3905 104.707C55.5748 102.982 53.6254 101.857 52.2235 102.879L22.3149 124.686C20.4714 126.03 18.1765 123.735 19.5206 121.891L41.3275 91.9829C42.3496 90.581 41.2241 88.6316 39.499 88.8159L2.69392 92.7469C0.425386 92.9892 -0.414621 89.8542 1.67113 88.9297L35.5108 73.9316C37.0969 73.2286 37.0969 70.9776 35.5107 70.2746L1.67111 55.2764C-0.414638 54.352 0.425398 51.217 2.69393 51.4593L39.499 55.3903C41.2241 55.5746 42.3496 53.6252 41.3274 52.2233L19.5206 22.3147C18.1765 20.4712 20.4715 18.1763 22.3149 19.5204L52.2235 41.3272C53.6254 42.3494 55.5748 41.2239 55.3905 39.4988L51.4595 2.6937Z" fill="#C8F954"/>
-                                </svg>
-
-                                <span className="Top-1">top</span>
-
-                            </div>
-
-                            <div className="Frame228">
-
-                                <img src="public/Body/crema.png"/>
-
-                                <button className="favorite209">
-                                    <svg id="star209"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-                                        <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144" fill="none">
+                                        <path d="M51.4595 2.6937C51.2172 0.425172 54.3522 -0.414835 55.2767 1.67092L70.2749 35.5105C70.9779 37.0967 73.2288 37.0967 73.9318 35.5105L88.93 1.6709C89.8544 -0.414853 92.9894 0.425183 92.7471 2.69371L88.8161 39.4988C88.6319 41.2239 90.5812 42.3494 91.9831 41.3272L121.892 19.5204C123.735 18.1763 126.03 20.4712 124.686 22.3147L102.879 52.2233C101.857 53.6252 102.982 55.5746 104.708 55.3903L141.513 51.4593C143.781 51.217 144.621 54.352 142.536 55.2765L108.696 70.2746C107.11 70.9776 107.11 73.2286 108.696 73.9316L142.535 88.9297C144.621 89.8542 143.781 92.9892 141.513 92.7469L104.708 88.8159C102.983 88.6316 101.857 90.581 102.879 91.9829L124.686 121.891C126.03 123.735 123.735 126.03 121.892 124.686L91.9831 102.879C90.5812 101.857 88.6319 102.982 88.8161 104.707L92.7471 141.513C92.9894 143.781 89.8544 144.621 88.93 142.535L73.9318 108.696C73.2288 107.11 70.9779 107.11 70.2749 108.696L55.2767 142.535C54.3522 144.621 51.2172 143.781 51.4595 141.512L55.3905 104.707C55.5748 102.982 53.6254 101.857 52.2235 102.879L22.3149 124.686C20.4714 126.03 18.1765 123.735 19.5206 121.891L41.3275 91.9829C42.3496 90.581 41.2241 88.6316 39.499 88.8159L2.69392 92.7469C0.425386 92.9892 -0.414621 89.8542 1.67113 88.9297L35.5108 73.9316C37.0969 73.2286 37.0969 70.9776 35.5107 70.2746L1.67111 55.2764C-0.414638 54.352 0.425398 51.217 2.69393 51.4593L39.499 55.3903C41.2241 55.5746 42.3496 53.6252 41.3274 52.2233L19.5206 22.3147C18.1765 20.4712 20.4715 18.1763 22.3149 19.5204L52.2235 41.3272C53.6254 42.3494 55.5748 41.2239 55.3905 39.4988L51.4595 2.6937Z" fill="#C8F954"/>
                                     </svg>
 
-                                </button>
-                            </div>
-
-                            <div className="Frame207-4">
-
-                                <div className="Frame206-2">
-
-                                    <span>COSRX Advanced Snail 92 All In One Cream</span>
-
-                                    <span>100 g / 3.53 oz</span>
+                                    <span className="Top-1">top</span>
 
                                 </div>
 
-                                <div className="Example">
+                                <div className="Frame228">
 
-                                    <span className="FramePrice">£26.00</span>
+                                    <img alt={`Foto ${SkinCareGet[1].name}`} src={`${baseUrl}product/${SkinCareGet[1].imageUrls[0]}`}/>
 
-                                    <Link to=""
-                                          className="Arrow1"
+                                    <button className="favorite209"
+
+                                            onClick={(event) => {
+                                                handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                                addItemToCart(SkinCareGet[1].id);  // Друга функція для додавання товару в кошик
+                                            }}
+
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
-                                            <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                        <svg id="star209"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                            <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
                                         </svg>
-                                    </Link>
+
+                                    </button>
+                                </div>
+
+                                <div className="Frame207-4">
+
+                                    <div className="Frame206-2">
+
+                                        <span>{SkinCareGet[1].name}</span>
+
+                                        <span>{SkinCareGet[1].sizeAndFit}</span>
+
+                                    </div>
+
+                                    <div className="Example">
+
+                                        <span className="FramePrice">£{SkinCareGet[1].price}</span>
+
+                                        <Link
+                                            to={`/product/${SkinCareGet[1].id}`}
+                                              className="Arrow1"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                            </svg>
+                                        </Link>
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                        </div>
+                        )}
+
+                        {SkinCareGet[2] && (
+
+                            <div className="Frame249-1">
+
+                                <div className="Component1">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144" fill="none">
+                                        <path d="M51.4595 2.6937C51.2172 0.425172 54.3522 -0.414835 55.2767 1.67092L70.2749 35.5105C70.9779 37.0967 73.2288 37.0967 73.9318 35.5105L88.93 1.6709C89.8544 -0.414853 92.9894 0.425183 92.7471 2.69371L88.8161 39.4988C88.6319 41.2239 90.5812 42.3494 91.9831 41.3272L121.892 19.5204C123.735 18.1763 126.03 20.4712 124.686 22.3147L102.879 52.2233C101.857 53.6252 102.982 55.5746 104.708 55.3903L141.513 51.4593C143.781 51.217 144.621 54.352 142.536 55.2765L108.696 70.2746C107.11 70.9776 107.11 73.2286 108.696 73.9316L142.535 88.9297C144.621 89.8542 143.781 92.9892 141.513 92.7469L104.708 88.8159C102.983 88.6316 101.857 90.581 102.879 91.9829L124.686 121.891C126.03 123.735 123.735 126.03 121.892 124.686L91.9831 102.879C90.5812 101.857 88.6319 102.982 88.8161 104.707L92.7471 141.513C92.9894 143.781 89.8544 144.621 88.93 142.535L73.9318 108.696C73.2288 107.11 70.9779 107.11 70.2749 108.696L55.2767 142.535C54.3522 144.621 51.2172 143.781 51.4595 141.512L55.3905 104.707C55.5748 102.982 53.6254 101.857 52.2235 102.879L22.3149 124.686C20.4714 126.03 18.1765 123.735 19.5206 121.891L41.3275 91.9829C42.3496 90.581 41.2241 88.6316 39.499 88.8159L2.69392 92.7469C0.425386 92.9892 -0.414621 89.8542 1.67113 88.9297L35.5108 73.9316C37.0969 73.2286 37.0969 70.9776 35.5107 70.2746L1.67111 55.2764C-0.414638 54.352 0.425398 51.217 2.69393 51.4593L39.499 55.3903C41.2241 55.5746 42.3496 53.6252 41.3274 52.2233L19.5206 22.3147C18.1765 20.4712 20.4715 18.1763 22.3149 19.5204L52.2235 41.3272C53.6254 42.3494 55.5748 41.2239 55.3905 39.4988L51.4595 2.6937Z" fill="#C8F954"/>
+                                    </svg>
+
+                                    <span className="Top-1">top</span>
+
+                                </div>
+
+                                <div className="Frame228">
+
+                                    <img alt={`Foto ${SkinCareGet[2].name}`} src={`${baseUrl}product/${SkinCareGet[2].imageUrls[0]}`}/>
+
+                                    <button className="favorite209"
+
+                                            onClick={(event) => {
+                                                handleStarClick(event);  // Перша функція для зміни стану зірочки
+                                                addItemToCart(SkinCareGet[2].id);  // Друга функція для додавання товару в кошик
+                                            }}
+                                    >
+                                        <svg id="star209"  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                                            <path  d="M16.1716 1.90088C16.4132 1.24791 17.3368 1.24792 17.5784 1.90088L21.3131 11.9938C21.3891 12.1991 21.5509 12.3609 21.7562 12.4369L31.8491 16.1716C32.5021 16.4132 32.5021 17.3368 31.8491 17.5784L21.7562 21.3131C21.5509 21.3891 21.3891 21.5509 21.3131 21.7562L17.5784 31.8491C17.3368 32.5021 16.4132 32.5021 16.1716 31.8491L12.4369 21.7562C12.3609 21.5509 12.1991 21.3891 11.9938 21.3131L1.90088 17.5784C1.24791 17.3368 1.24792 16.4132 1.90088 16.1716L11.9938 12.4369C12.1991 12.3609 12.3609 12.1991 12.4369 11.9938L16.1716 1.90088Z" stroke="#0D0D0D" strokeWidth="1.5"/>
+                                        </svg>
+
+                                    </button>
+                                </div>
+
+                                <div className="Frame207-4">
+
+                                    <div className="Frame206-2">
+
+                                        <span>{SkinCareGet[2].name}</span>
+
+                                        <span>{SkinCareGet[2].sizeAndFit}</span>
+
+                                    </div>
+
+                                    <div className="Example">
+
+                                        <span className="FramePrice">£{SkinCareGet[2].price}</span>
+
+                                        <Link
+                                            to={`/product/${SkinCareGet[2].id}`}
+                                              className="Arrow1"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" fill="none">
+                                                <path d="M71.4142 43.4142C72.1953 42.6332 72.1953 41.3668 71.4142 40.5858L58.6863 27.8579C57.9052 27.0768 56.6389 27.0768 55.8579 27.8579C55.0768 28.6389 55.0768 29.9052 55.8579 30.6863L67.1716 42L55.8579 53.3137C55.0768 54.0948 55.0768 55.3611 55.8579 56.1421C56.6389 56.9232 57.9052 56.9232 58.6863 56.1421L71.4142 43.4142ZM14 44H70V40H14V44Z" fill="#0D0D0D"/>
+                                            </svg>
+                                        </Link>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        )}
+
+
+
                     </div>
 
                     <Link
-                        to=""
+                        to="/skincareProducts"
                         className="ShopAll">show all
                     </Link>
 
 
                 </div>
 
-                <div className="Frame429">
+                {/*<div className="Frame429">*/}
 
-                    <div className="Frame424">
+                {/*    <div className="Frame424">*/}
 
-                        <div className="Frame243">
+                {/*        <div className="Frame243">*/}
 
-                            <div className="Frame199-2"></div>
+                {/*            <div className="Frame199-2"></div>*/}
 
-                            <div className="Frame231"></div>
+                {/*            <div className="Frame231"></div>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                        <div className="Frame234">
+                {/*        <div className="Frame234">*/}
 
-                            <div className="Frame233">
+                {/*            <div className="Frame233">*/}
 
-                                <span>your perfect match...</span>
+                {/*                <span>your perfect match...</span>*/}
 
-                                <span>NARS’ Light Reflecting Foundation is your new go-to beauty essential, delivering a flawless complexion and perfect coverage inspired by the diversity of natural skin tones.</span>
+                {/*                <span>NARS’ Light Reflecting Foundation is your new go-to beauty essential, delivering a flawless complexion and perfect coverage inspired by the diversity of natural skin tones.</span>*/}
 
-                            </div>
+                {/*            </div>*/}
 
-                            <Link
-                            to=""
-                            className="BuyFoundation">buy foundation
+                {/*            <Link*/}
+                {/*            to=""*/}
+                {/*            className="BuyFoundation">buy foundation*/}
 
-                            </Link>
+                {/*            </Link>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                    <div className="Frame426">
+                {/*    <div className="Frame426">*/}
 
-                        <div className="Frame223-2">
+                {/*        <div className="Frame223-2">*/}
 
-                            <span>and a little cover-up!</span>
+                {/*            <span>and a little cover-up!</span>*/}
 
-                            <span>NARS’ Radiant Creamy Concealer is an ultimate solution for achieving a flawless, radiant complexion. Its innovative formula is designed to cater to a wide array of skin tones. Whether you need to cover blemishes, dark circles, or redness, this concealer  has got you covered.</span>
+                {/*            <span>NARS’ Radiant Creamy Concealer is an ultimate solution for achieving a flawless, radiant complexion. Its innovative formula is designed to cater to a wide array of skin tones. Whether you need to cover blemishes, dark circles, or redness, this concealer  has got you covered.</span>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                        <div className="Frame425">
+                {/*        <div className="Frame425">*/}
 
-                            <Link
-                            to=""
-                            className="BuyConcealer">buy concealer</Link>
+                {/*            <Link*/}
+                {/*            to=""*/}
+                {/*            className="BuyConcealer">buy concealer</Link>*/}
 
-                            <div className="Frame236"></div>
+                {/*            <div className="Frame236"></div>*/}
 
-                            <div className="Frame235"></div>
+                {/*            <div className="Frame235"></div>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                </div>
+                {/*</div>*/}
 
                 <div className="footer-2">
 
