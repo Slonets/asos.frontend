@@ -31,7 +31,7 @@ const LoginPage = () => {
     useEffect(() => {
         if(basket.length > 0)
         {
-            const productIds = basket.map((item) => item.productId);
+            const productIds = basket.map((item) => parseInt(String(item.productId), 10));
             console.log("Такі id нових товарів взялися", productIds);
             setArray(productIds);
         }
@@ -95,7 +95,8 @@ const LoginPage = () => {
 
                     const products = JSON.parse(localStorage.getItem('basket') || '[]');
 
-                    basket.forEach((productId: number) => {
+                    //@ts-ignore
+                    basket.forEach((productId: any) => {
 
                         products.push(productId);
                     });
@@ -192,7 +193,8 @@ const LoginPage = () => {
 
                     const products = JSON.parse(localStorage.getItem('basket') || '[]');
 
-                    basket.forEach((productId: number) => {
+                    //@ts-ignore
+                    basket.forEach((productId: any) => {
 
                         products.push(productId);
                     });

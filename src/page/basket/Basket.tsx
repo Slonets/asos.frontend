@@ -31,7 +31,8 @@ const Basket=()=>{
 
         if(basket.length > 0)
         {
-            const productIds = basket.map((item: number) => item.productId);
+            // @ts-ignore
+            const productIds = basket.map((item:any) => item);
             setArray(productIds);
 
             console.log("Ця функція діє?",  productIds);
@@ -50,6 +51,8 @@ const Basket=()=>{
 
                 // Ініціалізуємо кількості для кожного продукту
                 const initialQuantities: { [key: number]: number } = {};
+
+                //@ts-ignore
                 resp.data.forEach((product: any) => {
                     initialQuantities[product.id] = 1; // або інше значення за замовчуванням
                 });
@@ -69,6 +72,7 @@ const Basket=()=>{
 
                 // Ініціалізуємо кількості для кожного продукту
                 const initialQuantities: { [key: number]: number } = {};
+                //@ts-ignore
                 resp.data.forEach((product: any) => {
                     initialQuantities[product.id] = 1; // або інше значення за замовчуванням
                 });
@@ -108,7 +112,7 @@ const Basket=()=>{
         {
             // Якщо авторизація не вдалася, оновлюємо локальний кошик
             const cart = JSON.parse(localStorage.getItem('basket') || '[]');
-            const updatedCart = cart.filter((item: any) => item !== productId);
+            const updatedCart = cart.filter((item: number) => item !== productId);
 
             localStorage.setItem('basket', JSON.stringify(updatedCart));
             dispatch({ type: BasketActionType.ADD_Basket, payload: updatedCart });
@@ -189,6 +193,7 @@ const Basket=()=>{
                 amount:totalPrice// ціна за одиницю
             }));
 
+            //@ts-ignore
             orderItems.forEach((item: any) => {
                 order.push(item);
             });

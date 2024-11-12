@@ -11,9 +11,10 @@ import {BasketActionType} from "../../store/slice/basketSlice.tsx";
 const Favourites=()=>{
 
     const baseUrl = APP_ENV.BASE_URL;
+    //@ts-ignore
     const items = useSelector((store: any) => store.favorite);
     const dispatch = useDispatch();
-
+    //@ts-ignore
     const userStatus = useSelector((store: any) => store.auth.isAuth);
 
     const [array, setArray] = useState<number[]>([]);
@@ -21,7 +22,7 @@ const Favourites=()=>{
     useEffect(() => {
         if(items.length > 0)
         {
-            const productIds = items.map((item: any) => item.id);
+            const productIds = items.map((item: number) => item);
             setArray(productIds);
         }
     }, [items]);
@@ -50,7 +51,7 @@ const Favourites=()=>{
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
         // Видалити товар з кошика
-        const updatedCart = cart.filter((item: any) => item !== productId);
+        const updatedCart = cart.filter((item: number) => item !== productId);
 
         // Оновити Local Storage
         localStorage.setItem('cart', JSON.stringify(updatedCart));
